@@ -357,6 +357,3 @@ CREATE TABLE recordatorios (
     INDEX idx_enviado (enviado)
 );
 
--- =========== DATOS INICIALES COMPLETOS ===========
--- (Incluir datos para todas las nuevas tablas)
--- ... [datos extensos para todas las tablas] ...
