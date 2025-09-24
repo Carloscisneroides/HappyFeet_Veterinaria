@@ -1,4 +1,4 @@
-package com.happyfeet.repository.iml;
+package com.happyfeet.repository.impl;
 
 import com.happyfeet.model.entities.Dueno;
 import com.happyfeet.repository.DuenoRepository;
