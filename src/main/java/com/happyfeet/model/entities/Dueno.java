@@ -179,10 +179,11 @@ public class Dueno {
     @Override
     public String toString() {
         return String.format("""
-            Dueño: %s
-            Documento: %s
-            Email: %s
-            Teléfono: %s
+            |********************************
+            |   Dueño:          %s
+            |   Documento:      %s
+            |   Email:          %s
+            |   Teléfono:       %s
             """, nombreCompleto, documentoIdentidad, email, telefono);
     }
 }
