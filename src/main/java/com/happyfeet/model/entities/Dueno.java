@@ -20,6 +20,15 @@ public class Dueno {
 
     private Dueno() {} // constructor privado
 
+    public String getTelefono() {
+        return telefono;
+
+    }
+
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
+    }
+
     public static class Builder {
         private Dueno dueno;
 
@@ -111,6 +120,41 @@ public class Dueno {
     public String getNombreCompleto() { return nombreCompleto; }
     public void setNombreCompleto(String nombreCompleto) {
         this.nombreCompleto = Objects.requireNonNull(nombreCompleto, "Nombre completo no puede ser nulo");
+    }
+
+    // Métodos de compatibilidad con servicios que usan nombre y apellido por separado
+    public String getNombre() {
+        String[] partes = dividirNombreCompleto();
+        return partes[0];
+    }
+
+    public void setNombre(String nombre) {
+        Objects.requireNonNull(nombre, "nombre no puede ser nulo");
+        String[] partes = dividirNombreCompleto();
+        String apellido = partes[1];
+        this.nombreCompleto = (nombre + " " + apellido).trim();
+    }
+
+    public String getApellido() {
+        String[] partes = dividirNombreCompleto();
+        return partes[1];
+    }
+
+    public void setApellido(String apellido) {
+        Objects.requireNonNull(apellido, "apellido no puede ser nulo");
+        String[] partes = dividirNombreCompleto();
+        String nombre = partes[0];
+        this.nombreCompleto = (nombre + " " + apellido).trim();
+    }
+
+    private String[] dividirNombreCompleto() {
+        String nc = this.nombreCompleto == null ? "" : this.nombreCompleto.trim();
+        if (nc.isEmpty()) return new String[]{"", ""};
+        int idx = nc.indexOf(' ');
+        if (idx < 0) return new String[]{nc, ""};
+        String nombre = nc.substring(0, idx).trim();
+        String apellido = nc.substring(idx + 1).trim();
+        return new String[]{nombre, apellido};
     }
 
     public String getDocumentoIdentidad() { return documentoIdentidad; }
