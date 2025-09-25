@@ -12,11 +12,12 @@ public class InventarioService {
 
     // Se mantiene el nombre del método tal como está en tu código para no romper llamadas existentes
     public void descontarStostck(Integer productoId, Integer cantidad) {
+        if (cantidad == null || cantidad <= 0) {
+            throw new IllegalArgumentException("La cantidad debe ser un entero positivo");
+        }
         Inventario producto = inventarioRepository.findById(productoId)
                 .orElseThrow(() -> new IllegalArgumentException("Producto no encontrado con ID: " + productoId));
 
-        // Las siguientes llamadas asumen que tu entidad Inventario cuenta con estos métodos de dominio.
-        // Si aún no existen, ver notas más abajo.
         if (producto.estaVencido()) {
             throw new IllegalStateException("No se puede vender un producto vencido: " + producto.getNombreProducto());
         }
@@ -26,5 +27,10 @@ public class InventarioService {
 
         producto.descontarStock(cantidad);
         inventarioRepository.update(producto);
+    }
+
+    // Nueva API con el nombre correcto, manteniendo compatibilidad hacia atrás
+    public void descontarStock(Integer productoId, Integer cantidad) {
+        descontarStostck(productoId, cantidad);
     }
 }

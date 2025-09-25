@@ -1,6 +1,6 @@
 package com.happyfeet.model.entities;
 
-import com.happyfeet.model.enums.CitaEstado;
+import com.happyfeet.model.entities.enums.CitaEstado;
 
 import java.time.LocalDateTime;
 import java.util.Objects;

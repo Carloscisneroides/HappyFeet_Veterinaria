@@ -5,7 +5,7 @@ package com.happyfeet.repository;
 // /src/main/java/com/happyfeet/repository/CitaRepository.java
 
 import com.happyfeet.model.entities.Cita;
-import com.happyfeet.model.enums.CitaEstado;
+import com.happyfeet.model.entities.enums.CitaEstado;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
