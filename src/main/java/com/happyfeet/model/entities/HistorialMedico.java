@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 public class HistorialMedico {
     private Integer id;
     private Integer mascotaId;
-    private Integer citaId;
+    private Long citaId;
     private Integer eventoMedicoId;
     private LocalDateTime fechaEvento;
     private Integer veterinarioId;
@@ -367,7 +367,7 @@ public class HistorialMedico {
             return this;
         }
 
-        public Builder withCitaId(Integer citaId) {
+        public Builder withCitaId(Long citaId) {
             historial.citaId = citaId;
             return this;
         }
@@ -574,8 +574,8 @@ public class HistorialMedico {
     public Integer getMascotaId() { return mascotaId; }
     public void setMascotaId(Integer mascotaId) { this.mascotaId = mascotaId; }
 
-    public Integer getCitaId() { return citaId; }
-    public void setCitaId(Integer citaId) { this.citaId = citaId; }
+    public Long getCitaId() { return citaId; }
+    public void setCitaId(Long citaId) { this.citaId = citaId; }
 
     public Integer getEventoMedicoId() { return eventoMedicoId; }
     public void setEventoMedicoId(Integer eventoMedicoId) { this.eventoMedicoId = eventoMedicoId; }
