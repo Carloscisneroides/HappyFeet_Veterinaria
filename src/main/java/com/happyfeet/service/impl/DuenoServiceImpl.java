@@ -1,4 +1,3 @@
-// /src/main/java/com/happyfeet/service/impl/DuenoServiceImpl.java
 package com.happyfeet.service.impl;
 
 import com.happyfeet.model.entities.Dueno;
@@ -19,18 +18,18 @@ public class DuenoServiceImpl implements DuenoService {
         this.duenoRepository = Objects.requireNonNull(duenoRepository, "duenoRepository no puede ser null");
     }
 
-    // Crea y devuelve el dueño creado
+    // CORREGIDO: Cambiado de 'crear' a 'crearDueno' para coincidir con la interfaz
     @Override
-    public Dueno crear(Dueno dueno) {
+    public Dueno crearDueno(Dueno dueno) {
         validarNoNull(dueno, "dueno");
         validarNegocio(dueno);
         validarDocumentoUnico(dueno.getDocumentoIdentidad());
         return duenoRepository.save(dueno);
     }
 
-    // Actualiza y devuelve el dueño actualizado
+    // CORREGIDO: Cambiado de 'actualizar' a 'actualizarDueno' para coincidir con la interfaz
     @Override
-    public Dueno actualizar(Long id, Dueno cambios) {
+    public Dueno actualizarDueno(Long id, Dueno cambios) {
         validarNoNull(id, "id");
         validarNoNull(cambios, "cambios");
         var existente = duenoRepository.findById(id)
@@ -47,11 +46,12 @@ public class DuenoServiceImpl implements DuenoService {
         var actualizado = mergeDueno(existente, cambios);
         validarNegocio(actualizado);
 
-        return duenoRepository.update(actualizado);
+        return duenoRepository.save(actualizado); // CORREGIDO: Cambiado de 'update' a 'save'
     }
 
+    // CORREGIDO: Cambiado de 'eliminar' a 'eliminarDueno' para coincidir con la interfaz
     @Override
-    public void eliminar(Long id) {
+    public void eliminarDueno(Long id) {
         validarNoNull(id, "id");
         if (!duenoRepository.existsById(id)) {
             throw new RecursoNoEncontradoException("Dueño con id " + id + " no existe");
@@ -74,15 +74,21 @@ public class DuenoServiceImpl implements DuenoService {
                 .toList();
     }
 
+    // CORREGIDO: Cambiado de 'buscarPorNombre' a 'buscarPorDueno' para coincidir con la interfaz
     @Override
-    public List<Dueno> buscarPorNombre(String termino) {
+    public List<Dueno> buscarPorDueno(String termino) {
+        if (termino == null || termino.isBlank()) {
+            return listarTodos();
+        }
+
         var filtro = normalizar(termino);
         Predicate<Dueno> nombreMatch = d -> normalizar(d.getNombre()).contains(filtro);
         Predicate<Dueno> apellidoMatch = d -> normalizar(d.getApellido()).contains(filtro);
         Predicate<Dueno> documentoMatch = d -> normalizar(d.getDocumentoIdentidad()).contains(filtro);
+        Predicate<Dueno> emailMatch = d -> normalizar(d.getEmail()).contains(filtro);
 
         return duenoRepository.findAll().stream()
-                .filter(nombreMatch.or(apellidoMatch).or(documentoMatch))
+                .filter(nombreMatch.or(apellidoMatch).or(documentoMatch).or(emailMatch))
                 .sorted(Comparator.comparing(Dueno::getApellido).thenComparing(Dueno::getNombre))
                 .toList();
     }
@@ -93,34 +99,51 @@ public class DuenoServiceImpl implements DuenoService {
         return duenoRepository.existsByDocumento(documento.trim());
     }
 
+    // MÉTODO ADICIONAL: Para soportar la funcionalidad del controller
+    public boolean existePorEmail(String email) {
+        if (email == null || email.isBlank()) {
+            return false;
+        }
+
+        String emailNormalizado = email.trim().toLowerCase();
+        return duenoRepository.findAll().stream()
+                .anyMatch(d -> d.getEmail() != null &&
+                        d.getEmail().toLowerCase().equals(emailNormalizado));
+    }
+
     // ------------------ Helpers de validación y util ------------------
 
     private void validarNegocio(Dueno d) {
-        validarTextoNoVacio(d.getNombre(), "nombre");
-        validarTextoNoVacio(d.getApellido(), "apellido");
+        validarTextoNoVacio(d.getNombreCompleto(), "nombreCompleto");
         validarTextoNoVacio(d.getDocumentoIdentidad(), "documentoIdentidad");
+        validarTextoNoVacio(d.getEmail(), "email");
+
         if (d.getTelefono() != null && d.getTelefono().length() > 20) {
-            throw new ValidacionException("telefono excede longitud permitida");
+            throw new ValidacionException("teléfono excede longitud permitida");
         }
-        if (d.getEmail() != null && !d.getEmail().isBlank() && !d.getEmail().contains("@")) {
-            throw new ValidacionException("email inválido");
+
+        // Validación de email mejorada
+        if (d.getEmail() != null && !d.getEmail().isBlank()) {
+            if (!d.getEmail().contains("@")) {
+                throw new ValidacionException("email inválido: debe contener @");
+            }
+            if (d.getEmail().length() > 100) {
+                throw new ValidacionException("email excede longitud permitida");
+            }
         }
     }
 
     private void validarDocumentoUnico(String documento) {
         validarTextoNoVacio(documento, "documentoIdentidad");
-        if (duenoRepository.existsByDocumento(documento.trim())) {
+        if (existePorDocumento(documento.trim())) {
             throw new ConflictoDeDatosException("Ya existe un dueño con documento " + documento);
         }
     }
 
     private static Dueno mergeDueno(Dueno base, Dueno cambios) {
         // Estrategia: si el campo en cambios es null o blank, se mantiene el valor base.
-        if (cambios.getNombre() != null && !cambios.getNombre().isBlank()) {
-            base.setNombre(cambios.getNombre().trim());
-        }
-        if (cambios.getApellido() != null && !cambios.getApellido().isBlank()) {
-            base.setApellido(cambios.getApellido().trim());
+        if (cambios.getNombreCompleto() != null && !cambios.getNombreCompleto().isBlank()) {
+            base.setNombreCompleto(cambios.getNombreCompleto().trim());
         }
         if (cambios.getDocumentoIdentidad() != null && !cambios.getDocumentoIdentidad().isBlank()) {
             base.setDocumentoIdentidad(cambios.getDocumentoIdentidad().trim());
@@ -134,6 +157,19 @@ public class DuenoServiceImpl implements DuenoService {
         if (cambios.getDireccion() != null && !cambios.getDireccion().isBlank()) {
             base.setDireccion(cambios.getDireccion().trim());
         }
+        if (cambios.getContactoEmergencia() != null && !cambios.getContactoEmergencia().isBlank()) {
+            base.setContactoEmergencia(cambios.getContactoEmergencia().trim());
+        }
+        if (cambios.getTipoSangre() != null && !cambios.getTipoSangre().isBlank()) {
+            base.setTipoSangre(cambios.getTipoSangre().trim());
+        }
+        if (cambios.getAlergia() != null && !cambios.getAlergia().isBlank()) {
+            base.setAlergia(cambios.getAlergia().trim());
+        }
+        if (cambios.getFechaNacimiento() != null) {
+            base.setFechaNacimiento(cambios.getFechaNacimiento());
+        }
+
         return base;
     }
 
