@@ -223,3 +223,54 @@ Notas:
 - La persistencia puede implementarse con JDBC (como está el proyecto) o migrarse a JPA/Hibernate manteniendo la misma separación por repositorios.
 - El enum CitaEstado se unifica en `com.happyfeet.model.entities.enums.CitaEstado` y es el que utiliza la entidad `Cita`.
 - Inventario incorpora reglas de dominio (vencimiento, stock mínimo, descuentos) y registra movimientos mediante la capa de repositorios.
+
+
+## 10. Mejoras que presenta el proyecto (estado actual)
+
+A continuación, un resumen práctico de las principales mejoras y fortalezas que hoy presenta el proyecto, pensando en su ejecución por consola, mantenibilidad y futura evolución:
+
+- Arquitectura por capas clara y coherente:
+  - Util, Model (entidades), Repository (contratos e implementaciones JDBC), Service (negocio/validaciones), Controller, View. Esto facilita aislar responsabilidades y probar por capas.
+- Modelo de dominio expresivo:
+  - Entidades con Builders que refuerzan invariantes (Dueno, Mascota, Cita, etc.).
+  - Equals/hashCode y utilidades (por ejemplo, Dueno divide nombre/apellido desde nombreCompleto).
+- Enums ricos (State/Strategy):
+  - CitaEstado en com.happyfeet.model.entities.enums implementa reglas de transición, estados finales/modificables, validaciones y helpers (porId, getEstadoInicial…).
+- Servicios con reglas de negocio y validación consistente:
+  - DuenoServiceImpl y MascotaServiceImpl validan requeridos, unicidades y aplican merge seguro de cambios.
+  - CitaServiceImpl centraliza el flujo de estados (programar, confirmar, iniciar, finalizar, cancelar), reprogramación y verificación de solapes.
+- Repositorios JDBC listos para uso real:
+  - DuenoRepositoryImpl, MascotaRepositoryImpl y CitaRepositoryImpl con mapeo cuidadoso (null-safe), consultas específicas y uso de PreparedStatement.
+- Conexión a BD centralizada y configurable:
+  - DatabaseConnection singleton y archivo database.properties en raíz del proyecto.
+- Ejecución por consola disponible:
+  - MainController con menú interactivo (MenuPrincipal) para Dueños, Mascotas y Citas.
+- Pruebas unitarias útiles sin BD:
+  - CitaServiceImplTest con repositorio en memoria, cubre creación, flujo de estados, solape de horarios y listados por fecha/estado.
+- Esquema SQL robusto y datos semilla:
+  - database/schema.sql y database/data.sql listos para levantar el entorno.
+- Compatibilidad y pequeños refinamientos recientes:
+  - Unificación del uso de CitaEstado en el paquete entities.enums; controladores ajustados para evitar conflictos de tipos.
+  - Defaults razonables (por ejemplo, razaId=1 y estado inicial PROGRAMADA).
+  - Correcciones de nombres y contratos en servicios (crearDueno, actualizarDueno, buscarPorDueno). 
+  - InventarioService mantiene compatibilidad retro (descontarStostck) y expone API con nombre correcto (descontarStock).
+
+### Próximas mejoras recomendadas (priorizadas)
+
+1) Persistencia completa y consistencia de dominio de Inventario:
+   - Completar métodos de dominio (estaVencido, tieneStock, descontarStock) y asegurar su reflejo en la entidad y BD.
+   - Ampliar repositorio/servicio de Inventario y cubrirlo con pruebas.
+2) Transacciones y pool de conexiones:
+   - Incorporar HikariCP y manejo transaccional donde corresponda (p. ej., operaciones compuestas).
+3) Logging estructurado:
+   - Agregar SLF4J + Logback con niveles, trazas para repos/servicios y mensajes de auditoría mínimos.
+4) Tests adicionales y de integración:
+   - Pruebas unitarias para DuenoService y MascotaService (mock repos o in-memory) y tests de integración con una BD temporal.
+5) Endurecer validaciones referenciales en servicios:
+   - Verificar existencia de veterinario/mascota/servicio al crear/reprogramar una cita (consultas previas o constraints manejadas).
+6) CI/CD y calidad:
+   - GitHub Actions para build y tests; perfiles Maven (dev/test/prod) y checks de estilo (Spotless/Checkstyle).
+7) Observabilidad en consola:
+   - Mensajes de error más amigables y centralización de manejo de excepciones en la capa Controller/View.
+8) Documentación operativa:
+   - Pasos de despliegue, troubleshooting y escenarios de ejemplo desde el menú por consola.

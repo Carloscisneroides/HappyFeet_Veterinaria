@@ -54,7 +54,7 @@ public class CitaController {
             nuevaCita.setInicio(inicio);
             nuevaCita.setFin(fin);
             nuevaCita.setMotivo(motivo);
-            nuevaCita.setEstado(CitaEstado.PROGRAMADA);
+            // No establecer estado explícito aquí; el servicio asigna el estado inicial adecuado
 
             Cita citaCreada = citaService.crear(nuevaCita);
             citaView.mostrarMensaje("Cita creada exitosamente para: " +

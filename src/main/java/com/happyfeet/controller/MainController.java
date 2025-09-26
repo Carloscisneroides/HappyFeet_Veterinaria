@@ -32,7 +32,7 @@ public class MainController {
 
     public MainController() {
         // Instanciar repositorios (DuenoRepositoryImpl es abstracto -> anónimo)
-        DuenoRepository duenoRepo = new DuenoRepositoryImpl() {};
+        DuenoRepository duenoRepo = new DuenoRepositoryImpl();
         MascotaRepository mascotaRepo = new MascotaRepositoryImpl();
         CitaRepository citaRepo = new CitaRepositoryImpl();
 
@@ -76,13 +76,13 @@ public class MainController {
         String email = ConsoleUtils.readOptional("Email");
         String contacto = ConsoleUtils.readOptional("Contacto emergencia");
 
-        Dueno d = new Dueno();
-        d.setNombre(nombre);
-        d.setApellido(apellido);
-        d.setDocumentoIdentidad(doc);
-        d.setTelefono(tel);
-        d.setEmail(email);
-        d.setContactoEmergencia(contacto);
+        Dueno d = Dueno.Builder.create()
+                .withNombreCompleto((nombre + " " + apellido).trim())
+                .withDocumentoIdentidad(doc)
+                .withTelefono(tel.isEmpty() ? null : tel)
+                .withEmail(email)
+                .withContactoEmergencia(contacto.isEmpty() ? null : contacto)
+                .build();
 
         Dueno creado = duenoService.crearDueno(d);
         System.out.println("Creado: id=" + creado.getId() + " | " + creado.getNombreCompleto());
@@ -95,17 +95,29 @@ public class MainController {
             System.out.println("No existe el dueño con id " + id);
             return;
         }
-        Dueno cambios = new Dueno();
-        cambios.setNombre(ConsoleUtils.readOptional("Nuevo nombre (enter para mantener)").isEmpty() ? opt.get().getNombre() : ConsoleUtils.readOptional("Nuevo nombre (enter para mantener)"));
-        cambios.setApellido(ConsoleUtils.readOptional("Nuevo apellido (enter para mantener)").isEmpty() ? opt.get().getApellido() : ConsoleUtils.readOptional("Nuevo apellido (enter para mantener)"));
+        Dueno base = opt.get();
+        String nuevoNombre = ConsoleUtils.readOptional("Nuevo nombre (enter para mantener)");
+        String nuevoApellido = ConsoleUtils.readOptional("Nuevo apellido (enter para mantener)");
         String nuevoDoc = ConsoleUtils.readOptional("Nuevo documento (enter para mantener)");
-        if (!nuevoDoc.isEmpty()) cambios.setDocumentoIdentidad(nuevoDoc);
         String nuevoTel = ConsoleUtils.readOptional("Nuevo teléfono (enter para mantener)");
-        if (!nuevoTel.isEmpty()) cambios.setTelefono(nuevoTel);
         String nuevoEmail = ConsoleUtils.readOptional("Nuevo email (enter para mantener)");
-        if (!nuevoEmail.isEmpty()) cambios.setEmail(nuevoEmail);
         String nuevoContacto = ConsoleUtils.readOptional("Nuevo contacto emergencia (enter para mantener)");
-        if (!nuevoContacto.isEmpty()) cambios.setContactoEmergencia(nuevoContacto);
+
+        String nombre = nuevoNombre.isEmpty() ? base.getNombre() : nuevoNombre;
+        String apellido = nuevoApellido.isEmpty() ? base.getApellido() : nuevoApellido;
+        String doc = nuevoDoc.isEmpty() ? base.getDocumentoIdentidad() : nuevoDoc;
+        String tel = nuevoTel.isEmpty() ? base.getTelefono() : nuevoTel;
+        String email = nuevoEmail.isEmpty() ? base.getEmail() : nuevoEmail;
+        String contacto = nuevoContacto.isEmpty() ? base.getContactoEmergencia() : nuevoContacto;
+
+        Dueno cambios = Dueno.Builder.create()
+                .withId(base.getId())
+                .withNombreCompleto((nombre + " " + apellido).trim())
+                .withDocumentoIdentidad(doc)
+                .withTelefono(tel)
+                .withEmail(email)
+                .withContactoEmergencia(contacto)
+                .build();
 
         Dueno act = duenoService.actualizarDueno(id, cambios);
         System.out.println("Actualizado: " + act.getNombreCompleto());
@@ -146,11 +158,12 @@ public class MainController {
         long duenoId = ConsoleUtils.readLong("Id del dueño (existente)");
         String nombre = ConsoleUtils.readNonEmpty("Nombre de la mascota");
         String microchip = ConsoleUtils.readOptional("Microchip");
-        Mascota m = new Mascota.Builder()
-                .setDuenoId((int) duenoId)
-                .setNombre(nombre)
-                .setMicrochip(microchip.isEmpty() ? null : microchip)
-                .setSexo(Mascota.Sexo.DESCONOCIDO)
+        Mascota m = Mascota.Builder.create()
+                .withDuenoId((int) duenoId)
+                .withNombre(nombre)
+                .withRazaId(1) // valor por defecto
+                .withMicrochip(microchip.isEmpty() ? null : microchip)
+                .withSexo(Mascota.Sexo.MACHO)
                 .build();
         Mascota creada = mascotaService.crearMascota(m);
         System.out.println("Mascota creada id=" + creada.getId());
@@ -166,12 +179,13 @@ public class MainController {
         String nuevoNombre = ConsoleUtils.readOptional("Nuevo nombre (enter para mantener)");
         String nuevoMicro = ConsoleUtils.readOptional("Nuevo microchip (enter para mantener)");
 
-        Mascota cambios = new Mascota.Builder()
-                .setId((int) id)
-                .setDuenoId(opt.get().getDuenoId())
-                .setNombre(nuevoNombre.isEmpty() ? opt.get().getNombre() : nuevoNombre)
-                .setMicrochip(nuevoMicro.isEmpty() ? opt.get().getMicrochip() : nuevoMicro)
-                .setSexo(opt.get().getSexo())
+        Mascota cambios = Mascota.Builder.create()
+                .withId((int) id)
+                .withDuenoId(opt.get().getDuenoId())
+                .withNombre(nuevoNombre.isEmpty() ? opt.get().getNombre() : nuevoNombre)
+                .withRazaId(opt.get().getRazaId() != null ? opt.get().getRazaId() : 1)
+                .withMicrochip(nuevoMicro.isEmpty() ? opt.get().getMicrochip() : nuevoMicro)
+                .withSexo(opt.get().getSexo() != null ? opt.get().getSexo() : Mascota.Sexo.MACHO)
                 .build();
         Mascota act = mascotaService.actualizarMascota(id, cambios);
         System.out.println("Actualizada: " + act.getNombre());
@@ -223,7 +237,7 @@ public class MainController {
         c.setInicio(inicio);
         c.setMotivo(motivo);
 
-        Cita creada = citaService.agendar(c);
+        Cita creada = citaService.crear(c);
         System.out.println("Cita agendada id=" + creada.getId());
     }
 
