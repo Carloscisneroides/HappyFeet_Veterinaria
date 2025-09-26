@@ -3,7 +3,6 @@ package com.happyfeet.service.impl;
 import com.happyfeet.model.entities.Mascota;
 import com.happyfeet.repository.MascotaRepository;
 import com.happyfeet.service.MascotaService;
-
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
@@ -18,8 +17,7 @@ public class MascotaServiceImpl implements MascotaService {
         this.mascotaRepository = Objects.requireNonNull(mascotaRepository, "mascotaRepository no puede ser null");
     }
 
-    @Override
-    public Mascota crear(Mascota mascota) {
+    public Mascota crearMascota(Mascota mascota) {
         validarNoNull(mascota, "mascota");
         validarNegocio(mascota);
         if (mascota.getMicrochip() != null && !mascota.getMicrochip().isBlank() && existePorMicrochip(mascota.getMicrochip())) {
@@ -28,8 +26,7 @@ public class MascotaServiceImpl implements MascotaService {
         return mascotaRepository.save(mascota);
     }
 
-    @Override
-    public Mascota actualizar(Long id, Mascota cambios) {
+    public Mascota actualizarMascota(Long id, Mascota cambios) {
         validarNoNull(id, "id");
         validarNoNull(cambios, "cambios");
         Mascota existente = mascotaRepository.findById(id)
@@ -48,8 +45,7 @@ public class MascotaServiceImpl implements MascotaService {
         return mascotaRepository.update(actualizado);
     }
 
-    @Override
-    public void eliminar(Long id) {
+    public void eliminarMascota(Long id) {
         validarNoNull(id, "id");
         if (!mascotaRepository.existsById(id)) {
             throw new RecursoNoEncontradoException("Mascota con id " + id + " no existe");
@@ -57,21 +53,18 @@ public class MascotaServiceImpl implements MascotaService {
         mascotaRepository.deleteById(id);
     }
 
-    @Override
     public Optional<Mascota> buscarPorId(Long id) {
         validarNoNull(id, "id");
         return mascotaRepository.findById(id);
     }
 
-    @Override
-    public List<Mascota> listarTodos() {
+    public List<Mascota> listarTodas() {
         return mascotaRepository.findAll().stream()
                 .sorted(Comparator.comparing(Mascota::getNombre).thenComparing(Mascota::getId))
                 .toList();
     }
 
-    @Override
-    public List<Mascota> listarPorDueno(Long duenoId) {
+    public List<Mascota> buscarPorDueno(Long duenoId) {
         validarNoNull(duenoId, "duenoId");
         return mascotaRepository.findByDuenoId(duenoId);
     }
