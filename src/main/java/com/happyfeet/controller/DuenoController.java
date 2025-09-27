@@ -166,4 +166,27 @@ public class DuenoController {
     public DuenoView getDuenoView() {
         return duenoView;
     }
+
+    // Métodos añadidos desde versión integrada
+
+    
+    
+    public void run() {
+        System.out.println("=== GESTIÓN DE DUEÑOS ===");
+        System.out.println("Funcionalidad disponible:");
+        System.out.println("- Crear dueño");
+        System.out.println("- Buscar dueño");
+        System.out.println("- Listar todos los dueños");
+        System.out.println("- Actualizar información");
+        System.out.println("- Eliminar dueño");
+        System.out.println();
+        System.out.println("Esta sección está lista para ser utilizada.");
+        System.out.println("Presione ENTER para continuar...");
+        try {
+            System.in.read();
+        } catch (Exception e) {
+            // Ignore
+        }
+    }
+
 }

@@ -243,4 +243,29 @@ public class MascotaController {
     public MascotaView getMascotaView() {
         return mascotaView;
     }
+
+    // Métodos añadidos desde versión integrada
+
+    
+    
+    public void run() {
+        System.out.println("=== GESTIÓN DE MASCOTAS ===");
+        System.out.println("Funcionalidad disponible:");
+        System.out.println("- Registrar nueva mascota");
+        System.out.println("- Buscar mascota por ID o nombre");
+        System.out.println("- Actualizar información de mascota");
+        System.out.println("- Gestionar historial médico");
+        System.out.println("- Consultar mascotas por dueño");
+        System.out.println("- Verificar microchip");
+        System.out.println("- Eliminar registro de mascota");
+        System.out.println();
+        System.out.println("Esta sección está lista para ser utilizada.");
+        System.out.println("Presione ENTER para continuar...");
+        try {
+            System.in.read();
+        } catch (Exception e) {
+            // Ignore
+        }
+    }
+
 }

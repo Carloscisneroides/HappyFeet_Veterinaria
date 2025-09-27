@@ -22,3 +22,29 @@
 2025-09-26 07:26:58 [INFO] Datos de ejemplo inicializados para actividades especiales
 2025-09-26 07:26:58 [INFO] Todos los módulos del sistema inicializados correctamente
 2025-09-26 07:26:58 [INFO] Iniciando sistema Happy Feet Veterinaria
+2025-09-26 14:13:55 [INFO] Inicializando MainController y todos los servicios del sistema
+2025-09-26 14:13:56 [INFO] CitaServiceImpl inicializado
+2025-09-26 14:13:56 [INFO] InventarioController inicializado
+2025-09-26 14:13:56 [INFO] FacturaController inicializado
+2025-09-26 14:13:56 [INFO] ActividadesEspecialesController inicializado
+2025-09-26 14:13:56 [INFO] Datos de ejemplo inicializados para actividades especiales
+2025-09-26 14:13:56 [INFO] Todos los módulos del sistema inicializados correctamente
+2025-09-26 14:13:56 [INFO] Iniciando sistema Happy Feet Veterinaria
+2025-09-26 14:15:29 [INFO] Dueño creado: Juan (ID: 2)
+2025-09-27 08:11:00 [INFO] Inicializando MainController y todos los servicios del sistema
+2025-09-27 08:11:02 [INFO] CitaServiceImpl inicializado
+2025-09-27 08:11:02 [INFO] InventarioController inicializado
+2025-09-27 08:11:02 [INFO] FacturaController inicializado
+2025-09-27 08:11:02 [INFO] ActividadesEspecialesController inicializado
+2025-09-27 08:11:02 [INFO] Datos de ejemplo inicializados para actividades especiales
+2025-09-27 08:11:02 [INFO] Todos los módulos del sistema inicializados correctamente
+2025-09-27 08:11:02 [INFO] Iniciando sistema Happy Feet Veterinaria
+2025-09-27 08:14:21 [INFO] Mascota creada: Milo (ID: 2)
+2025-09-27 08:20:00 [INFO] Inicializando MainController y todos los servicios del sistema
+2025-09-27 08:20:01 [INFO] CitaServiceImpl inicializado
+2025-09-27 08:20:01 [INFO] InventarioController inicializado
+2025-09-27 08:20:01 [INFO] FacturaController inicializado
+2025-09-27 08:20:01 [INFO] ActividadesEspecialesController inicializado
+2025-09-27 08:20:01 [INFO] Datos de ejemplo inicializados para actividades especiales
+2025-09-27 08:20:01 [INFO] Todos los módulos del sistema inicializados correctamente
+2025-09-27 08:20:01 [INFO] Iniciando sistema Happy Feet Veterinaria

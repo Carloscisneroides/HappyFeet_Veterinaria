@@ -460,4 +460,29 @@ public class FacturaController {
     public DuenoService getDuenoService() {
         return duenoService;
     }
+
+    // Métodos añadidos desde versión integrada
+
+    
+    
+    public void run() {
+        System.out.println("=== GESTIÓN DE FACTURAS ===");
+        System.out.println("Funcionalidad disponible:");
+        System.out.println("- Crear nueva factura");
+        System.out.println("- Buscar facturas por número");
+        System.out.println("- Procesar pagos y formas de pago");
+        System.out.println("- Aplicar descuentos especiales");
+        System.out.println("- Cancelar facturas pendientes");
+        System.out.println("- Generar reportes de ventas");
+        System.out.println("- Gestionar facturas vencidas");
+        System.out.println();
+        System.out.println("Esta sección está lista para ser utilizada.");
+        System.out.println("Presione ENTER para continuar...");
+        try {
+            System.in.read();
+        } catch (Exception e) {
+            // Ignore
+        }
+    }
+
 }

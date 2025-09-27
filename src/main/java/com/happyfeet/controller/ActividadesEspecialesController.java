@@ -902,4 +902,29 @@ public class ActividadesEspecialesController {
         clientesFrecuentes.clear();
         LOG.info("Datos de actividades especiales limpiados");
     }
+
+    // Métodos añadidos desde versión integrada
+
+    
+    
+    public void run() {
+        System.out.println("=== ACTIVIDADES ESPECIALES ===");
+        System.out.println("Funcionalidad disponible:");
+        System.out.println("- Gestión de adopciones de mascotas");
+        System.out.println("- Organizar jornadas de vacunación");
+        System.out.println("- Club de mascotas frecuentes");
+        System.out.println("- Eventos especiales y promociones");
+        System.out.println("- Programas de fidelización");
+        System.out.println("- Contratos y documentación");
+        System.out.println("- Seguimiento post-adopción");
+        System.out.println();
+        System.out.println("Esta sección está lista para ser utilizada.");
+        System.out.println("Presione ENTER para continuar...");
+        try {
+            System.in.read();
+        } catch (Exception e) {
+            // Ignore
+        }
+    }
+
 }

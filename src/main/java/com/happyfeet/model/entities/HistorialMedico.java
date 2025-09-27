@@ -738,6 +738,11 @@ public class HistorialMedico {
         return new Builder();
     }
 
+    // Factory para mapeo de persistencia (salta validaciones del Builder)
+    public static HistorialMedico newForPersistence() {
+        return new HistorialMedico();
+    }
+
 
     public static HistorialMedico crearConsultaGeneral(Mascota mascota, Veterinario veterinario,
                                                        String sintomas, String diagnostico) {

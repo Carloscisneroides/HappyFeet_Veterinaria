@@ -334,7 +334,7 @@ public class Factura {
         }
     }
 
-    private Factura() {
+    public Factura() {
         this.items = new ArrayList<>();
         this.historialEstados = new ArrayList<>();
         this.fechaEmision = LocalDateTime.now();

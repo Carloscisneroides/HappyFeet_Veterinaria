@@ -1,0 +1,23 @@
+# Maven build output
+/target/
+
+# Java
+*.class
+*.log
+
+# IDEs and editors
+.idea/
+.vscode/
+*.iml
+*.ipr
+*.iws
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Maven
+.mvn/wrapper/maven-wrapper.jar
+
+# Local configuration (optional)
+database.properties

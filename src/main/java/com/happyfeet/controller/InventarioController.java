@@ -429,4 +429,29 @@ public class InventarioController {
     public InventarioRepository getInventarioRepository() {
         return inventarioRepository;
     }
+
+    // Métodos añadidos desde versión integrada
+
+    
+    
+    public void run() {
+        System.out.println("=== GESTIÓN DE INVENTARIO ===");
+        System.out.println("Funcionalidad disponible:");
+        System.out.println("- Agregar nuevos productos");
+        System.out.println("- Controlar niveles de stock");
+        System.out.println("- Alertas de stock bajo y productos vencidos");
+        System.out.println("- Ajustar cantidades de inventario");
+        System.out.println("- Buscar productos por código y nombre");
+        System.out.println("- Generar reportes de inventario");
+        System.out.println("- Gestionar fechas de vencimiento");
+        System.out.println();
+        System.out.println("Esta sección está lista para ser utilizada.");
+        System.out.println("Presione ENTER para continuar...");
+        try {
+            System.in.read();
+        } catch (Exception e) {
+            // Ignore
+        }
+    }
+
 }

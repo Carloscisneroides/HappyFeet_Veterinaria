@@ -5,7 +5,6 @@ import com.happyfeet.repository.InventarioRepository;
 import com.happyfeet.util.DatabaseConnection;
 
 import java.sql.*;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;

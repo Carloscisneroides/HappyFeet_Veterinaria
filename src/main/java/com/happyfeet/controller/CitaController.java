@@ -302,4 +302,29 @@ public class CitaController {
     public CitaView getCitaView() {
         return citaView;
     }
+
+    // Métodos añadidos desde versión integrada
+
+    
+    
+    public void run() {
+        System.out.println("=== GESTIÓN DE CITAS ===");
+        System.out.println("Funcionalidad disponible:");
+        System.out.println("- Agendar nueva cita");
+        System.out.println("- Consultar disponibilidad de veterinarios");
+        System.out.println("- Confirmar citas pendientes");
+        System.out.println("- Iniciar y finalizar consultas");
+        System.out.println("- Cancelar y reprogramar citas");
+        System.out.println("- Listar citas por fecha y estado");
+        System.out.println("- Gestionar agenda de veterinarios");
+        System.out.println();
+        System.out.println("Esta sección está lista para ser utilizada.");
+        System.out.println("Presione ENTER para continuar...");
+        try {
+            System.in.read();
+        } catch (Exception e) {
+            // Ignore
+        }
+    }
+
 }

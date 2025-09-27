@@ -1,5 +1,13 @@
 package com.happyfeet.controller;
 
+
+
+import com.happyfeet.model.entities.Factura;
+import com.happyfeet.model.entities.Inventario;
+import com.happyfeet.service.CitaService;
+import com.happyfeet.service.DuenoService;
+import com.happyfeet.service.FacturaService;
+import com.happyfeet.service.MascotaService;
 import com.happyfeet.model.entities.*;
 import com.happyfeet.service.*;
 import com.happyfeet.repository.InventarioRepository;
@@ -119,7 +127,7 @@ public class ReporteController {
             System.out.printf("TOTAL: %-12d servicios        $%-14.0f%n", totalServicios, totalIngresos);
 
             // Top 3
-            System.out.println("\n🏆 TOP 3 SERVICIOS MÁS SOLICITADOS:");
+            System.out.println("\n[TOP] TOP 3 SERVICIOS MAS SOLICITADOS:");
             for (int i = 0; i < Math.min(3, serviciosOrdenados.size()); i++) {
                 ServicioEstadistica s = serviciosOrdenados.get(i);
                 System.out.printf("%d. %s (%d servicios)%n", i + 1, s.getNombre(), s.getCantidad());
@@ -186,7 +194,7 @@ public class ReporteController {
             System.out.printf("Rating promedio del equipo: %.1f/5.0%n", promedioRating);
 
             // Mejores performers
-            System.out.println("\n🌟 DESTACADOS DEL MES:");
+            System.out.println("\n[*] DESTACADOS DEL MES:");
             VeterinarioEstadistica masConsultas = veterinarios.stream()
                     .max(Comparator.comparing(VeterinarioEstadistica::getConsultas)).orElse(null);
             VeterinarioEstadistica mejorRating = veterinarios.stream()
@@ -244,19 +252,19 @@ public class ReporteController {
                     .toList();
 
             // Resumen ejecutivo
-            System.out.println("📊 RESUMEN EJECUTIVO:");
+            System.out.println("[INFO] RESUMEN EJECUTIVO:");
             System.out.printf("• Total productos: %d%n", totalProductos);
             System.out.printf("• Stock total: %,d unidades%n", stockTotal);
             System.out.printf("• Valor inventario: $%,.0f%n", valorTotal);
 
-            System.out.println("\n⚠️  ALERTAS:");
+            System.out.println("\n[!] ALERTAS:");
             System.out.printf("• Productos con stock bajo: %d%n", stockBajo.size());
             System.out.printf("• Productos vencidos: %d%n", vencidos.size());
             System.out.printf("• Productos por vencer (30 días): %d%n", porVencer.size());
 
             // Productos con stock bajo
             if (!stockBajo.isEmpty()) {
-                System.out.println("\n🔴 PRODUCTOS CON STOCK BAJO:");
+                System.out.println("\n[CRITICO] PRODUCTOS CON STOCK BAJO:");
                 System.out.printf("%-30s %-8s %-8s %-12s%n", "PRODUCTO", "STOCK", "MÍNIMO", "DIFERENCIA");
                 System.out.println("-".repeat(65));
 
@@ -274,7 +282,7 @@ public class ReporteController {
 
             // Productos vencidos
             if (!vencidos.isEmpty()) {
-                System.out.println("\n❌ PRODUCTOS VENCIDOS:");
+                System.out.println("\n[VENCIDO] PRODUCTOS VENCIDOS:");
                 System.out.printf("%-30s %-12s %-8s%n", "PRODUCTO", "VENCIMIENTO", "STOCK");
                 System.out.println("-".repeat(55));
 
@@ -290,7 +298,7 @@ public class ReporteController {
 
             // Productos por vencer
             if (!porVencer.isEmpty()) {
-                System.out.println("\n🟡 PRODUCTOS POR VENCER (30 DÍAS):");
+                System.out.println("\n[ALERTA] PRODUCTOS POR VENCER (30 DIAS):");
                 System.out.printf("%-30s %-12s %-8s%n", "PRODUCTO", "VENCIMIENTO", "STOCK");
                 System.out.println("-".repeat(55));
 
@@ -306,7 +314,7 @@ public class ReporteController {
             }
 
             // Recomendaciones
-            System.out.println("\n💡 RECOMENDACIONES:");
+            System.out.println("\n[RECOM] RECOMENDACIONES:");
             if (stockBajo.size() > 0) {
                 System.out.println("• Reabastecer " + stockBajo.size() + " productos con stock bajo");
             }
@@ -335,7 +343,7 @@ public class ReporteController {
             System.out.println("3. Último semestre");
             System.out.println("4. Personalizado");
 
-            int opcion = ConsoleUtils.readInt("Seleccione opción");
+            int opcion = ConsoleUtils.readInt("Seleccione opcion");
 
             LocalDate fechaInicio, fechaFin;
             String periodo;
@@ -344,31 +352,31 @@ public class ReporteController {
                 case 1 -> {
                     fechaFin = LocalDate.now();
                     fechaInicio = fechaFin.minusMonths(1);
-                    periodo = "Último Mes";
+                    periodo = "Ultimo Mes";
                 }
                 case 2 -> {
                     fechaFin = LocalDate.now();
                     fechaInicio = fechaFin.minusMonths(3);
-                    periodo = "Últimos 3 Meses";
+                    periodo = "Ultimos 3 Meses";
                 }
                 case 3 -> {
                     fechaFin = LocalDate.now();
                     fechaInicio = fechaFin.minusMonths(6);
-                    periodo = "Último Semestre";
+                    periodo = "Ultimo Semestre";
                 }
                 case 4 -> {
                     fechaInicio = ConsoleUtils.readDate("Fecha inicio");
                     fechaFin = ConsoleUtils.readDate("Fecha fin");
-                    periodo = "Período Personalizado";
+                    periodo = "Periodo Personalizado";
                 }
                 default -> {
-                    System.out.println("Opción no válida");
+                    System.out.println("Opcion no valida");
                     return;
                 }
             }
 
             System.out.println("\n" + "=".repeat(80));
-            System.out.printf("                 ANÁLISIS FACTURACIÓN - %s%n", periodo);
+            System.out.printf("                 ANALISIS FACTURACION - %s%n", periodo);
             System.out.printf("                 %s al %s%n",
                     fechaInicio.format(FECHA_FORMATO), fechaFin.format(FECHA_FORMATO));
             System.out.println("=".repeat(80));
@@ -401,7 +409,7 @@ public class ReporteController {
                     .filter(f -> f.getEstado() == Factura.FacturaEstado.CANCELADA).count();
 
             // Resumen financiero
-            System.out.println("💰 RESUMEN FINANCIERO:");
+            System.out.println("[FINANZAS] RESUMEN FINANCIERO:");
             System.out.printf("• Total facturado (pagado): $%,.0f%n", totalFacturado);
             System.out.printf("• Total pendiente de cobro: $%,.0f%n", totalPendiente);
             System.out.printf("• Total facturas: %d%n", facturasPeriodo.size());
@@ -428,7 +436,7 @@ public class ReporteController {
                     .map(Factura::getTotalProductos)
                     .reduce(BigDecimal.ZERO, BigDecimal::add);
 
-            System.out.println("\n📊 DISTRIBUCIÓN DE INGRESOS:");
+            System.out.println("\n[DISTRIB] DISTRIBUCION DE INGRESOS:");
             if (totalFacturado.compareTo(BigDecimal.ZERO) > 0) {
                 double porcentajeServicios = totalServicios.multiply(BigDecimal.valueOf(100))
                         .divide(totalFacturado, 1, BigDecimal.ROUND_HALF_UP).doubleValue();
@@ -440,11 +448,11 @@ public class ReporteController {
             }
 
             // Tendencia mensual (simulada)
-            System.out.println("\n📈 TENDENCIA MENSUAL (simulada):");
+            System.out.println("\n[TREND] TENDENCIA MENSUAL (simulada):");
             System.out.println("Mes 1: $2,450,000 | Mes 2: $2,680,000 | Mes 3: $2,890,000");
             System.out.println("Tendencia: +8.9% crecimiento mensual promedio");
 
-            LOG.info("Reporte de facturación por período generado: " + periodo);
+            LOG.info("Reporte de facturacion por periodo generado: " + periodo);
 
         } catch (Exception e) {
             LOG.error("Error generando reporte de facturación", e);
@@ -464,31 +472,31 @@ public class ReporteController {
             System.out.println("=".repeat(90));
 
             // Resumen ejecutivo
-            System.out.println("📊 RESUMEN EJECUTIVO DEL MES:");
+            System.out.println("[RESUMEN] RESUMEN EJECUTIVO DEL MES:");
             System.out.println("• Facturación total: $8,950,000");
             System.out.println("• Citas atendidas: 387");
             System.out.println("• Nuevos clientes: 23");
             System.out.println("• Productos vendidos: 1,245 unidades");
             System.out.println("• Satisfacción promedio: 4.7/5.0");
 
-            System.out.println("\n💰 INDICADORES FINANCIEROS:");
+            System.out.println("\n[FINANZAS] INDICADORES FINANCIEROS:");
             System.out.println("• Crecimiento vs mes anterior: +12.3%");
             System.out.println("• Margen bruto: 68.5%");
             System.out.println("• Ticket promedio: $156,500");
             System.out.println("• Tasa de conversión: 94.2%");
 
-            System.out.println("\n👥 INDICADORES OPERATIVOS:");
+            System.out.println("\n[OPERATIVO] INDICADORES OPERATIVOS:");
             System.out.println("• Ocupación promedio veterinarios: 87%");
             System.out.println("• Tiempo promedio consulta: 32 min");
             System.out.println("• Cancelaciones: 3.1%");
             System.out.println("• Productos con rotación alta: 89%");
 
-            System.out.println("\n🎯 METAS DEL MES:");
+            System.out.println("\n[METAS] METAS DEL MES:");
             System.out.println("• Facturación objetivo: $9,000,000 (99.4% cumplido)");
             System.out.println("• Citas objetivo: 400 (96.8% cumplido)");
             System.out.println("• Satisfacción objetivo: 4.8 (97.9% cumplido)");
 
-            System.out.println("\n⚡ ACCIONES REQUERIDAS:");
+            System.out.println("\n[ACCION] ACCIONES REQUERIDAS:");
             System.out.println("• Reabastecer 12 productos con stock crítico");
             System.out.println("• Seguimiento a 8 facturas vencidas");
             System.out.println("• Programar mantenimiento equipos");
@@ -511,47 +519,47 @@ public class ReporteController {
             System.out.println("=".repeat(100));
 
             // KPIs principales en tiempo real
-            System.out.println("📊 INDICADORES CLAVE (KPIs) - TIEMPO REAL:");
+            System.out.println("[KPI] INDICADORES CLAVE (KPIs) - TIEMPO REAL:");
             System.out.printf("%-25s %-15s %-15s %-20s %-15s%n",
                     "INDICADOR", "ACTUAL", "OBJETIVO", "VARIACIÓN", "ESTADO");
             System.out.println("-".repeat(100));
 
             System.out.printf("%-25s %-15s %-15s %-20s %-15s%n",
-                    "Facturación Mensual", "$8,950K", "$9,000K", "-0.6%", "🟡 CERCA");
+                    "Facturación Mensual", "$8,950K", "$9,000K", "-0.6%", "[OK] CERCA");
             System.out.printf("%-25s %-15s %-15s %-20s %-15s%n",
-                    "Citas Mensuales", "387", "400", "-3.3%", "🟡 CERCA");
+                    "Citas Mensuales", "387", "400", "-3.3%", "[OK] CERCA");
             System.out.printf("%-25s %-15s %-15s %-20s %-15s%n",
-                    "Satisfacción Cliente", "4.7/5.0", "4.8/5.0", "-2.1%", "🟡 CERCA");
+                    "Satisfacción Cliente", "4.7/5.0", "4.8/5.0", "-2.1%", "[OK] CERCA");
             System.out.printf("%-25s %-15s %-15s %-20s %-15s%n",
-                    "Margen Bruto", "68.5%", "65%", "+5.4%", "🟢 SUPERADO");
+                    "Margen Bruto", "68.5%", "65%", "+5.4%", "[EXITO] SUPERADO");
             System.out.printf("%-25s %-15s %-15s %-20s %-15s%n",
-                    "Rotación Inventario", "4.2x", "4.0x", "+5%", "🟢 SUPERADO");
+                    "Rotación Inventario", "4.2x", "4.0x", "+5%", "[EXITO] SUPERADO");
 
-            System.out.println("\n🏥 ESTADO OPERATIVO:");
+            System.out.println("\n[ESTADO] ESTADO OPERATIVO:");
             System.out.println("• Veterinarios activos: 4/4 (100%)");
             System.out.println("• Salas de consulta ocupadas: 3/4 (75%)");
             System.out.println("• Equipos funcionando: 12/12 (100%)");
             System.out.println("• Stock crítico: 12 productos");
             System.out.println("• Alertas activas: 8");
 
-            System.out.println("\n📈 TENDENCIAS (últimos 3 meses):");
-            System.out.println("• Crecimiento facturación: ↗ +15.2%");
-            System.out.println("• Nuevos clientes: ↗ +23%");
-            System.out.println("• Retención clientes: ↗ 91.5%");
-            System.out.println("• Tiempo espera promedio: ↘ -12 min");
+            System.out.println("\n[TREND] TENDENCIAS (ultimos 3 meses):");
+            System.out.println("• Crecimiento facturación: [UP] +15.2%");
+            System.out.println("• Nuevos clientes: [UP] +23%");
+            System.out.println("• Retención clientes: [UP] 91.5%");
+            System.out.println("• Tiempo espera promedio: [DOWN] -12 min");
 
-            System.out.println("\n🎯 PRÓXIMOS HITOS:");
+            System.out.println("\n[HITOS] PROXIMOS HITOS:");
             System.out.println("• Meta Q1 2025: $27M (en curso: $8.95M)");
             System.out.println("• Campaña vacunación: 15-Feb a 30-Abr");
             System.out.println("• Certificación ISO: En proceso");
             System.out.println("• Expansión servicios: Planificada Jun-2025");
 
-            System.out.println("\n⚠️ ALERTAS CRÍTICAS:");
+            System.out.println("\n[ALERTA] ALERTAS CRITICAS:");
             System.out.println("• 2 productos vencidos requieren baja inmediata");
             System.out.println("• Factura #FAC-001245 vencida hace 15 días");
             System.out.println("• Veterinario Dr. García - alta carga (95% ocupación)");
 
-            System.out.println("\n💡 RECOMENDACIONES ESTRATÉGICAS:");
+            System.out.println("\n[ESTRATEGIA] RECOMENDACIONES ESTRATEGICAS:");
             System.out.println("• Implementar sistema de recordatorios automáticos");
             System.out.println("• Contratar veterinario adicional para cubrir demanda");
             System.out.println("• Optimizar proceso de facturación para reducir vencidas");
@@ -622,4 +630,59 @@ public class ReporteController {
     public MascotaService getMascotaService() {
         return mascotaService;
     }
+
+    // ============ CLASES AUXILIARES ADICIONALES ============
+
+    private static class InventarioEstadistica {
+        private final String codigo;
+        private final String nombre;
+        private final int cantidadActual;
+        private final int stockMinimo;
+        private final int stockMaximo;
+        private final BigDecimal precio;
+
+        public InventarioEstadistica(String codigo, String nombre, int cantidadActual,
+                                    int stockMinimo, int stockMaximo, BigDecimal precio) {
+            this.codigo = codigo;
+            this.nombre = nombre;
+            this.cantidadActual = cantidadActual;
+            this.stockMinimo = stockMinimo;
+            this.stockMaximo = stockMaximo;
+            this.precio = precio;
+        }
+
+        public String getCodigo() { return codigo; }
+        public String getNombre() { return nombre; }
+        public int getCantidadActual() { return cantidadActual; }
+        public int getStockMinimo() { return stockMinimo; }
+        public int getStockMaximo() { return stockMaximo; }
+        public BigDecimal getPrecio() { return precio; }
+
+        public String getEstado() {
+            if (cantidadActual <= stockMinimo) {
+                return "CRÍTICO";
+            } else if (cantidadActual <= stockMinimo * 1.5) {
+                return "BAJO";
+            } else {
+                return "NORMAL";
+            }
+        }
+    }
+
+    private static class FacturacionDiaria {
+        private final LocalDate fecha;
+        private final int facturas;
+        private final BigDecimal monto;
+
+        public FacturacionDiaria(LocalDate fecha, int facturas, BigDecimal monto) {
+            this.fecha = fecha;
+            this.facturas = facturas;
+            this.monto = monto;
+        }
+
+        public LocalDate getFecha() { return fecha; }
+        public int getFacturas() { return facturas; }
+        public BigDecimal getMonto() { return monto; }
+    }
+
 }

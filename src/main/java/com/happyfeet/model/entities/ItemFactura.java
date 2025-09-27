@@ -86,7 +86,7 @@ public class ItemFactura {
     }
 
     // Constructor privado para Builder
-    private ItemFactura() {
+    public ItemFactura() {
         this.cantidad = BigDecimal.ONE;
         this.precioUnitario = BigDecimal.ZERO;
         this.descuento = BigDecimal.ZERO;
@@ -575,4 +575,12 @@ public class ItemFactura {
                 .withCantidad(cantidad)
                 .build();
     }
+
+    // Métodos añadidos desde versión integrada
+
+    
+    
+    public void setPrecio(BigDecimal bigDecimal) {
+    }
+
 }

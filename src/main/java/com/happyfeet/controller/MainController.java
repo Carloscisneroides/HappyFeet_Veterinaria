@@ -10,7 +10,6 @@ import com.happyfeet.repository.impl.InventarioRepositoryImpl;
 import com.happyfeet.service.*;
 import com.happyfeet.service.impl.*;
 import com.happyfeet.view.ConsoleUtils;
-import com.happyfeet.view.MenuPrincipal;
 import com.happyfeet.util.FileLogger;
 
 import java.time.LocalDate;
@@ -32,6 +31,7 @@ public class MainController {
     private final CitaService citaService;
     private final InventarioService inventarioService;
     private final FacturaService facturaService;
+    private final com.happyfeet.service.HistorialMedicoService historialMedicoService;
 
     // ============ CONTROLADORES ESPECIALIZADOS ============
     private final InventarioController inventarioController;
@@ -55,6 +55,10 @@ public class MainController {
             this.citaService = new CitaServiceImpl(citaRepo);
             this.inventarioService = new InventarioService(inventarioRepo);
             this.facturaService = new FacturaServiceImpl(facturaRepo);
+            this.historialMedicoService = new com.happyfeet.service.impl.HistorialMedicoServiceImpl(
+                    new com.happyfeet.repository.impl.HistorialMedicoRepositoryImpl(),
+                    this.inventarioService
+            );
 
             // Instanciar controladores especializados
             this.inventarioController = new InventarioController(inventarioService, inventarioRepo);
@@ -81,7 +85,7 @@ public class MainController {
             
             ████████████████████████████████████████████████
             █                                              █
-            █           🐾 HAPPY FEET VETERINARIA 🐾       █
+            █           HAPPY FEET VETERINARIA           █
             █                                              █
             █          Sistema de Gestión Integral         █
             █                 Versión 1.0                  █
@@ -143,7 +147,7 @@ public class MainController {
 
             Dueno creado = duenoService.crearDueno(nuevoDueno);
             LOG.info("Dueño creado: " + creado.getNombreCompleto() + " (ID: " + creado.getId() + ")");
-            System.out.println("✅ Dueño creado exitosamente: " + creado.getNombreCompleto());
+            System.out.println("[OK] Dueño creado exitosamente: " + creado.getNombreCompleto());
 
         } catch (Exception e) {
             LOG.error("Error creando dueño", e);
@@ -180,7 +184,7 @@ public class MainController {
                     .build();
 
             Dueno actualizado = duenoService.actualizarDueno(id, cambios);
-            System.out.println("✅ Dueño actualizado: " + actualizado.getNombreCompleto());
+            System.out.println("[OK] Dueño actualizado: " + actualizado.getNombreCompleto());
 
         } catch (Exception e) {
             LOG.error("Error actualizando dueño", e);
@@ -199,7 +203,7 @@ public class MainController {
 
             duenoService.eliminarDueno(id);
             LOG.info("Dueño eliminado ID: " + id);
-            System.out.println("✅ Dueño eliminado exitosamente");
+            System.out.println("[OK] Dueño eliminado exitosamente");
 
         } catch (Exception e) {
             LOG.error("Error eliminando dueño", e);
@@ -279,7 +283,7 @@ public class MainController {
 
             Mascota creada = mascotaService.crearMascota(nuevaMascota);
             LOG.info("Mascota creada: " + creada.getNombre() + " (ID: " + creada.getId() + ")");
-            System.out.println("✅ Mascota creada exitosamente: " + creada.getNombre());
+            System.out.println("[OK] Mascota creada exitosamente: " + creada.getNombre());
 
         } catch (Exception e) {
             LOG.error("Error creando mascota", e);
@@ -313,7 +317,7 @@ public class MainController {
                     .build();
 
             Mascota actualizada = mascotaService.actualizarMascota(id, cambios);
-            System.out.println("✅ Mascota actualizada: " + actualizada.getNombre());
+            System.out.println("[OK] Mascota actualizada: " + actualizada.getNombre());
 
         } catch (Exception e) {
             LOG.error("Error actualizando mascota", e);
@@ -332,7 +336,7 @@ public class MainController {
 
             mascotaService.eliminarMascota(id);
             LOG.info("Mascota eliminada ID: " + id);
-            System.out.println("✅ Mascota eliminada exitosamente");
+            System.out.println("[OK] Mascota eliminada exitosamente");
 
         } catch (Exception e) {
             LOG.error("Error eliminando mascota", e);
@@ -401,7 +405,7 @@ public class MainController {
 
             // Verificar disponibilidad
             if (citaService.haySolape(idVet, inicio, inicio.plusHours(1))) {
-                System.out.println("❌ El veterinario ya tiene una cita en ese horario");
+                System.out.println("[X] El veterinario ya tiene una cita en ese horario");
                 return;
             }
 
@@ -413,7 +417,7 @@ public class MainController {
 
             Cita creada = citaService.crear(nuevaCita);
             LOG.info("Cita agendada: ID " + creada.getId() + " para " + inicio);
-            System.out.println("✅ Cita agendada exitosamente (ID: " + creada.getId() + ")");
+            System.out.println("[OK] Cita agendada exitosamente (ID: " + creada.getId() + ")");
 
         } catch (Exception e) {
             LOG.error("Error agendando cita", e);
@@ -432,7 +436,7 @@ public class MainController {
                     nuevoMotivo.isEmpty() ? null : nuevoMotivo);
 
             LOG.info("Cita reprogramada: ID " + id + " a " + nuevoInicio);
-            System.out.println("✅ Cita reprogramada exitosamente");
+            System.out.println("[OK] Cita reprogramada exitosamente");
 
         } catch (Exception e) {
             LOG.error("Error reprogramando cita", e);
@@ -445,7 +449,7 @@ public class MainController {
             long id = ConsoleUtils.readLong("ID de la cita");
             citaService.iniciar(id);
             LOG.info("Cita iniciada: ID " + id);
-            System.out.println("✅ Cita iniciada");
+            System.out.println("[OK] Cita iniciada");
         } catch (Exception e) {
             LOG.error("Error iniciando cita", e);
             System.err.println("Error: " + e.getMessage());
@@ -457,7 +461,7 @@ public class MainController {
             long id = ConsoleUtils.readLong("ID de la cita");
             citaService.finalizar(id);
             LOG.info("Cita finalizada: ID " + id);
-            System.out.println("✅ Cita finalizada");
+            System.out.println("[OK] Cita finalizada");
         } catch (Exception e) {
             LOG.error("Error finalizando cita", e);
             System.err.println("Error: " + e.getMessage());
@@ -475,7 +479,7 @@ public class MainController {
 
             citaService.cancelar(id);
             LOG.info("Cita cancelada: ID " + id);
-            System.out.println("✅ Cita cancelada");
+            System.out.println("[OK] Cita cancelada");
         } catch (Exception e) {
             LOG.error("Error cancelando cita", e);
             System.err.println("Error: " + e.getMessage());
@@ -489,7 +493,7 @@ public class MainController {
             LocalDateTime fin = ConsoleUtils.readDateTime("Fecha y hora de fin");
 
             boolean haySolape = citaService.haySolape(idVet, inicio, fin);
-            System.out.println(haySolape ? "❌ HAY SOLAPE DE HORARIOS" : "✅ No hay solape");
+            System.out.println(haySolape ? "[X] HAY SOLAPE DE HORARIOS" : "[OK] No hay solape");
 
         } catch (Exception e) {
             LOG.error("Error validando solape", e);
@@ -560,6 +564,42 @@ public class MainController {
                 case 0 -> { return; }
             }
             ConsoleUtils.pause();
+        }
+    }
+
+    // ============ REGISTRO DE CONSULTAS MÉDICAS (INVENTARIO AUTOMÁTICO) ============
+
+    public void registrarConsultaMedica() {
+        try {
+            System.out.println("\n=== REGISTRAR CONSULTA MÉDICA ===");
+            int mascotaId = ConsoleUtils.readInt("ID de la mascota");
+            int veterinarioId = ConsoleUtils.readInt("ID del veterinario");
+            String sintomas = ConsoleUtils.readOptional("Síntomas (opcional)");
+            String diagnostico = ConsoleUtils.readNonEmpty("Diagnóstico");
+
+            com.happyfeet.model.entities.HistorialMedico historial = com.happyfeet.model.entities.HistorialMedico.builder()
+                    .withMascotaId(mascotaId)
+                    .withVeterinarioId(veterinarioId)
+                    .withEventoMedico(com.happyfeet.model.entities.HistorialMedico.TipoEventoMedico.CONSULTA, "Consulta General")
+                    .withSintomas(sintomas)
+                    .withDiagnostico(diagnostico)
+                    .build();
+
+            // Capturar insumos a usar
+            java.util.List<com.happyfeet.service.dto.UsoInsumo> insumos = new java.util.ArrayList<>();
+            while (ConsoleUtils.confirm("¿Agregar insumo/medicamento a usar?")) {
+                int prodId = ConsoleUtils.readInt("ID del producto en inventario");
+                int cant = ConsoleUtils.readInt("Cantidad a usar");
+                insumos.add(new com.happyfeet.service.dto.UsoInsumo(prodId, cant));
+            }
+
+            com.happyfeet.model.entities.HistorialMedico guardado = historialMedicoService.registrarConsultaConInsumos(historial, insumos);
+
+            System.out.println("\nConsulta registrada correctamente. ID: " + guardado.getId());
+            System.out.println(guardado.generarReporteMedico());
+        } catch (Exception e) {
+            LOG.error("Error registrando consulta médica", e);
+            System.err.println("Error al registrar consulta: " + e.getMessage());
         }
     }
 
@@ -668,7 +708,8 @@ public class MainController {
                         "Iniciar cita",
                         "Finalizar cita",
                         "Cancelar cita",
-                        "Verificar disponibilidad"
+                        "Verificar disponibilidad",
+                        "Registrar consulta médica"
                 );
 
                 switch (opcion) {
@@ -680,6 +721,7 @@ public class MainController {
                     case 6 -> controller.finalizarCita();
                     case 7 -> controller.cancelarCita();
                     case 8 -> controller.validarSolapeCita();
+                    case 9 -> controller.registrarConsultaMedica();
                     case 0 -> { return; }
                 }
                 ConsoleUtils.pause();
