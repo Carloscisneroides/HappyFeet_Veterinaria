@@ -1,11 +1,13 @@
 package com.happyfeet.repository.impl;
 
 import com.happyfeet.model.entities.HistorialMedico;
+import com.happyfeet.repository.DataAccessException;
 import com.happyfeet.repository.HistorialMedicoRepository;
 import com.happyfeet.util.DatabaseConnection;
 
 import java.math.BigDecimal;
 import java.sql.*;
+import java.sql.Date;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -74,7 +76,7 @@ public class HistorialMedicoRepositoryImpl implements HistorialMedicoRepository 
             return historial;
 
         } catch (SQLException e) {
-            throw new RuntimeException("Error guardando historial médico", e);
+            throw new DataAccessException("Error guardando historial médico", e);
         }
     }
 
@@ -131,7 +133,7 @@ public class HistorialMedicoRepositoryImpl implements HistorialMedicoRepository 
             return historial;
 
         } catch (SQLException e) {
-            throw new RuntimeException("Error actualizando historial médico", e);
+            throw new DataAccessException("Error actualizando historial médico", e);
         }
     }
 
@@ -144,7 +146,7 @@ public class HistorialMedicoRepositoryImpl implements HistorialMedicoRepository 
             ps.setInt(1, id);
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {
-            throw new RuntimeException("Error eliminando historial médico", e);
+            throw new DataAccessException("Error eliminando historial médico", e);
         }
     }
 
@@ -160,7 +162,7 @@ public class HistorialMedicoRepositoryImpl implements HistorialMedicoRepository 
             }
             return Optional.empty();
         } catch (SQLException e) {
-            throw new RuntimeException("Error buscando historial médico por id", e);
+            throw new DataAccessException("Error buscando historial médico por id", e);
         }
     }
 
@@ -174,7 +176,7 @@ public class HistorialMedicoRepositoryImpl implements HistorialMedicoRepository 
             while (rs.next()) list.add(mapRow(rs));
             return list;
         } catch (SQLException e) {
-            throw new RuntimeException("Error listando historiales médicos", e);
+            throw new DataAccessException("Error listando historiales médicos", e);
         }
     }
 
@@ -191,7 +193,7 @@ public class HistorialMedicoRepositoryImpl implements HistorialMedicoRepository 
             }
             return list;
         } catch (SQLException e) {
-            throw new RuntimeException("Error buscando historiales por mascota", e);
+            throw new DataAccessException("Error buscando historiales por mascota", e);
         }
     }
 
@@ -209,7 +211,7 @@ public class HistorialMedicoRepositoryImpl implements HistorialMedicoRepository 
             }
             return list;
         } catch (SQLException e) {
-            throw new RuntimeException("Error buscando historiales por rango de fechas", e);
+            throw new DataAccessException("Error buscando historiales por rango de fechas", e);
         }
     }
 
@@ -226,7 +228,7 @@ public class HistorialMedicoRepositoryImpl implements HistorialMedicoRepository 
             }
             return list;
         } catch (SQLException e) {
-            throw new RuntimeException("Error buscando historiales por veterinario", e);
+            throw new DataAccessException("Error buscando historiales por veterinario", e);
         }
     }
 
@@ -243,7 +245,7 @@ public class HistorialMedicoRepositoryImpl implements HistorialMedicoRepository 
             }
             return Optional.empty();
         } catch (SQLException e) {
-            throw new RuntimeException("Error buscando historial por mascota y fecha", e);
+            throw new DataAccessException("Error buscando historial por mascota y fecha", e);
         }
     }
 
@@ -257,7 +259,7 @@ public class HistorialMedicoRepositoryImpl implements HistorialMedicoRepository 
             while (rs.next()) list.add(mapRow(rs));
             return list;
         } catch (SQLException e) {
-            throw new RuntimeException("Error buscando historiales que requieren seguimiento", e);
+            throw new DataAccessException("Error buscando historiales que requieren seguimiento", e);
         }
     }
 

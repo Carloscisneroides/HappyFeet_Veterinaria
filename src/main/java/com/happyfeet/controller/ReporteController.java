@@ -15,6 +15,7 @@ import com.happyfeet.util.FileLogger;
 import com.happyfeet.view.ConsoleUtils;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -381,70 +382,92 @@ public class ReporteController {
                     fechaInicio.format(FECHA_FORMATO), fechaFin.format(FECHA_FORMATO));
             System.out.println("=".repeat(80));
 
-            List<Factura> facturas = facturaService.listarTodas();
+            // Consultar en BD las métricas del período seleccionado
+            java.time.LocalDateTime ini = fechaInicio.atStartOfDay();
+            java.time.LocalDateTime finExclusivo = fechaFin.plusDays(1).atStartOfDay();
 
-            // Filtrar por período (simulado - en implementación real sería con fechas reales)
-            List<Factura> facturasPeriodo = facturas; // Para efectos de demo, usamos todas
+            java.math.BigDecimal totalFacturado = java.math.BigDecimal.ZERO;
+            java.math.BigDecimal totalPendiente = java.math.BigDecimal.ZERO;
+            long totalFacturas = 0;
+            long facturasPagadas = 0;
+            long facturasPendientes = 0;
+            long facturasCanceladas = 0;
 
-            if (facturasPeriodo.isEmpty()) {
-                System.out.println("No hay facturas en el período seleccionado");
-                return;
-            }
+            try (java.sql.Connection conn = com.happyfeet.util.DatabaseConnection.getInstance().getConnection()) {
+                // Totales y conteos por estado
+                String sql = "SELECT estado, COUNT(*) c, COALESCE(SUM(total),0) s FROM facturas WHERE fecha_emision >= ? AND fecha_emision < ? GROUP BY estado";
+                try (java.sql.PreparedStatement ps = conn.prepareStatement(sql)) {
+                    ps.setTimestamp(1, java.sql.Timestamp.valueOf(ini));
+                    ps.setTimestamp(2, java.sql.Timestamp.valueOf(finExclusivo));
+                    try (java.sql.ResultSet rs = ps.executeQuery()) {
+                        while (rs.next()) {
+                            String estado = rs.getString("estado");
+                            long c = rs.getLong("c");
+                            java.math.BigDecimal s = rs.getBigDecimal("s");
+                            totalFacturas += c;
+                            if ("Pagada".equals(estado)) {
+                                facturasPagadas = c;
+                                totalFacturado = s;
+                            } else if ("Pendiente".equals(estado)) {
+                                facturasPendientes = c;
+                                totalPendiente = s;
+                            } else if ("Cancelada".equals(estado)) {
+                                facturasCanceladas = c;
+                            }
+                        }
+                    }
+                }
 
-            // Análisis de facturación
-            BigDecimal totalFacturado = facturasPeriodo.stream()
-                    .filter(Factura::estaPagada)
-                    .map(Factura::getTotal)
-                    .reduce(BigDecimal.ZERO, BigDecimal::add);
+                // Distribución por tipo de item (servicios vs productos) solo de facturas pagadas
+                java.math.BigDecimal totalServicios = java.math.BigDecimal.ZERO;
+                java.math.BigDecimal totalProductos = java.math.BigDecimal.ZERO;
+                String sqlDist = "SELECT i.tipo_item, COALESCE(SUM(i.subtotal),0) sum_subtotal " +
+                        "FROM items_factura i JOIN facturas f ON f.id = i.factura_id " +
+                        "WHERE f.fecha_emision >= ? AND f.fecha_emision < ? AND f.estado = 'Pagada' " +
+                        "GROUP BY i.tipo_item";
+                try (java.sql.PreparedStatement ps2 = conn.prepareStatement(sqlDist)) {
+                    ps2.setTimestamp(1, java.sql.Timestamp.valueOf(ini));
+                    ps2.setTimestamp(2, java.sql.Timestamp.valueOf(finExclusivo));
+                    try (java.sql.ResultSet rs2 = ps2.executeQuery()) {
+                        while (rs2.next()) {
+                            String tipo = rs2.getString("tipo_item");
+                            java.math.BigDecimal suma = rs2.getBigDecimal("sum_subtotal");
+                            if ("servicio".equalsIgnoreCase(tipo)) totalServicios = suma;
+                            if ("producto".equalsIgnoreCase(tipo)) totalProductos = suma;
+                        }
+                    }
+                }
 
-            BigDecimal totalPendiente = facturasPeriodo.stream()
-                    .filter(f -> f.getEstado() == Factura.FacturaEstado.PENDIENTE)
-                    .map(Factura::getTotal)
-                    .reduce(BigDecimal.ZERO, BigDecimal::add);
+                // Resumen financiero
+                System.out.println("[FINANZAS] RESUMEN FINANCIERO:");
+                System.out.printf("• Total facturado (pagado): $%,.0f%n", totalFacturado);
+                System.out.printf("• Total pendiente de cobro: $%,.0f%n", totalPendiente);
+                System.out.printf("• Total facturas: %d%n", totalFacturas);
+                if (totalFacturas > 0) {
+                    System.out.printf("  - Pagadas: %d (%.1f%%)%n", facturasPagadas,
+                            (facturasPagadas * 100.0) / totalFacturas);
+                    System.out.printf("  - Pendientes: %d (%.1f%%)%n", facturasPendientes,
+                            (facturasPendientes * 100.0) / totalFacturas);
+                    System.out.printf("  - Canceladas: %d%n", facturasCanceladas);
+                }
 
-            long facturasPagadas = facturasPeriodo.stream().filter(Factura::estaPagada).count();
-            long facturasPendientes = facturasPeriodo.stream()
-                    .filter(f -> f.getEstado() == Factura.FacturaEstado.PENDIENTE).count();
-            long facturasCanceladas = facturasPeriodo.stream()
-                    .filter(f -> f.getEstado() == Factura.FacturaEstado.CANCELADA).count();
+                if (facturasPagadas > 0 && totalFacturado.compareTo(java.math.BigDecimal.ZERO) > 0) {
+                    java.math.BigDecimal ticketPromedio = totalFacturado.divide(java.math.BigDecimal.valueOf(facturasPagadas),
+                            2, java.math.RoundingMode.HALF_UP);
+                    System.out.printf("• Ticket promedio: $%,.0f%n", ticketPromedio);
+                }
 
-            // Resumen financiero
-            System.out.println("[FINANZAS] RESUMEN FINANCIERO:");
-            System.out.printf("• Total facturado (pagado): $%,.0f%n", totalFacturado);
-            System.out.printf("• Total pendiente de cobro: $%,.0f%n", totalPendiente);
-            System.out.printf("• Total facturas: %d%n", facturasPeriodo.size());
-            System.out.printf("  - Pagadas: %d (%.1f%%)%n", facturasPagadas,
-                    (facturasPagadas * 100.0) / facturasPeriodo.size());
-            System.out.printf("  - Pendientes: %d (%.1f%%)%n", facturasPendientes,
-                    (facturasPendientes * 100.0) / facturasPeriodo.size());
-            System.out.printf("  - Canceladas: %d%n", facturasCanceladas);
+                // Distribución de ingresos
+                System.out.println("\n[DISTRIB] DISTRIBUCION DE INGRESOS:");
+                if (totalFacturado.compareTo(java.math.BigDecimal.ZERO) > 0) {
+                    double porcentajeServicios = totalServicios.multiply(java.math.BigDecimal.valueOf(100))
+                            .divide(totalFacturado, 1, java.math.RoundingMode.HALF_UP).doubleValue();
+                    double porcentajeProductos = totalProductos.multiply(java.math.BigDecimal.valueOf(100))
+                            .divide(totalFacturado, 1, java.math.RoundingMode.HALF_UP).doubleValue();
 
-            if (facturasPagadas > 0) {
-                BigDecimal ticketPromedio = totalFacturado.divide(BigDecimal.valueOf(facturasPagadas),
-                        2, BigDecimal.ROUND_HALF_UP);
-                System.out.printf("• Ticket promedio: $%,.0f%n", ticketPromedio);
-            }
-
-            // Análisis por servicios vs productos
-            BigDecimal totalServicios = facturasPeriodo.stream()
-                    .filter(Factura::estaPagada)
-                    .map(Factura::getTotalServicios)
-                    .reduce(BigDecimal.ZERO, BigDecimal::add);
-
-            BigDecimal totalProductos = facturasPeriodo.stream()
-                    .filter(Factura::estaPagada)
-                    .map(Factura::getTotalProductos)
-                    .reduce(BigDecimal.ZERO, BigDecimal::add);
-
-            System.out.println("\n[DISTRIB] DISTRIBUCION DE INGRESOS:");
-            if (totalFacturado.compareTo(BigDecimal.ZERO) > 0) {
-                double porcentajeServicios = totalServicios.multiply(BigDecimal.valueOf(100))
-                        .divide(totalFacturado, 1, BigDecimal.ROUND_HALF_UP).doubleValue();
-                double porcentajeProductos = totalProductos.multiply(BigDecimal.valueOf(100))
-                        .divide(totalFacturado, 1, BigDecimal.ROUND_HALF_UP).doubleValue();
-
-                System.out.printf("• Servicios: $%,.0f (%.1f%%)%n", totalServicios, porcentajeServicios);
-                System.out.printf("• Productos: $%,.0f (%.1f%%)%n", totalProductos, porcentajeProductos);
+                    System.out.printf("• Servicios: $%,.0f (%.1f%%)%n", totalServicios, porcentajeServicios);
+                    System.out.printf("• Productos: $%,.0f (%.1f%%)%n", totalProductos, porcentajeProductos);
+                }
             }
 
             // Tendencia mensual (simulada)
@@ -460,6 +483,35 @@ public class ReporteController {
         }
     }
 
+
+
+    /**
+     * Método legacy mantenido para compatibilidad
+     */
+    public void mostrarServiciosMasSolicitados() {
+        reporteServiciosMasSolicitados();
+    }
+
+    /**
+     * Método legacy mantenido para compatibilidad
+     */
+    public void mostrarDesempenoVeterinario() {
+        reporteDesempenoVeterinarios();
+    }
+
+    /**
+     * Método legacy mantenido para compatibilidad
+     */
+    public void mostrarEstadoInventario() {
+        reporteEstadoInventario();
+    }
+
+    /**
+     * Método legacy mantenido para compatibilidad
+     */
+    public void mostrarFacturacionPorPeriodo(String periodo) {
+        reporteFacturacionPorPeriodo();
+    }
     // ============ REPORTE 5: REPORTE COMPLETO MENSUAL ============
 
     public void reporteCompletoMensual() {

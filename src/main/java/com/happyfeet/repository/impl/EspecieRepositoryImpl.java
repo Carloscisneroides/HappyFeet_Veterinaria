@@ -1,6 +1,7 @@
 package com.happyfeet.repository.impl;
 
 import com.happyfeet.model.entities.Especie;
+import com.happyfeet.repository.DataAccessException;
 import com.happyfeet.repository.EspecieRepository;
 import com.happyfeet.util.DatabaseConnection;
 
@@ -36,7 +37,7 @@ public class EspecieRepositoryImpl implements EspecieRepository {
             return especie;
 
         } catch (SQLException e) {
-            throw new RuntimeException("Error guardando especie", e);
+            throw new DataAccessException("Error guardando especie", e);
         }
     }
 
@@ -55,7 +56,7 @@ public class EspecieRepositoryImpl implements EspecieRepository {
             return Optional.empty();
 
         } catch (SQLException e) {
-            throw new RuntimeException("Error buscando especie por id", e);
+            throw new DataAccessException("Error buscando especie por id", e);
         }
     }
 
@@ -74,7 +75,7 @@ public class EspecieRepositoryImpl implements EspecieRepository {
             return list;
 
         } catch (SQLException e) {
-            throw new RuntimeException("Error listando especies", e);
+            throw new DataAccessException("Error listando especies", e);
         }
     }
 
@@ -97,7 +98,7 @@ public class EspecieRepositoryImpl implements EspecieRepository {
             return especie;
 
         } catch (SQLException e) {
-            throw new RuntimeException("Error actualizando especie", e);
+            throw new DataAccessException("Error actualizando especie", e);
         }
     }
 
@@ -113,7 +114,7 @@ public class EspecieRepositoryImpl implements EspecieRepository {
             return ps.executeUpdate() > 0;
 
         } catch (SQLException e) {
-            throw new RuntimeException("Error eliminando especie", e);
+            throw new DataAccessException("Error eliminando especie", e);
         }
     }
 
@@ -132,7 +133,7 @@ public class EspecieRepositoryImpl implements EspecieRepository {
             return Optional.empty();
 
         } catch (SQLException e) {
-            throw new RuntimeException("Error buscando especie por nombre", e);
+            throw new DataAccessException("Error buscando especie por nombre", e);
         }
     }
 

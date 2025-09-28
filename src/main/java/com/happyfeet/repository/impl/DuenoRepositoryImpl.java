@@ -1,10 +1,12 @@
 package com.happyfeet.repository.impl;
 
 import com.happyfeet.model.entities.Dueno;
+import com.happyfeet.repository.DataAccessException;
 import com.happyfeet.repository.DuenoRepository;
 import com.happyfeet.util.DatabaseConnection;
 
 import java.sql.*;
+import java.sql.Date;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -41,7 +43,7 @@ public class DuenoRepositoryImpl implements DuenoRepository {
                 }
                 return d;
             } catch (SQLException e) {
-                throw new RuntimeException("Error guardando dueño", e);
+                throw new DataAccessException("Error guardando dueño", e);
             }
         } else {
             return update(d);
@@ -60,7 +62,7 @@ public class DuenoRepositoryImpl implements DuenoRepository {
             }
             return Optional.empty();
         } catch (SQLException e) {
-            throw new RuntimeException("Error buscando dueño por id", e);
+            throw new DataAccessException("Error buscando dueño por id", e);
         }
     }
 
@@ -72,10 +74,10 @@ public class DuenoRepositoryImpl implements DuenoRepository {
              PreparedStatement stmt = conn.prepareStatement(sql);
              ResultSet rs = stmt.executeQuery()) {
             while (rs.next()) duenos.add(mapRow(rs));
+            return duenos;
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new DataAccessException("Error listando dueños", e);
         }
-        return duenos;
     }
 
     @Override
@@ -98,7 +100,7 @@ public class DuenoRepositoryImpl implements DuenoRepository {
             ps.executeUpdate();
             return d;
         } catch (SQLException e) {
-            throw new RuntimeException("Error actualizando dueño", e);
+            throw new DataAccessException("Error actualizando dueño", e);
         }
     }
 
@@ -111,7 +113,7 @@ public class DuenoRepositoryImpl implements DuenoRepository {
             ps.setInt(1, id);
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {
-            throw new RuntimeException("Error eliminando dueño", e);
+            throw new DataAccessException("Error eliminando dueño", e);
         }
     }
 
@@ -129,7 +131,7 @@ public class DuenoRepositoryImpl implements DuenoRepository {
             }
             return null;
         } catch (SQLException e) {
-            throw new RuntimeException("Error buscando dueño por nombre", e);
+            throw new DataAccessException("Error buscando dueño por nombre", e);
         }
     }
 
@@ -145,7 +147,7 @@ public class DuenoRepositoryImpl implements DuenoRepository {
             }
             return null;
         } catch (SQLException e) {
-            throw new RuntimeException("Error buscando dueño por documento", e);
+            throw new DataAccessException("Error buscando dueño por documento", e);
         }
     }
 
@@ -161,7 +163,7 @@ public class DuenoRepositoryImpl implements DuenoRepository {
             }
             return null;
         } catch (SQLException e) {
-            throw new RuntimeException("Error buscando dueño por teléfono", e);
+            throw new DataAccessException("Error buscando dueño por teléfono", e);
         }
     }
 
@@ -177,7 +179,7 @@ public class DuenoRepositoryImpl implements DuenoRepository {
             }
             return null;
         } catch (SQLException e) {
-            throw new RuntimeException("Error buscando dueño por email", e);
+            throw new DataAccessException("Error buscando dueño por email", e);
         }
     }
 
@@ -193,7 +195,7 @@ public class DuenoRepositoryImpl implements DuenoRepository {
             }
             return null;
         } catch (SQLException e) {
-            throw new RuntimeException("Error buscando dueño por contacto de emergencia", e);
+            throw new DataAccessException("Error buscando dueño por contacto de emergencia", e);
         }
     }
 
@@ -209,7 +211,7 @@ public class DuenoRepositoryImpl implements DuenoRepository {
             }
             return null;
         } catch (SQLException e) {
-            throw new RuntimeException("Error buscando dueño por tipo de sangre", e);
+            throw new DataAccessException("Error buscando dueño por tipo de sangre", e);
         }
     }
 

@@ -5,37 +5,35 @@ import com.happyfeet.model.entities.Inventario;
 import com.happyfeet.model.entities.Servicio;
 import com.happyfeet.repository.FacturaRepository;
 import com.happyfeet.service.FacturaService;
+import com.happyfeet.service.HistorialMedicoService;
+import com.happyfeet.model.entities.HistorialMedico;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-/**
- * Servicio de facturación que orquesta la creación, modificación y cálculo de totales
- * delegando las reglas numéricas a la entidad Factura (usa BigDecimal internamente).
- */
 public class FacturaServiceImpl implements FacturaService {
 
     private final FacturaRepository repository;
+    private final HistorialMedicoService historialMedicoService;
 
-    public FacturaServiceImpl(FacturaRepository repository) {
-        this.repository = Objects.requireNonNull(repository, "repository no puede ser null");
+    public FacturaServiceImpl(FacturaRepository repository, HistorialMedicoService historialMedicoService) {
+        this.repository = Objects.requireNonNull(repository);
+        this.historialMedicoService = Objects.requireNonNull(historialMedicoService);
     }
 
     @Override
     public Factura crearFactura(Factura factura) {
-        Objects.requireNonNull(factura, "factura no puede ser null");
-        // No invocar métodos privados de Factura; se asume que las operaciones de agregado ya recalculan.
         return repository.save(factura);
     }
 
     @Override
     public Factura crearFacturaConItems(Factura factura, List<Factura.ItemFactura> items) {
-        Objects.requireNonNull(factura, "factura no puede ser null");
-        Objects.requireNonNull(items, "items no puede ser null");
+        // Agregar items uno por uno usando el método público
         for (Factura.ItemFactura item : items) {
-            factura.agregarItem(item); // agregarItem ya recalcula totales
+            factura.agregarItem(item);
         }
         return repository.save(factura);
     }
@@ -57,26 +55,67 @@ public class FacturaServiceImpl implements FacturaService {
 
     @Override
     public Factura agregarServicio(Factura factura, Servicio servicio) {
-        Objects.requireNonNull(factura, "factura no puede ser null");
-        Objects.requireNonNull(servicio, "servicio no puede ser null");
-        factura.agregarServicio(servicio); // ya recalcula totales internamente
+        factura.agregarServicio(servicio);
         return repository.save(factura);
     }
 
     @Override
     public Factura agregarProducto(Factura factura, Inventario producto, BigDecimal cantidad) {
-        Objects.requireNonNull(factura, "factura no puede ser null");
-        Objects.requireNonNull(producto, "producto no puede ser null");
-        Objects.requireNonNull(cantidad, "cantidad no puede ser null");
-        factura.agregarProducto(producto, cantidad); // ya recalcula totales internamente
+        factura.agregarProducto(producto, cantidad);
         return repository.save(factura);
     }
 
     @Override
     public Factura recalcularTotales(Factura factura) {
-        Objects.requireNonNull(factura, "factura no puede ser null");
-        // Forzamos un recálculo usando una API pública
-        factura.aplicarDescuento(factura.getDescuento());
+        // El recálculo se hace automáticamente al agregar items
         return repository.save(factura);
     }
+
+    @Override
+    public Factura generarFacturaPorConsulta(Integer consultaId) {
+        // Buscar el historial médico de la consulta
+        Optional<HistorialMedico> historialOpt = historialMedicoService.obtenerPorId(consultaId);
+        if (historialOpt.isEmpty()) {
+            throw new IllegalArgumentException("Consulta médica no encontrada: " + consultaId);
+        }
+        HistorialMedico historial = historialOpt.get();
+
+        Factura factura = new Factura();
+        factura.setFechaEmision(LocalDateTime.now());
+        factura.setNumeroFactura("FACT-" + System.currentTimeMillis());
+
+        // Obtener dueño ID desde la mascota del historial
+        if (historial.getMascota() != null) {
+            factura.setDuenoId(historial.getMascota().getDuenoId());
+        } else {
+            // Valor por defecto si no hay mascota asociada
+            factura.setDuenoId(1);
+        }
+
+        // Agregar servicio de consulta usando Builder
+        Factura.ItemFactura itemConsulta = new Factura.ItemFactura.Builder(Factura.ItemFactura.TipoItem.SERVICIO)
+                .withDescripcion("Consulta médica: " + (historial.getDiagnostico() != null ? historial.getDiagnostico() : "Consulta general"))
+                .withCantidad(BigDecimal.ONE)
+                .withPrecioUnitario(new BigDecimal("30000"))
+                .build();
+        factura.agregarItem(itemConsulta);
+
+        // Agregar medicamentos
+        if (historial.getMedicamentosRecetados() != null && !historial.getMedicamentosRecetados().isBlank()) {
+            String[] meds = historial.getMedicamentosRecetados().split(",");
+            for (String med : meds) {
+                Factura.ItemFactura itemMed = new Factura.ItemFactura.Builder(Factura.ItemFactura.TipoItem.PRODUCTO)
+                        .withDescripcion("Medicamento: " + med.trim())
+                        .withCantidad(BigDecimal.ONE)
+                        .withPrecioUnitario(new BigDecimal("15000"))
+                        .build();
+                factura.agregarItem(itemMed);
+            }
+        }
+
+        return repository.save(factura);
+    }
+
+
+
 }

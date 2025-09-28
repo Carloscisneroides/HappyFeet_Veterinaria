@@ -6,6 +6,7 @@ import com.happyfeet.repository.impl.*;
 import com.happyfeet.service.*;
 import com.happyfeet.service.impl.*;
 import com.happyfeet.view.*;
+import com.happyfeet.util.DatabaseConnection;
 
 public class DependencyFactory {
 
@@ -17,6 +18,8 @@ public class DependencyFactory {
     private MascotaRepository mascotaRepository;
     private FacturaRepository facturaRepository;
     private InventarioRepository inventarioRepository;
+    private ProveedorRepository proveedorRepository;
+    private HistorialMedicoRepository historialMedicoRepository;
 
     // Services
     private CitaService citaService;
@@ -26,6 +29,8 @@ public class DependencyFactory {
     private InventarioService inventarioService;
     private ReporteService reporteService;
     private VeterinarioService veterinarioService;
+    private ProveedorService proveedorService;
+    private HistorialMedicoService historialMedicoService;
 
     // Views
     private CitaView citaView;
@@ -40,6 +45,7 @@ public class DependencyFactory {
     private InventarioController inventarioController;
     private ReporteController reporteController;
     private ActividadesEspecialesController actividadesController;
+    private ProveedorController proveedorController;
     private MainController mainController;
 
     private DependencyFactory() {
@@ -54,33 +60,44 @@ public class DependencyFactory {
     }
 
     private void initializeComponents() {
+        // Initialize database connection
+        DatabaseConnection dbConnection = DatabaseConnection.getInstance();
+
+        // Mostrar configuración efectiva (sin exponer password) para facilitar diagnóstico
+        java.util.Properties cfg = dbConnection.getCurrentConfig();
+        String pwdSet = (cfg.getProperty("db.password") != null && !cfg.getProperty("db.password").isEmpty()) ? "SI" : "NO";
+        System.out.println("[BD] Config efectiva -> URL: " + cfg.getProperty("db.url") + ", Usuario: " + cfg.getProperty("db.username") + ", Password definido: " + pwdSet);
+
+        // Validar conectividad al iniciar para dar feedback inmediato
+        try {
+            dbConnection.getConnection();
+            System.out.println("[BD] Conexión establecida correctamente: " + dbConnection.getConnectionInfo());
+        } catch (RuntimeException ex) {
+            System.err.println("[BD] Error al conectar con la base de datos: " + ex.getMessage());
+            System.err.println("[BD] Verifica archivo database.properties, variables del sistema (db.url, db.username, db.password) o variables de entorno (DB_URL, DB_USERNAME, DB_PASSWORD).");
+            throw ex; // Abortamos el arranque: nunca intentar operar sin credenciales/conexión válidas
+        }
+
         // Initialize repositories
         citaRepository = new CitaRepositoryImpl();
         duenoRepository = new DuenoRepositoryImpl();
         mascotaRepository = new MascotaRepositoryImpl();
-        facturaRepository = new FacturaRepositoryImpl();
-        inventarioRepository = new InventarioRepositoryImpl();
+        facturaRepository = new FacturaRepositoryImpl(dbConnection);
+        inventarioRepository = new InventarioRepositoryImpl(dbConnection);
+        proveedorRepository = new ProveedorRepositoryImpl();
+        historialMedicoRepository = new HistorialMedicoRepositoryImpl();
+        VeterinarioRepository veterinarioRepository = new VeterinarioRepositoryImpl();
 
         // Initialize services
         duenoService = new DuenoServiceImpl(duenoRepository);
         mascotaService = new MascotaServiceImpl(mascotaRepository);
         citaService = new CitaServiceImpl(citaRepository);
-        facturaService = new FacturaServiceImpl(facturaRepository);
-        inventarioService = new InventarioService(inventarioRepository);
+        inventarioService = new InventarioServiceImpl(inventarioRepository);
         reporteService = new ReporteServiceImpl(new LoggerServiceImpl());
-
-        // Create a basic veterinario service implementation
-        veterinarioService = new VeterinarioService() {
-            @Override
-            public java.util.Optional<com.happyfeet.model.entities.Veterinario> buscarPorId(Long id) {
-                return java.util.Optional.empty();
-            }
-
-            @Override
-            public boolean existePorId(Long id) {
-                return false;
-            }
-        };
+        proveedorService = new ProveedorServiceImpl(proveedorRepository);
+        veterinarioService = new VeterinarioServiceImpl(veterinarioRepository);
+        historialMedicoService = new HistorialMedicoServiceImpl(historialMedicoRepository, inventarioService);
+        facturaService = new FacturaServiceImpl(facturaRepository, historialMedicoService);
 
         // Initialize views
         citaView = new CitaView();
@@ -88,13 +105,14 @@ public class DependencyFactory {
         mascotaView = new MascotaView();
 
         // Initialize controllers with dependencies
-        citaController = new CitaController(citaService, mascotaService, veterinarioService, citaView);
+        citaController = new CitaController(citaService, mascotaService, veterinarioService, inventarioService, citaView);
         duenoController = new DuenoController(duenoService, mascotaService, duenoView);
         mascotaController = new MascotaController(mascotaService, duenoService, mascotaView);
         facturaController = new FacturaController(facturaService, duenoService, inventarioService, inventarioRepository);
-        inventarioController = new InventarioController(inventarioService, inventarioRepository);
+        inventarioController = new InventarioController(inventarioService, inventarioRepository, proveedorService);
         reporteController = new ReporteController(facturaService, mascotaService, duenoService, citaService, inventarioRepository);
         actividadesController = new ActividadesEspecialesController(mascotaService, duenoService);
+        proveedorController = new ProveedorController(proveedorService);
         mainController = new MainController();
     }
 
@@ -127,6 +145,10 @@ public class DependencyFactory {
         return actividadesController;
     }
 
+    public ProveedorController getProveedorController() {
+        return proveedorController;
+    }
+
     public MainController getMainController() {
         return mainController;
     }
@@ -154,5 +176,13 @@ public class DependencyFactory {
 
     public ReporteService getReporteService() {
         return reporteService;
+    }
+
+    public ProveedorService getProveedorService() {
+        return proveedorService;
+    }
+
+    public HistorialMedicoService getHistorialMedicoService() {
+        return historialMedicoService;
     }
 }

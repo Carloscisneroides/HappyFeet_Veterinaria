@@ -1,10 +1,12 @@
 package com.happyfeet.repository.impl;
 
 import com.happyfeet.model.entities.Mascota;
+import com.happyfeet.repository.DataAccessException;
 import com.happyfeet.repository.MascotaRepository;
 import com.happyfeet.util.DatabaseConnection;
 
 import java.sql.*;
+import java.sql.Date;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -49,7 +51,7 @@ public class MascotaRepositoryImpl implements MascotaRepository {
             }
             return m;
         } catch (SQLException e) {
-            throw new RuntimeException("Error guardando mascota", e);
+            throw new DataAccessException("Error guardando mascota", e);
         }
     }
 
@@ -65,7 +67,7 @@ public class MascotaRepositoryImpl implements MascotaRepository {
             }
             return Optional.empty();
         } catch (SQLException e) {
-            throw new RuntimeException("Error buscando mascota por id", e);
+            throw new DataAccessException("Error buscando mascota por id", e);
         }
     }
 
@@ -79,7 +81,7 @@ public class MascotaRepositoryImpl implements MascotaRepository {
             while (rs.next()) list.add(mapRow(rs));
             return list;
         } catch (SQLException e) {
-            throw new RuntimeException("Error listando mascotas", e);
+            throw new DataAccessException("Error listando mascotas", e);
         }
     }
 
@@ -108,7 +110,7 @@ public class MascotaRepositoryImpl implements MascotaRepository {
             ps.executeUpdate();
             return m;
         } catch (SQLException e) {
-            throw new RuntimeException("Error actualizando mascota", e);
+            throw new DataAccessException("Error actualizando mascota", e);
         }
     }
 
@@ -121,7 +123,7 @@ public class MascotaRepositoryImpl implements MascotaRepository {
             ps.setInt(1, id);
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {
-            throw new RuntimeException("Error eliminando mascota", e);
+            throw new DataAccessException("Error eliminando mascota", e);
         }
     }
 
@@ -139,7 +141,7 @@ public class MascotaRepositoryImpl implements MascotaRepository {
             }
             return list;
         } catch (SQLException e) {
-            throw new RuntimeException("Error buscando por duenoId", e);
+            throw new DataAccessException("Error buscando mascota por duenoId", e);
         }
     }
 
@@ -156,7 +158,7 @@ public class MascotaRepositoryImpl implements MascotaRepository {
             }
             return list;
         } catch (SQLException e) {
-            throw new RuntimeException("Error buscando por nombre", e);
+            throw new DataAccessException("Error buscando mascota por nombre", e);
         }
     }
 
@@ -172,7 +174,7 @@ public class MascotaRepositoryImpl implements MascotaRepository {
             }
             return null;
         } catch (SQLException e) {
-            throw new RuntimeException("Error buscando por microchip", e);
+            throw new DataAccessException("Error buscando mascota por microchip", e);
         }
     }
 

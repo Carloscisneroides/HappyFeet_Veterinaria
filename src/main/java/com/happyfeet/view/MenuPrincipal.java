@@ -65,13 +65,13 @@ public class MenuPrincipal {
         System.out.println("║                    MENU PRINCIPAL                           ║");
         System.out.println("╠══════════════════════════════════════════════════════════════╣");
         System.out.println("║                                                              ║");
-        System.out.println("║  [1] 1. Gestión de Dueños                                   ║");
-        System.out.println("║  [2] 2. Gestión de Mascotas                                 ║");
-        System.out.println("║  [3] 3. Gestión de Citas                                    ║");
-        System.out.println("║  [4] 4. Gestión de Facturas                                 ║");
-        System.out.println("║  [5] 5. Gestión de Inventario                               ║");
+        System.out.println("║  [1] 1. Gestión de Pacientes (Dueños)                      ║");
+        System.out.println("║  [2] 2. Gestión de Mascotas (Ficha Completa)               ║");
+        System.out.println("║  [3] 3. Servicios Médicos y Citas                          ║");
+        System.out.println("║  [4] 4. Facturación y Reportes Gerenciales                 ║");
+        System.out.println("║  [5] 5. Inventario y Gestión de Farmacia                   ║");
         System.out.println("║  [6] 6. Reportes y Estadísticas                             ║");
-        System.out.println("║  [7] 7. Actividades Especiales                              ║");
+        System.out.println("║  [7] 7. Actividades Especiales (Adopciones/Club)           ║");
         System.out.println("║  [8] 8. Configuración y Utilidades                         ║");
         System.out.println("║  [9] 9. Ayuda                                               ║");
         System.out.println("║  [0] 0. Salir                                               ║");
@@ -101,23 +101,23 @@ public class MenuPrincipal {
         try {
             switch (opcion) {
                 case 1:
-                    mostrarSubtitulo("GESTIÓN DE DUEÑOS");
+                    mostrarSubtitulo("GESTIÓN DE PACIENTES (DUEÑOS)");
                     factory.getDuenoController().run();
                     break;
                 case 2:
-                    mostrarSubtitulo("GESTIÓN DE MASCOTAS");
+                    mostrarSubtitulo("GESTIÓN DE MASCOTAS - FICHA COMPLETA");
                     factory.getMascotaController().run();
                     break;
                 case 3:
-                    mostrarSubtitulo("GESTIÓN DE CITAS");
+                    mostrarSubtitulo("SERVICIOS MÉDICOS Y CITAS");
                     factory.getCitaController().run();
                     break;
                 case 4:
-                    mostrarSubtitulo("GESTIÓN DE FACTURAS");
+                    mostrarSubtitulo("FACTURACIÓN Y REPORTES GERENCIALES");
                     factory.getFacturaController().run();
                     break;
                 case 5:
-                    mostrarSubtitulo("GESTIÓN DE INVENTARIO");
+                    mostrarSubtitulo("INVENTARIO Y GESTIÓN DE FARMACIA");
                     factory.getInventarioController().run();
                     break;
                 case 6:
@@ -373,13 +373,13 @@ public class MenuPrincipal {
         System.out.println();
         System.out.println("📋 Guía rápida de uso:");
         System.out.println();
-        System.out.println("1️⃣  DUEÑOS: Registre y gestione información de propietarios");
-        System.out.println("2️⃣  MASCOTAS: Administre datos de las mascotas y su historial");
-        System.out.println("3️⃣  CITAS: Programe y gestione citas veterinarias");
-        System.out.println("4️⃣  FACTURAS: Genere y administre facturas de servicios");
-        System.out.println("5️⃣  INVENTARIO: Controle stock de medicamentos y productos");
-        System.out.println("6️⃣  REPORTES: Genere estadísticas y reportes del negocio");
-        System.out.println("7️⃣  ACTIVIDADES: Gestione adopciones, vacunaciones y eventos");
+        System.out.println("1️⃣  PACIENTES: Registre dueños con contacto de emergencia y relaciones");
+        System.out.println("2️⃣  MASCOTAS: Ficha completa con alergias, peso, vacunas, microchip y foto");
+        System.out.println("3️⃣  SERVICIOS MÉDICOS: Consultas completas con descuento automático de inventario");
+        System.out.println("4️⃣  FACTURACIÓN: Facturas en texto plano con IVA y reportes gerenciales");
+        System.out.println("5️⃣  INVENTARIO: Control de stock, alertas, vencimientos y proveedores");
+        System.out.println("6️⃣  REPORTES: Estadísticas de servicios, veterinarios y análisis financiero");
+        System.out.println("7️⃣  ACTIVIDADES: Adopciones con contratos, jornadas de vacunación y club de puntos");
         System.out.println("8️⃣  CONFIGURACIÓN: Ajustes del sistema y utilidades");
         System.out.println();
         System.out.println("💡 Consejos:");

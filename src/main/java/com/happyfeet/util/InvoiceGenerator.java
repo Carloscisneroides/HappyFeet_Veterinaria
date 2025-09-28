@@ -35,4 +35,21 @@ public class InvoiceGenerator {
             return null;
         }
     }
+    public static String generarFacturaTextoPlano(Factura factura) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Clínica HappyFeet\n");
+        sb.append("Cliente ID: ").append(factura.getDuenoId()).append("\n");
+        sb.append("Fecha: ").append(factura.getFechaEmision()).append("\n");
+        sb.append("Detalle:\n");
+        factura.getItems().forEach(item -> {
+            sb.append("- ").append(item.getDescripcion())
+                    .append(" x").append(item.getCantidad())
+                    .append(" $").append(item.getPrecioUnitario()).append("\n");
+        });
+        sb.append("Subtotal: $").append(factura.getSubtotal()).append("\n");
+        sb.append("Impuestos: $").append(factura.getImpuestos()).append("\n");
+        sb.append("Total: $").append(factura.getTotal()).append("\n");
+        return sb.toString();
+    }
+
 }

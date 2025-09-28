@@ -17,6 +17,8 @@ public class Mascota {
     private String alergias;
     private String condicionesPreexistentes;
     private Double pesoActual;
+    private String historialVacunas;
+    private String procedimientosPrevios;
     private String microchip;
     private LocalDate fechaImplantacionMicrochip;
     private Boolean agresivo;
@@ -97,6 +99,16 @@ public class Mascota {
 
         public Builder withPesoActual(Double pesoActual) {
             mascota.pesoActual = pesoActual;
+            return this;
+        }
+
+        public Builder withHistorialVacunas(String historialVacunas) {
+            mascota.historialVacunas = historialVacunas;
+            return this;
+        }
+
+        public Builder withProcedimientosPrevios(String procedimientosPrevios) {
+            mascota.procedimientosPrevios = procedimientosPrevios;
             return this;
         }
 
@@ -184,6 +196,12 @@ public class Mascota {
 
     public Double getPesoActual() { return pesoActual; }
     public void setPesoActual(Double pesoActual) { this.pesoActual = pesoActual; }
+
+    public String getHistorialVacunas() { return historialVacunas; }
+    public void setHistorialVacunas(String historialVacunas) { this.historialVacunas = historialVacunas; }
+
+    public String getProcedimientosPrevios() { return procedimientosPrevios; }
+    public void setProcedimientosPrevios(String procedimientosPrevios) { this.procedimientosPrevios = procedimientosPrevios; }
 
     public String getMicrochip() { return microchip; }
     public void setMicrochip(String microchip) { this.microchip = microchip; }

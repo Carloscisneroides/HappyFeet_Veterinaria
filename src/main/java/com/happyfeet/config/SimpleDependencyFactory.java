@@ -223,11 +223,38 @@ public class SimpleDependencyFactory {
             public com.happyfeet.model.entities.Factura recalcularTotales(com.happyfeet.model.entities.Factura factura) {
                 return factura;
             }
+
+            @Override
+            public com.happyfeet.model.entities.Factura generarFacturaPorConsulta(Integer consultaId) {
+                return new com.happyfeet.model.entities.Factura();
+            }
         };
 
-        InventarioService inventarioService = new InventarioService(null) {
+        InventarioService inventarioService = new InventarioService() {
+            @Override
+            public void descontarProductoPorNombre(String nombreProducto, int cantidad) {}
+
+            @Override
+            public void descontarStostck(Integer productoId, Integer cantidad) {}
+
             @Override
             public void descontarStock(Integer productoId, Integer cantidad) {}
+
+            @Override
+            public boolean verificarDisponibilidad(String nombreProducto, int cantidad) { return false; }
+
+            @Override
+            public void descontarStock(String nombreProducto, int cantidad) {}
+
+            @Override
+            public java.util.List<com.happyfeet.model.entities.Inventario> obtenerProductosBajoStockMinimo() {
+                return new java.util.ArrayList<>();
+            }
+
+            @Override
+            public java.util.List<com.happyfeet.model.entities.Inventario> obtenerProductosProximosAVencer() {
+                return new java.util.ArrayList<>();
+            }
         };
 
         ReporteService reporteService = new ReporteService() {
@@ -247,6 +274,26 @@ public class SimpleDependencyFactory {
             @Override
             public Map<String, Object> generarReporteInventarioDatos(String idReporte) {
                 return new HashMap<>();
+            }
+
+            @Override
+            public List<String> obtenerServiciosMasSolicitados() {
+                return new ArrayList<>();
+            }
+
+            @Override
+            public List<String> obtenerDesempenoVeterinario() {
+                return new ArrayList<>();
+            }
+
+            @Override
+            public List<String> obtenerEstadoInventario() {
+                return new ArrayList<>();
+            }
+
+            @Override
+            public List<String> obtenerFacturacionPorPeriodo(String periodo) {
+                return new ArrayList<>();
             }
         };
 
@@ -286,6 +333,15 @@ public class SimpleDependencyFactory {
                 return true;
             }
 
+            @Override
+            public List<com.happyfeet.model.entities.Inventario> findProductosBajoStockMinimo() {
+                return new ArrayList<>();
+            }
+
+            @Override
+            public List<com.happyfeet.model.entities.Inventario> findProductosProximosAVencer() {
+                return new ArrayList<>();
+            }
         };
 
         // Vistas
@@ -296,9 +352,63 @@ public class SimpleDependencyFactory {
         // Controladores
         duenoController = new DuenoController(duenoService, mascotaService, duenoView);
         mascotaController = new MascotaController(mascotaService, duenoService, mascotaView);
-        citaController = new CitaController(citaService, mascotaService, veterinarioService, citaView);
+        citaController = new CitaController(citaService, mascotaService, veterinarioService, inventarioService, citaView);
         facturaController = new FacturaController(facturaService, duenoService, inventarioService, null);
-        inventarioController = new InventarioController(inventarioService, null);
+        // Create a mock ProveedorService
+        ProveedorService proveedorService = new ProveedorService() {
+            @Override
+            public com.happyfeet.model.entities.Proveedor crearProveedor(com.happyfeet.model.entities.Proveedor proveedor) {
+                return proveedor;
+            }
+
+            @Override
+            public com.happyfeet.model.entities.Proveedor actualizarProveedor(Integer id, com.happyfeet.model.entities.Proveedor cambios) {
+                return cambios;
+            }
+
+            @Override
+            public void eliminarProveedor(Integer id) {}
+
+            @Override
+            public Optional<com.happyfeet.model.entities.Proveedor> buscarPorId(Integer id) {
+                return Optional.empty();
+            }
+
+            @Override
+            public List<com.happyfeet.model.entities.Proveedor> listarProveedoresActivos() {
+                return new ArrayList<>();
+            }
+
+            @Override
+            public List<com.happyfeet.model.entities.Proveedor> listarTodos() {
+                return new ArrayList<>();
+            }
+
+            @Override
+            public List<com.happyfeet.model.entities.Proveedor> buscarPorNombre(String nombre) {
+                return new ArrayList<>();
+            }
+
+            @Override
+            public List<com.happyfeet.model.entities.Proveedor> buscarPorTipo(com.happyfeet.model.entities.Proveedor.TipoProveedor tipo) {
+                return new ArrayList<>();
+            }
+
+            @Override
+            public List<com.happyfeet.model.entities.Proveedor> buscarPorCiudad(String ciudad) {
+                return new ArrayList<>();
+            }
+
+            @Override
+            public boolean existePorNit(String nit) {
+                return false;
+            }
+
+            @Override
+            public void cambiarEstado(Integer id, boolean activo) {}
+        };
+
+        inventarioController = new InventarioController(inventarioService, inventarioRepository, proveedorService);
         reporteController = new ReporteController(facturaService, mascotaService, duenoService, citaService,
 
 

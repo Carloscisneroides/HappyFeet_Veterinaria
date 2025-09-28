@@ -244,27 +244,271 @@ public class MascotaController {
         return mascotaView;
     }
 
+
+    /**
+     * Transferir propiedad de mascota a nuevo dueño
+     */
+    public void transferirPropiedadMascota(Long mascotaId, Long nuevoDuenoId) {
+        try {
+            // Verificar que la mascota existe
+            Optional<Mascota> mascotaOpt = mascotaService.buscarPorId(mascotaId);
+            if (mascotaOpt.isEmpty()) {
+                mascotaView.mostrarError("Mascota no encontrada con ID: " + mascotaId);
+                return;
+            }
+
+            // Verificar que el nuevo dueño existe
+            Optional<Dueno> nuevoDuenoOpt = duenoService.buscarPorId(nuevoDuenoId);
+            if (nuevoDuenoOpt.isEmpty()) {
+                mascotaView.mostrarError("Dueño no encontrado con ID: " + nuevoDuenoId);
+                return;
+            }
+
+            Mascota mascota = mascotaOpt.get();
+            Dueno nuevoDueno = nuevoDuenoOpt.get();
+            Long duenoAnteriorId = mascota.getDuenoId().longValue();
+
+            // Obtener información del dueño anterior
+            Optional<Dueno> duenoAnteriorOpt = duenoService.buscarPorId(duenoAnteriorId);
+            String nombreAnterior = duenoAnteriorOpt.map(Dueno::getNombreCompleto).orElse("Desconocido");
+
+            // Confirmar transferencia
+            boolean confirmar = mascotaView.mostrarConfirmacion(
+                String.format("¿Confirma transferir '%s' de %s a %s?",
+                    mascota.getNombre(), nombreAnterior, nuevoDueno.getNombreCompleto())
+            );
+
+            if (confirmar) {
+                mascota.setDuenoId(nuevoDuenoId.intValue());
+                mascotaService.actualizarMascota(mascotaId, mascota);
+
+                mascotaView.mostrarMensaje(String.format(
+                    "Propiedad transferida exitosamente:\n" +
+                    "Mascota: %s\n" +
+                    "Dueño anterior: %s\n" +
+                    "Nuevo dueño: %s",
+                    mascota.getNombre(), nombreAnterior, nuevoDueno.getNombreCompleto()
+                ));
+            } else {
+                mascotaView.mostrarMensaje("Transferencia cancelada");
+            }
+
+        } catch (Exception e) {
+            mascotaView.mostrarError("Error al transferir propiedad: " + e.getMessage());
+        }
+    }
+
+
     // Métodos añadidos desde versión integrada
 
     
     
     public void run() {
-        System.out.println("=== GESTIÓN DE MASCOTAS ===");
-        System.out.println("Funcionalidad disponible:");
-        System.out.println("- Registrar nueva mascota");
-        System.out.println("- Buscar mascota por ID o nombre");
-        System.out.println("- Actualizar información de mascota");
-        System.out.println("- Gestionar historial médico");
-        System.out.println("- Consultar mascotas por dueño");
-        System.out.println("- Verificar microchip");
-        System.out.println("- Eliminar registro de mascota");
-        System.out.println();
-        System.out.println("Esta sección está lista para ser utilizada.");
-        System.out.println("Presione ENTER para continuar...");
+        java.util.Scanner scanner = new java.util.Scanner(System.in);
+        boolean continuar = true;
+
+        while (continuar) {
+            mostrarMenuMascotas();
+            try {
+                int opcion = Integer.parseInt(scanner.nextLine());
+                switch (opcion) {
+                    case 1 -> registrarMascotaCompleta(scanner);
+                    case 2 -> buscarMascotaInteractivo(scanner);
+                    case 3 -> actualizarMascotaInteractivo(scanner);
+                    case 4 -> transferirPropiedadInteractivo(scanner);
+                    case 5 -> listarTodas();
+                    case 6 -> mostrarMascotasPorDueno(scanner);
+                    case 7 -> verificarMicrochipInteractivo(scanner);
+                    case 8 -> eliminarMascotaInteractivo(scanner);
+                    case 0 -> continuar = false;
+                    default -> System.out.println("❌ Opción no válida");
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("❌ Por favor ingrese un número válido");
+            }
+        }
+    }
+
+    private void mostrarMenuMascotas() {
+        System.out.println("\n╔══════════════════════════════════════════════════════════════╗");
+        System.out.println("║                    GESTIÓN DE MASCOTAS                      ║");
+        System.out.println("╠══════════════════════════════════════════════════════════════╣");
+        System.out.println("║ [1] Registrar nueva mascota (ficha completa)                ║");
+        System.out.println("║ [2] Buscar mascota por ID o nombre                          ║");
+        System.out.println("║ [3] Actualizar información de mascota                       ║");
+        System.out.println("║ [4] Transferir propiedad de mascota                         ║");
+        System.out.println("║ [5] Listar todas las mascotas                               ║");
+        System.out.println("║ [6] Consultar mascotas por dueño                            ║");
+        System.out.println("║ [7] Verificar microchip                                     ║");
+        System.out.println("║ [8] Eliminar registro de mascota                            ║");
+        System.out.println("║ [0] Volver al menú principal                                ║");
+        System.out.println("╚══════════════════════════════════════════════════════════════╝");
+        System.out.print("Seleccione una opción: ");
+    }
+
+    private void registrarMascotaCompleta(java.util.Scanner scanner) {
         try {
-            System.in.read();
+            System.out.println("\n=== REGISTRO DE MASCOTA COMPLETO ===");
+
+            System.out.print("Nombre de la mascota: ");
+            String nombre = scanner.nextLine();
+
+            System.out.print("ID del dueño: ");
+            Integer duenoId = Integer.parseInt(scanner.nextLine());
+
+            System.out.print("Sexo (MACHO/HEMBRA): ");
+            Mascota.Sexo sexo = Mascota.Sexo.valueOf(scanner.nextLine().toUpperCase());
+
+            System.out.print("Color: ");
+            String color = scanner.nextLine();
+
+            System.out.print("Peso actual (kg): ");
+            Double peso = Double.parseDouble(scanner.nextLine());
+
+            System.out.print("Alergias conocidas: ");
+            String alergias = scanner.nextLine();
+
+            System.out.print("Condiciones preexistentes: ");
+            String condiciones = scanner.nextLine();
+
+            System.out.print("Historial de vacunas: ");
+            String historialVacunas = scanner.nextLine();
+
+            System.out.print("Procedimientos previos: ");
+            String procedimientos = scanner.nextLine();
+
+            System.out.print("Número de microchip (opcional): ");
+            String microchip = scanner.nextLine();
+            if (microchip.trim().isEmpty()) microchip = null;
+
+            System.out.print("URL de foto (opcional): ");
+            String fotoUrl = scanner.nextLine();
+            if (fotoUrl.trim().isEmpty()) fotoUrl = null;
+
+            System.out.print("¿Es agresivo? (s/n): ");
+            Boolean agresivo = scanner.nextLine().toLowerCase().startsWith("s");
+
+            Mascota nuevaMascota = Mascota.Builder.create()
+                    .withNombre(nombre)
+                    .withDuenoId(duenoId)
+                    .withSexo(sexo)
+                    .withColor(color)
+                    .withPesoActual(peso)
+                    .withAlergias(alergias)
+                    .withCondicionesPreexistentes(condiciones)
+                    .withHistorialVacunas(historialVacunas)
+                    .withProcedimientosPrevios(procedimientos)
+                    .withMicrochip(microchip)
+                    .withUrlFoto(fotoUrl)
+                    .withAgresivo(agresivo)
+                    .build();
+
+            Mascota mascotaCreada = mascotaService.crearMascota(nuevaMascota);
+            System.out.println("✅ Mascota registrada exitosamente: " + mascotaCreada.getNombre());
+
         } catch (Exception e) {
-            // Ignore
+            System.out.println("❌ Error al registrar mascota: " + e.getMessage());
+        }
+    }
+
+    private void buscarMascotaInteractivo(java.util.Scanner scanner) {
+        System.out.println("\n=== BUSCAR MASCOTA ===");
+        System.out.println("[1] Buscar por ID");
+        System.out.println("[2] Buscar por nombre");
+        System.out.print("Seleccione opción: ");
+
+        try {
+            int opcion = Integer.parseInt(scanner.nextLine());
+            switch (opcion) {
+                case 1 -> {
+                    System.out.print("Ingrese ID de la mascota: ");
+                    Long id = Long.parseLong(scanner.nextLine());
+                    mostrarDetallesMascota(id);
+                }
+                case 2 -> {
+                    System.out.print("Ingrese nombre o parte del nombre: ");
+                    String nombre = scanner.nextLine();
+                    buscarPorNombre(nombre);
+                }
+                default -> System.out.println("❌ Opción no válida");
+            }
+        } catch (NumberFormatException e) {
+            System.out.println("❌ Formato numérico inválido");
+        }
+    }
+
+    private void transferirPropiedadInteractivo(java.util.Scanner scanner) {
+        System.out.println("\n=== TRANSFERIR PROPIEDAD DE MASCOTA ===");
+        try {
+            System.out.print("ID de la mascota a transferir: ");
+            Long mascotaId = Long.parseLong(scanner.nextLine());
+
+            System.out.print("ID del nuevo dueño: ");
+            Long nuevoDuenoId = Long.parseLong(scanner.nextLine());
+
+            transferirPropiedadMascota(mascotaId, nuevoDuenoId);
+
+        } catch (NumberFormatException e) {
+            System.out.println("❌ Por favor ingrese números válidos");
+        }
+    }
+
+    private void mostrarMascotasPorDueno(java.util.Scanner scanner) {
+        System.out.println("\n=== MASCOTAS POR DUEÑO ===");
+        try {
+            System.out.print("Ingrese ID del dueño: ");
+            Long duenoId = Long.parseLong(scanner.nextLine());
+            buscarPorDueno(duenoId);
+        } catch (NumberFormatException e) {
+            System.out.println("❌ Por favor ingrese un número válido");
+        }
+    }
+
+    private void verificarMicrochipInteractivo(java.util.Scanner scanner) {
+        System.out.println("\n=== VERIFICAR MICROCHIP ===");
+        System.out.print("Ingrese número de microchip: ");
+        String microchip = scanner.nextLine();
+
+        boolean existe = existePorMicrochip(microchip);
+        if (existe) {
+            System.out.println("✅ Microchip encontrado en el sistema");
+        } else {
+            System.out.println("ℹ️ Microchip no registrado en el sistema");
+        }
+    }
+
+    private void actualizarMascotaInteractivo(java.util.Scanner scanner) {
+        System.out.println("\n=== ACTUALIZAR MASCOTA ===");
+        try {
+            System.out.print("ID de la mascota a actualizar: ");
+            Long id = Long.parseLong(scanner.nextLine());
+
+            Optional<Mascota> mascotaOpt = buscarPorId(id);
+            if (mascotaOpt.isPresent()) {
+                Mascota mascota = mascotaOpt.get();
+                System.out.println("Datos actuales: " + mascota.getNombre());
+
+                System.out.print("Nuevo peso (actual: " + mascota.getPesoActual() + " kg): ");
+                String pesoStr = scanner.nextLine();
+                if (!pesoStr.trim().isEmpty()) {
+                    mascota.setPesoActual(Double.parseDouble(pesoStr));
+                }
+
+                actualizarMascota(id, mascota);
+            }
+        } catch (NumberFormatException e) {
+            System.out.println("❌ Formato numérico inválido");
+        }
+    }
+
+    private void eliminarMascotaInteractivo(java.util.Scanner scanner) {
+        System.out.println("\n=== ELIMINAR MASCOTA ===");
+        try {
+            System.out.print("ID de la mascota a eliminar: ");
+            Long id = Long.parseLong(scanner.nextLine());
+            eliminarMascota(id);
+        } catch (NumberFormatException e) {
+            System.out.println("❌ Por favor ingrese un número válido");
         }
     }
 

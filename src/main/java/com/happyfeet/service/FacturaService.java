@@ -7,7 +7,6 @@ import com.happyfeet.model.entities.Servicio;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
-
 public interface FacturaService {
     Factura crearFactura(Factura factura);
     Factura crearFacturaConItems(Factura factura, List<Factura.ItemFactura> items);
@@ -15,8 +14,9 @@ public interface FacturaService {
     List<Factura> listarTodas();
     boolean eliminar(Integer id);
 
-    // Operaciones sobre items
     Factura agregarServicio(Factura factura, Servicio servicio);
     Factura agregarProducto(Factura factura, Inventario producto, BigDecimal cantidad);
     Factura recalcularTotales(Factura factura);
+
+    Factura generarFacturaPorConsulta(Integer consultaId);
 }

@@ -48,3 +48,466 @@
 2025-09-27 08:20:01 [INFO] Datos de ejemplo inicializados para actividades especiales
 2025-09-27 08:20:01 [INFO] Todos los módulos del sistema inicializados correctamente
 2025-09-27 08:20:01 [INFO] Iniciando sistema Happy Feet Veterinaria
+2025-09-27 08:45:13 [INFO] Inicializando MainController y todos los servicios del sistema
+2025-09-27 08:45:14 [INFO] CitaServiceImpl inicializado
+2025-09-27 08:45:14 [INFO] InventarioController inicializado
+2025-09-27 08:45:14 [INFO] FacturaController inicializado
+2025-09-27 08:45:14 [INFO] ActividadesEspecialesController inicializado
+2025-09-27 08:45:14 [INFO] Datos de ejemplo inicializados para actividades especiales
+2025-09-27 08:45:14 [INFO] Todos los módulos del sistema inicializados correctamente
+2025-09-27 08:45:14 [INFO] Iniciando sistema Happy Feet Veterinaria
+2025-09-27 08:46:02 [INFO] Dueño creado: Juan Jose Arrublas (ID: 1)
+2025-09-27 08:47:05 [ERROR] Error creando mascota
+java.lang.RuntimeException: Error guardando mascota
+	at com.happyfeet.repository.impl.MascotaRepositoryImpl.save(MascotaRepositoryImpl.java:52)
+	at com.happyfeet.repository.impl.MascotaRepositoryImpl.save(MascotaRepositoryImpl.java:14)
+	at com.happyfeet.service.impl.MascotaServiceImpl.crearMascota(MascotaServiceImpl.java:26)
+	at com.happyfeet.controller.MainController.crearMascota(MainController.java:284)
+	at com.happyfeet.controller.MainController$MenuPrincipalCompleto.menuPacientes(MainController.java:692)
+	at com.happyfeet.controller.MainController$MenuPrincipalCompleto.iniciar(MainController.java:650)
+	at com.happyfeet.controller.MainController.run(MainController.java:79)
+	at com.happyfeet.controller.MainController.main(MainController.java:777)
+Caused by: java.sql.SQLIntegrityConstraintViolationException: Cannot add or update a child row: a foreign key constraint fails (`happy_feet_veterinaria`.`mascotas`, CONSTRAINT `mascotas_ibfk_2` FOREIGN KEY (`raza_id`) REFERENCES `razas` (`id`))
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:118)
+	at com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping.translateException(SQLExceptionsMapping.java:122)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeInternal(ClientPreparedStatement.java:916)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeUpdateInternal(ClientPreparedStatement.java:1061)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeUpdateInternal(ClientPreparedStatement.java:1009)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeLargeUpdate(ClientPreparedStatement.java:1320)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeUpdate(ClientPreparedStatement.java:994)
+	at com.happyfeet.repository.impl.MascotaRepositoryImpl.save(MascotaRepositoryImpl.java:44)
+	... 7 more
+2025-09-27 08:47:51 [ERROR] Error creando mascota
+java.lang.RuntimeException: Error guardando mascota
+	at com.happyfeet.repository.impl.MascotaRepositoryImpl.save(MascotaRepositoryImpl.java:52)
+	at com.happyfeet.repository.impl.MascotaRepositoryImpl.save(MascotaRepositoryImpl.java:14)
+	at com.happyfeet.service.impl.MascotaServiceImpl.crearMascota(MascotaServiceImpl.java:26)
+	at com.happyfeet.controller.MainController.crearMascota(MainController.java:284)
+	at com.happyfeet.controller.MainController$MenuPrincipalCompleto.menuPacientes(MainController.java:692)
+	at com.happyfeet.controller.MainController$MenuPrincipalCompleto.iniciar(MainController.java:650)
+	at com.happyfeet.controller.MainController.run(MainController.java:79)
+	at com.happyfeet.controller.MainController.main(MainController.java:777)
+Caused by: java.sql.SQLIntegrityConstraintViolationException: Cannot add or update a child row: a foreign key constraint fails (`happy_feet_veterinaria`.`mascotas`, CONSTRAINT `mascotas_ibfk_2` FOREIGN KEY (`raza_id`) REFERENCES `razas` (`id`))
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:118)
+	at com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping.translateException(SQLExceptionsMapping.java:122)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeInternal(ClientPreparedStatement.java:916)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeUpdateInternal(ClientPreparedStatement.java:1061)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeUpdateInternal(ClientPreparedStatement.java:1009)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeLargeUpdate(ClientPreparedStatement.java:1320)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeUpdate(ClientPreparedStatement.java:994)
+	at com.happyfeet.repository.impl.MascotaRepositoryImpl.save(MascotaRepositoryImpl.java:44)
+	... 7 more
+2025-09-27 08:49:45 [INFO] Mascota registrada para adopción: moddy
+2025-09-27 08:56:46 [INFO] Inicializando MainController y todos los servicios del sistema
+2025-09-27 08:56:47 [INFO] CitaServiceImpl inicializado
+2025-09-27 08:56:47 [INFO] InventarioController inicializado
+2025-09-27 08:56:47 [INFO] FacturaController inicializado
+2025-09-27 08:56:47 [INFO] ActividadesEspecialesController inicializado
+2025-09-27 08:56:47 [INFO] Datos de ejemplo inicializados para actividades especiales
+2025-09-27 08:56:47 [INFO] Todos los módulos del sistema inicializados correctamente
+2025-09-27 08:56:47 [INFO] Iniciando sistema Happy Feet Veterinaria
+2025-09-27 08:57:32 [INFO] Dueño creado: Juan (ID: 1)
+2025-09-27 08:57:47 [ERROR] Error creando mascota
+java.lang.RuntimeException: Error guardando mascota
+	at com.happyfeet.repository.impl.MascotaRepositoryImpl.save(MascotaRepositoryImpl.java:52)
+	at com.happyfeet.repository.impl.MascotaRepositoryImpl.save(MascotaRepositoryImpl.java:14)
+	at com.happyfeet.service.impl.MascotaServiceImpl.crearMascota(MascotaServiceImpl.java:26)
+	at com.happyfeet.controller.MainController.crearMascota(MainController.java:284)
+	at com.happyfeet.controller.MainController$MenuPrincipalCompleto.menuPacientes(MainController.java:692)
+	at com.happyfeet.controller.MainController$MenuPrincipalCompleto.iniciar(MainController.java:650)
+	at com.happyfeet.controller.MainController.run(MainController.java:79)
+	at com.happyfeet.controller.MainController.main(MainController.java:777)
+Caused by: java.sql.SQLIntegrityConstraintViolationException: Cannot add or update a child row: a foreign key constraint fails (`happy_feet_veterinaria`.`mascotas`, CONSTRAINT `mascotas_ibfk_2` FOREIGN KEY (`raza_id`) REFERENCES `razas` (`id`))
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:118)
+	at com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping.translateException(SQLExceptionsMapping.java:122)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeInternal(ClientPreparedStatement.java:916)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeUpdateInternal(ClientPreparedStatement.java:1061)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeUpdateInternal(ClientPreparedStatement.java:1009)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeLargeUpdate(ClientPreparedStatement.java:1320)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeUpdate(ClientPreparedStatement.java:994)
+	at com.happyfeet.repository.impl.MascotaRepositoryImpl.save(MascotaRepositoryImpl.java:44)
+	... 7 more
+2025-09-27 08:58:52 [ERROR] Error creando mascota
+java.lang.RuntimeException: Error guardando mascota
+	at com.happyfeet.repository.impl.MascotaRepositoryImpl.save(MascotaRepositoryImpl.java:52)
+	at com.happyfeet.repository.impl.MascotaRepositoryImpl.save(MascotaRepositoryImpl.java:14)
+	at com.happyfeet.service.impl.MascotaServiceImpl.crearMascota(MascotaServiceImpl.java:26)
+	at com.happyfeet.controller.MainController.crearMascota(MainController.java:284)
+	at com.happyfeet.controller.MainController$MenuPrincipalCompleto.menuPacientes(MainController.java:692)
+	at com.happyfeet.controller.MainController$MenuPrincipalCompleto.iniciar(MainController.java:650)
+	at com.happyfeet.controller.MainController.run(MainController.java:79)
+	at com.happyfeet.controller.MainController.main(MainController.java:777)
+Caused by: java.sql.SQLIntegrityConstraintViolationException: Cannot add or update a child row: a foreign key constraint fails (`happy_feet_veterinaria`.`mascotas`, CONSTRAINT `mascotas_ibfk_2` FOREIGN KEY (`raza_id`) REFERENCES `razas` (`id`))
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:118)
+	at com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping.translateException(SQLExceptionsMapping.java:122)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeInternal(ClientPreparedStatement.java:916)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeUpdateInternal(ClientPreparedStatement.java:1061)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeUpdateInternal(ClientPreparedStatement.java:1009)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeLargeUpdate(ClientPreparedStatement.java:1320)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeUpdate(ClientPreparedStatement.java:994)
+	at com.happyfeet.repository.impl.MascotaRepositoryImpl.save(MascotaRepositoryImpl.java:44)
+	... 7 more
+2025-09-27 08:58:58 [INFO] Sistema Happy Feet finalizado
+2025-09-27 08:59:31 [INFO] CitaServiceImpl inicializado
+2025-09-27 08:59:31 [INFO] FacturaController inicializado
+2025-09-27 08:59:31 [INFO] InventarioController inicializado
+2025-09-27 08:59:31 [INFO] ReporteController inicializado
+2025-09-27 08:59:31 [INFO] ActividadesEspecialesController inicializado
+2025-09-27 08:59:31 [INFO] Datos de ejemplo inicializados para actividades especiales
+2025-09-27 08:59:31 [INFO] Inicializando MainController y todos los servicios del sistema
+2025-09-27 08:59:31 [INFO] CitaServiceImpl inicializado
+2025-09-27 08:59:31 [INFO] InventarioController inicializado
+2025-09-27 08:59:31 [INFO] FacturaController inicializado
+2025-09-27 08:59:31 [INFO] ActividadesEspecialesController inicializado
+2025-09-27 08:59:31 [INFO] Datos de ejemplo inicializados para actividades especiales
+2025-09-27 08:59:31 [INFO] Todos los módulos del sistema inicializados correctamente
+2025-09-27T08:59:31.079893400 INFO  MenuPrincipal inicializado
+2025-09-27 09:01:21 [INFO] CitaServiceImpl inicializado
+2025-09-27 09:01:21 [INFO] FacturaController inicializado
+2025-09-27 09:01:21 [INFO] InventarioController inicializado
+2025-09-27 09:01:21 [INFO] ReporteController inicializado
+2025-09-27 09:01:21 [INFO] ActividadesEspecialesController inicializado
+2025-09-27 09:01:21 [INFO] Datos de ejemplo inicializados para actividades especiales
+2025-09-27 09:01:21 [INFO] Inicializando MainController y todos los servicios del sistema
+2025-09-27 09:01:21 [INFO] CitaServiceImpl inicializado
+2025-09-27 09:01:21 [INFO] InventarioController inicializado
+2025-09-27 09:01:21 [INFO] FacturaController inicializado
+2025-09-27 09:01:21 [INFO] ActividadesEspecialesController inicializado
+2025-09-27 09:01:21 [INFO] Datos de ejemplo inicializados para actividades especiales
+2025-09-27 09:01:21 [INFO] Todos los módulos del sistema inicializados correctamente
+2025-09-27T09:01:21.533156900 INFO  MenuPrincipal inicializado
+2025-09-27 09:03:58 [INFO] CitaServiceImpl inicializado
+2025-09-27 09:03:58 [INFO] FacturaController inicializado
+2025-09-27 09:03:58 [INFO] InventarioController inicializado
+2025-09-27 09:03:58 [INFO] ReporteController inicializado
+2025-09-27 09:03:58 [INFO] ActividadesEspecialesController inicializado
+2025-09-27 09:03:58 [INFO] Datos de ejemplo inicializados para actividades especiales
+2025-09-27 09:03:58 [INFO] Inicializando MainController y todos los servicios del sistema
+2025-09-27 09:03:58 [INFO] CitaServiceImpl inicializado
+2025-09-27 09:03:58 [INFO] InventarioController inicializado
+2025-09-27 09:03:58 [INFO] FacturaController inicializado
+2025-09-27 09:03:58 [INFO] ActividadesEspecialesController inicializado
+2025-09-27 09:03:58 [INFO] Datos de ejemplo inicializados para actividades especiales
+2025-09-27 09:03:58 [INFO] Todos los módulos del sistema inicializados correctamente
+2025-09-27T09:03:58.831576900 INFO  MenuPrincipal inicializado
+2025-09-27T09:04:11.679615700 INFO  Usuario salió del sistema
+2025-09-27 09:04:43 [INFO] CitaServiceImpl inicializado
+2025-09-27 09:04:43 [INFO] FacturaController inicializado
+2025-09-27 09:04:43 [INFO] InventarioController inicializado
+2025-09-27 09:04:43 [INFO] ReporteController inicializado
+2025-09-27 09:04:43 [INFO] ActividadesEspecialesController inicializado
+2025-09-27 09:04:43 [INFO] Datos de ejemplo inicializados para actividades especiales
+2025-09-27 09:04:43 [INFO] Inicializando MainController y todos los servicios del sistema
+2025-09-27 09:04:43 [INFO] CitaServiceImpl inicializado
+2025-09-27 09:04:43 [INFO] InventarioController inicializado
+2025-09-27 09:04:43 [INFO] FacturaController inicializado
+2025-09-27 09:04:43 [INFO] ActividadesEspecialesController inicializado
+2025-09-27 09:04:43 [INFO] Datos de ejemplo inicializados para actividades especiales
+2025-09-27 09:04:43 [INFO] Todos los módulos del sistema inicializados correctamente
+2025-09-27T09:04:43.315899700 INFO  MenuPrincipal inicializado
+2025-09-27 09:05:13 [INFO] CitaServiceImpl inicializado
+2025-09-27 09:05:13 [INFO] FacturaController inicializado
+2025-09-27 09:05:13 [INFO] InventarioController inicializado
+2025-09-27 09:05:13 [INFO] ReporteController inicializado
+2025-09-27 09:05:13 [INFO] ActividadesEspecialesController inicializado
+2025-09-27 09:05:13 [INFO] Datos de ejemplo inicializados para actividades especiales
+2025-09-27 09:05:13 [INFO] Inicializando MainController y todos los servicios del sistema
+2025-09-27 09:05:13 [INFO] CitaServiceImpl inicializado
+2025-09-27 09:05:13 [INFO] InventarioController inicializado
+2025-09-27 09:05:13 [INFO] FacturaController inicializado
+2025-09-27 09:05:13 [INFO] ActividadesEspecialesController inicializado
+2025-09-27 09:05:13 [INFO] Datos de ejemplo inicializados para actividades especiales
+2025-09-27 09:05:13 [INFO] Todos los módulos del sistema inicializados correctamente
+2025-09-27T09:05:13.133977600 INFO  MenuPrincipal inicializado
+2025-09-27 09:05:50 [INFO] CitaServiceImpl inicializado
+2025-09-27 09:05:50 [INFO] FacturaController inicializado
+2025-09-27 09:05:51 [INFO] InventarioController inicializado
+2025-09-27 09:05:51 [INFO] ReporteController inicializado
+2025-09-27 09:05:51 [INFO] ActividadesEspecialesController inicializado
+2025-09-27 09:05:51 [INFO] Datos de ejemplo inicializados para actividades especiales
+2025-09-27 09:05:51 [INFO] Inicializando MainController y todos los servicios del sistema
+2025-09-27 09:05:51 [INFO] CitaServiceImpl inicializado
+2025-09-27 09:05:51 [INFO] InventarioController inicializado
+2025-09-27 09:05:51 [INFO] FacturaController inicializado
+2025-09-27 09:05:51 [INFO] ActividadesEspecialesController inicializado
+2025-09-27 09:05:51 [INFO] Datos de ejemplo inicializados para actividades especiales
+2025-09-27 09:05:51 [INFO] Todos los módulos del sistema inicializados correctamente
+2025-09-27T09:05:51.017785100 INFO  MenuPrincipal inicializado
+2025-09-27 09:06:07 [INFO] Inicializando aplicación Happy Feet Veterinaria
+2025-09-27 09:06:07 [INFO] FacturaController inicializado
+2025-09-27 09:06:07 [INFO] InventarioController inicializado
+2025-09-27 09:06:07 [INFO] ReporteController inicializado
+2025-09-27 09:06:07 [INFO] ActividadesEspecialesController inicializado
+2025-09-27 09:06:07 [INFO] Datos de ejemplo inicializados para actividades especiales
+2025-09-27 09:06:07 [INFO] Inicializando MainController y todos los servicios del sistema
+2025-09-27 09:06:07 [INFO] CitaServiceImpl inicializado
+2025-09-27 09:06:07 [INFO] InventarioController inicializado
+2025-09-27 09:06:07 [INFO] FacturaController inicializado
+2025-09-27 09:06:07 [INFO] ActividadesEspecialesController inicializado
+2025-09-27 09:06:07 [INFO] Datos de ejemplo inicializados para actividades especiales
+2025-09-27 09:06:07 [INFO] Todos los módulos del sistema inicializados correctamente
+2025-09-27 09:06:07 [INFO] Todos los controladores inicializados correctamente
+2025-09-27 09:06:32 [ERROR] Error crítico en main
+java.util.NoSuchElementException: No line found
+	at java.base/java.util.Scanner.nextLine(Scanner.java:1677)
+	at com.happyfeet.view.ConsoleUtils.menu(ConsoleUtils.java:116)
+	at com.happyfeet.HappyFeetApplication.ejecutarMenuPrincipal(HappyFeetApplication.java:67)
+	at com.happyfeet.HappyFeetApplication.iniciar(HappyFeetApplication.java:44)
+	at com.happyfeet.HappyFeetApplication.main(HappyFeetApplication.java:173)
+2025-09-27 09:09:51 [INFO] Inicializando aplicación Happy Feet Veterinaria
+2025-09-27 09:09:52 [INFO] FacturaController inicializado
+2025-09-27 09:09:52 [INFO] InventarioController inicializado
+2025-09-27 09:09:52 [INFO] ReporteController inicializado
+2025-09-27 09:09:52 [INFO] ActividadesEspecialesController inicializado
+2025-09-27 09:09:52 [INFO] Datos de ejemplo inicializados para actividades especiales
+2025-09-27 09:09:52 [INFO] Inicializando MainController y todos los servicios del sistema
+2025-09-27 09:09:52 [INFO] CitaServiceImpl inicializado
+2025-09-27 09:09:52 [INFO] InventarioController inicializado
+2025-09-27 09:09:52 [INFO] FacturaController inicializado
+2025-09-27 09:09:52 [INFO] ActividadesEspecialesController inicializado
+2025-09-27 09:09:52 [INFO] Datos de ejemplo inicializados para actividades especiales
+2025-09-27 09:09:52 [INFO] Todos los módulos del sistema inicializados correctamente
+2025-09-27 09:09:52 [INFO] Todos los controladores inicializados correctamente
+2025-09-27 09:10:41 [INFO] Inicializando MainController y todos los servicios del sistema
+2025-09-27 09:10:42 [INFO] CitaServiceImpl inicializado
+2025-09-27 09:10:42 [INFO] InventarioController inicializado
+2025-09-27 09:10:42 [INFO] FacturaController inicializado
+2025-09-27 09:10:42 [INFO] ActividadesEspecialesController inicializado
+2025-09-27 09:10:42 [INFO] Datos de ejemplo inicializados para actividades especiales
+2025-09-27 09:10:42 [INFO] Todos los módulos del sistema inicializados correctamente
+2025-09-27 09:10:42 [INFO] Iniciando sistema Happy Feet Veterinaria
+2025-09-27 09:10:57 [ERROR] Error creando mascota
+java.lang.RuntimeException: Error guardando mascota
+	at com.happyfeet.repository.impl.MascotaRepositoryImpl.save(MascotaRepositoryImpl.java:52)
+	at com.happyfeet.repository.impl.MascotaRepositoryImpl.save(MascotaRepositoryImpl.java:14)
+	at com.happyfeet.service.impl.MascotaServiceImpl.crearMascota(MascotaServiceImpl.java:26)
+	at com.happyfeet.controller.MainController.crearMascota(MainController.java:284)
+	at com.happyfeet.controller.MainController$MenuPrincipalCompleto.menuPacientes(MainController.java:692)
+	at com.happyfeet.controller.MainController$MenuPrincipalCompleto.iniciar(MainController.java:650)
+	at com.happyfeet.controller.MainController.run(MainController.java:79)
+	at com.happyfeet.controller.MainController.main(MainController.java:777)
+Caused by: java.sql.SQLIntegrityConstraintViolationException: Cannot add or update a child row: a foreign key constraint fails (`happy_feet_veterinaria`.`mascotas`, CONSTRAINT `mascotas_ibfk_2` FOREIGN KEY (`raza_id`) REFERENCES `razas` (`id`))
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:118)
+	at com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping.translateException(SQLExceptionsMapping.java:122)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeInternal(ClientPreparedStatement.java:916)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeUpdateInternal(ClientPreparedStatement.java:1061)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeUpdateInternal(ClientPreparedStatement.java:1009)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeLargeUpdate(ClientPreparedStatement.java:1320)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeUpdate(ClientPreparedStatement.java:994)
+	at com.happyfeet.repository.impl.MascotaRepositoryImpl.save(MascotaRepositoryImpl.java:44)
+	... 7 more
+2025-09-27 09:22:31 [INFO] Inicializando MainController y todos los servicios del sistema
+2025-09-27 09:22:31 [INFO] CitaServiceImpl inicializado
+2025-09-27 09:22:31 [INFO] InventarioController inicializado
+2025-09-27 09:22:31 [INFO] FacturaController inicializado
+2025-09-27 09:22:31 [INFO] ActividadesEspecialesController inicializado
+2025-09-27 09:22:31 [INFO] Datos de ejemplo inicializados para actividades especiales
+2025-09-27 09:22:31 [INFO] Todos los módulos del sistema inicializados correctamente
+2025-09-27 09:22:31 [INFO] Iniciando sistema Happy Feet Veterinaria
+2025-09-27 09:22:43 [INFO] Mascota creada: moddy (ID: 5)
+2025-09-27 12:38:50 [INFO] Inicializando aplicación Happy Feet Veterinaria
+2025-09-27 12:38:50 [INFO] FacturaController inicializado
+2025-09-27 12:38:50 [INFO] InventarioController inicializado
+2025-09-27 12:38:50 [INFO] ReporteController inicializado
+2025-09-27 12:38:50 [INFO] ActividadesEspecialesController inicializado
+2025-09-27 12:38:50 [INFO] Datos de ejemplo inicializados para actividades especiales
+2025-09-27 12:38:50 [INFO] Inicializando MainController y todos los servicios del sistema
+2025-09-27 12:38:50 [INFO] CitaServiceImpl inicializado
+2025-09-27 12:38:50 [INFO] InventarioController inicializado
+2025-09-27 12:38:50 [INFO] FacturaController inicializado
+2025-09-27 12:38:50 [INFO] ActividadesEspecialesController inicializado
+2025-09-27 12:38:50 [INFO] Datos de ejemplo inicializados para actividades especiales
+2025-09-27 12:38:50 [INFO] Todos los módulos del sistema inicializados correctamente
+2025-09-27 12:38:50 [INFO] Todos los controladores inicializados correctamente
+2025-09-27 12:42:47 [INFO] Inicializando aplicación Happy Feet Veterinaria
+2025-09-27 12:42:47 [INFO] FacturaController inicializado
+2025-09-27 12:42:47 [INFO] InventarioController inicializado
+2025-09-27 12:42:47 [INFO] ReporteController inicializado
+2025-09-27 12:42:47 [INFO] ActividadesEspecialesController inicializado
+2025-09-27 12:42:47 [INFO] Datos de ejemplo inicializados para actividades especiales
+2025-09-27 12:42:47 [INFO] Inicializando MainController y todos los servicios del sistema
+2025-09-27 12:42:47 [INFO] CitaServiceImpl inicializado
+2025-09-27 12:42:47 [INFO] InventarioController inicializado
+2025-09-27 12:42:47 [INFO] FacturaController inicializado
+2025-09-27 12:42:47 [INFO] ActividadesEspecialesController inicializado
+2025-09-27 12:42:47 [INFO] Datos de ejemplo inicializados para actividades especiales
+2025-09-27 12:42:47 [INFO] Todos los módulos del sistema inicializados correctamente
+2025-09-27 12:42:47 [INFO] Todos los controladores inicializados correctamente
+2025-09-27 12:43:45 [ERROR] Error buscando producto por código
+java.lang.NullPointerException: Cannot invoke "com.happyfeet.repository.InventarioRepository.findByCodigo(String)" because "this.inventarioRepository" is null
+	at com.happyfeet.controller.InventarioController.buscarProductoPorCodigo(InventarioController.java:71)
+	at com.happyfeet.controller.InventarioController.run(InventarioController.java:456)
+	at com.happyfeet.HappyFeetApplication.menuInventario(HappyFeetApplication.java:115)
+	at com.happyfeet.HappyFeetApplication.ejecutarMenuPrincipal(HappyFeetApplication.java:83)
+	at com.happyfeet.HappyFeetApplication.iniciar(HappyFeetApplication.java:44)
+	at com.happyfeet.HappyFeetApplication.main(HappyFeetApplication.java:173)
+2025-09-27 12:44:16 [ERROR] Error creando producto
+java.lang.NullPointerException: Cannot invoke "com.happyfeet.repository.InventarioRepository.findByCodigo(String)" because "this.inventarioRepository" is null
+	at com.happyfeet.controller.InventarioController.crearProducto(InventarioController.java:115)
+	at com.happyfeet.controller.InventarioController.run(InventarioController.java:458)
+	at com.happyfeet.HappyFeetApplication.menuInventario(HappyFeetApplication.java:115)
+	at com.happyfeet.HappyFeetApplication.ejecutarMenuPrincipal(HappyFeetApplication.java:83)
+	at com.happyfeet.HappyFeetApplication.iniciar(HappyFeetApplication.java:44)
+	at com.happyfeet.HappyFeetApplication.main(HappyFeetApplication.java:173)
+2025-09-27 12:50:39 [INFO] Inicializando aplicación Happy Feet Veterinaria
+2025-09-27 12:50:39 [INFO] CitaServiceImpl inicializado
+2025-09-27 12:50:39 [INFO] FacturaController inicializado
+2025-09-27 12:50:39 [INFO] InventarioController inicializado
+2025-09-27 12:50:39 [INFO] ReporteController inicializado
+2025-09-27 12:50:39 [INFO] ActividadesEspecialesController inicializado
+2025-09-27 12:50:39 [INFO] Datos de ejemplo inicializados para actividades especiales
+2025-09-27 12:50:39 [INFO] Inicializando MainController y todos los servicios del sistema
+2025-09-27 12:50:39 [INFO] CitaServiceImpl inicializado
+2025-09-27 12:50:39 [INFO] InventarioController inicializado
+2025-09-27 12:50:39 [INFO] FacturaController inicializado
+2025-09-27 12:50:39 [INFO] ActividadesEspecialesController inicializado
+2025-09-27 12:50:39 [INFO] Datos de ejemplo inicializados para actividades especiales
+2025-09-27 12:50:39 [INFO] Todos los módulos del sistema inicializados correctamente
+2025-09-27 12:50:39 [INFO] Todos los controladores inicializados correctamente
+2025-09-27 12:54:38 [INFO] Inicializando aplicación Happy Feet Veterinaria
+2025-09-27 12:54:38 [INFO] CitaServiceImpl inicializado
+2025-09-27 12:54:38 [INFO] FacturaController inicializado
+2025-09-27 12:54:38 [INFO] InventarioController inicializado
+2025-09-27 12:54:38 [INFO] ReporteController inicializado
+2025-09-27 12:54:38 [INFO] ActividadesEspecialesController inicializado
+2025-09-27 12:54:38 [INFO] Datos de ejemplo inicializados para actividades especiales
+2025-09-27 12:54:38 [INFO] Inicializando MainController y todos los servicios del sistema
+2025-09-27 12:54:38 [INFO] CitaServiceImpl inicializado
+2025-09-27 12:54:38 [INFO] InventarioController inicializado
+2025-09-27 12:54:38 [INFO] FacturaController inicializado
+2025-09-27 12:54:38 [INFO] ActividadesEspecialesController inicializado
+2025-09-27 12:54:38 [INFO] Datos de ejemplo inicializados para actividades especiales
+2025-09-27 12:54:38 [INFO] Todos los módulos del sistema inicializados correctamente
+2025-09-27 12:54:38 [INFO] Todos los controladores inicializados correctamente
+2025-09-27 12:54:40 [INFO] Iniciando sistema Happy Feet Veterinaria
+2025-09-27 12:56:01 [INFO] Mascota creada: petra (ID: 5)
+2025-09-27 12:59:32 [INFO] Factura creada: FACT-1758995906233-1 para carlos cisneros
+2025-09-27 13:12:51 [INFO] Factura pagada: FACT-1758995906233-1 - Efectivo
+2025-09-27 13:19:49 [ERROR] Error registrando consulta médica
+java.lang.NullPointerException: Cannot invoke "java.lang.Integer.intValue()" because the return value of "com.happyfeet.model.entities.HistorialMedico.getEventoMedicoId()" is null
+	at com.happyfeet.repository.impl.HistorialMedicoRepositoryImpl.save(HistorialMedicoRepositoryImpl.java:42)
+	at com.happyfeet.repository.impl.HistorialMedicoRepositoryImpl.save(HistorialMedicoRepositoryImpl.java:15)
+	at com.happyfeet.service.impl.HistorialMedicoServiceImpl.registrarConsultaConInsumos(HistorialMedicoServiceImpl.java:42)
+	at com.happyfeet.controller.MainController.registrarConsultaMedica(MainController.java:596)
+	at com.happyfeet.controller.MainController$MenuPrincipalCompleto.menuCitas(MainController.java:724)
+	at com.happyfeet.controller.MainController$MenuPrincipalCompleto.iniciar(MainController.java:651)
+	at com.happyfeet.controller.MainController.run(MainController.java:79)
+	at com.happyfeet.HappyFeetApplication.ejecutarMenuPrincipal(HappyFeetApplication.java:67)
+	at com.happyfeet.HappyFeetApplication.iniciar(HappyFeetApplication.java:44)
+	at com.happyfeet.HappyFeetApplication.main(HappyFeetApplication.java:145)
+2025-09-27 13:20:42 [INFO] Inicializando aplicación Happy Feet Veterinaria
+2025-09-27 13:20:42 [INFO] CitaServiceImpl inicializado
+2025-09-27 13:20:42 [INFO] FacturaController inicializado
+2025-09-27 13:20:42 [INFO] InventarioController inicializado
+2025-09-27 13:20:42 [INFO] ReporteController inicializado
+2025-09-27 13:20:42 [INFO] ActividadesEspecialesController inicializado
+2025-09-27 13:20:42 [INFO] Datos de ejemplo inicializados para actividades especiales
+2025-09-27 13:20:42 [INFO] Inicializando MainController y todos los servicios del sistema
+2025-09-27 13:20:42 [INFO] CitaServiceImpl inicializado
+2025-09-27 13:20:42 [INFO] InventarioController inicializado
+2025-09-27 13:20:42 [INFO] FacturaController inicializado
+2025-09-27 13:20:42 [INFO] ActividadesEspecialesController inicializado
+2025-09-27 13:20:42 [INFO] Datos de ejemplo inicializados para actividades especiales
+2025-09-27 13:20:42 [INFO] Todos los módulos del sistema inicializados correctamente
+2025-09-27 13:20:42 [INFO] Todos los controladores inicializados correctamente
+2025-09-27 13:20:53 [INFO] Iniciando sistema Happy Feet Veterinaria
+2025-09-27 13:22:31 [INFO] Mascota eliminada ID: 4
+2025-09-27 13:25:35 [INFO] Cita creada: ID 1 para veterinario 2
+2025-09-27 13:25:35 [INFO] Cita agendada: ID 1 para 2025-09-27T16:40
+2025-09-27 13:29:03 [ERROR] Error creando producto
+java.lang.RuntimeException: Error guardando producto en inventario
+	at com.happyfeet.repository.impl.InventarioRepositoryImpl.save(InventarioRepositoryImpl.java:50)
+	at com.happyfeet.repository.impl.InventarioRepositoryImpl.save(InventarioRepositoryImpl.java:12)
+	at com.happyfeet.controller.InventarioController.crearProducto(InventarioController.java:139)
+	at com.happyfeet.controller.MainController.gestionarInventario(MainController.java:527)
+	at com.happyfeet.controller.MainController$MenuPrincipalCompleto.iniciar(MainController.java:652)
+	at com.happyfeet.controller.MainController.run(MainController.java:79)
+	at com.happyfeet.HappyFeetApplication.ejecutarMenuPrincipal(HappyFeetApplication.java:67)
+	at com.happyfeet.HappyFeetApplication.iniciar(HappyFeetApplication.java:44)
+	at com.happyfeet.HappyFeetApplication.main(HappyFeetApplication.java:145)
+Caused by: java.sql.SQLSyntaxErrorException: Unknown column 'categoria' in 'field list'
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:121)
+	at com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping.translateException(SQLExceptionsMapping.java:122)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeInternal(ClientPreparedStatement.java:916)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeUpdateInternal(ClientPreparedStatement.java:1061)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeUpdateInternal(ClientPreparedStatement.java:1009)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeLargeUpdate(ClientPreparedStatement.java:1320)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeUpdate(ClientPreparedStatement.java:994)
+	at com.happyfeet.repository.impl.InventarioRepositoryImpl.save(InventarioRepositoryImpl.java:42)
+	... 8 more
+2025-09-27 13:29:55 [INFO] Stock ajustado para Alimento premium para gatos: 28 -> 50
+2025-09-27 13:42:20 [INFO] Factura creada: FACT-1758998199960-1 para carlos cisneros
+2025-09-27 13:48:02 [INFO] Inicializando aplicación Happy Feet Veterinaria
+2025-09-27 13:48:02 [INFO] CitaServiceImpl inicializado
+2025-09-27 13:48:02 [INFO] FacturaController inicializado
+2025-09-27 13:48:02 [INFO] InventarioController inicializado
+2025-09-27 13:48:02 [INFO] ReporteController inicializado
+2025-09-27 13:48:02 [INFO] ActividadesEspecialesController inicializado
+2025-09-27 13:48:02 [INFO] Datos de ejemplo inicializados para actividades especiales
+2025-09-27 13:48:02 [INFO] Inicializando MainController y todos los servicios del sistema
+2025-09-27 13:48:02 [INFO] CitaServiceImpl inicializado
+2025-09-27 13:48:02 [INFO] InventarioController inicializado
+2025-09-27 13:48:02 [INFO] FacturaController inicializado
+2025-09-27 13:48:02 [INFO] ActividadesEspecialesController inicializado
+2025-09-27 13:48:02 [INFO] Datos de ejemplo inicializados para actividades especiales
+2025-09-27 13:48:02 [INFO] Todos los módulos del sistema inicializados correctamente
+2025-09-27 13:48:02 [INFO] Todos los controladores inicializados correctamente
+2025-09-27 13:48:14 [INFO] Iniciando sistema Happy Feet Veterinaria
+2025-09-27 13:56:50 [INFO] Inicializando aplicación Happy Feet Veterinaria
+2025-09-27 13:56:51 [INFO] CitaServiceImpl inicializado
+2025-09-27 13:56:51 [INFO] FacturaController inicializado
+2025-09-27 13:56:51 [INFO] InventarioController inicializado
+2025-09-27 13:56:51 [INFO] ReporteController inicializado
+2025-09-27 13:56:51 [INFO] ActividadesEspecialesController inicializado
+2025-09-27 13:56:51 [INFO] Datos de ejemplo inicializados para actividades especiales
+2025-09-27 13:56:51 [INFO] Inicializando MainController y todos los servicios del sistema
+2025-09-27 13:56:51 [INFO] CitaServiceImpl inicializado
+2025-09-27 13:56:51 [INFO] InventarioController inicializado
+2025-09-27 13:56:51 [INFO] FacturaController inicializado
+2025-09-27 13:56:51 [INFO] ActividadesEspecialesController inicializado
+2025-09-27 13:56:51 [INFO] Datos de ejemplo inicializados para actividades especiales
+2025-09-27 13:56:51 [INFO] Todos los módulos del sistema inicializados correctamente
+2025-09-27 13:56:51 [INFO] Todos los controladores inicializados correctamente
+2025-09-27 13:57:00 [INFO] Iniciando sistema Happy Feet Veterinaria
+2025-09-27 14:01:23 [INFO] Inicializando aplicación Happy Feet Veterinaria
+2025-09-27 14:01:23 [INFO] CitaServiceImpl inicializado
+2025-09-27 14:01:23 [INFO] FacturaController inicializado
+2025-09-27 14:01:23 [INFO] InventarioController inicializado
+2025-09-27 14:01:23 [INFO] ReporteController inicializado
+2025-09-27 14:01:23 [INFO] ActividadesEspecialesController inicializado
+2025-09-27 14:01:23 [INFO] Datos de ejemplo inicializados para actividades especiales
+2025-09-27 14:01:23 [INFO] Inicializando MainController y todos los servicios del sistema
+2025-09-27 14:01:23 [INFO] CitaServiceImpl inicializado
+2025-09-27 14:01:23 [INFO] InventarioController inicializado
+2025-09-27 14:01:23 [INFO] FacturaController inicializado
+2025-09-27 14:01:23 [INFO] ActividadesEspecialesController inicializado
+2025-09-27 14:01:23 [INFO] Datos de ejemplo inicializados para actividades especiales
+2025-09-27 14:01:23 [INFO] Todos los módulos del sistema inicializados correctamente
+2025-09-27 14:01:23 [INFO] Todos los controladores inicializados correctamente
+2025-09-27 14:01:25 [INFO] Iniciando sistema Happy Feet Veterinaria
+2025-09-27 14:01:56 [INFO] Dueño creado: Juan Jose Arrublas (ID: 3)
+2025-09-28 08:06:47 [INFO] Inicializando aplicación Happy Feet Veterinaria
+2025-09-28 08:06:47 [INFO] CitaServiceImpl inicializado
+2025-09-28 08:06:47 [INFO] FacturaController inicializado
+2025-09-28 08:06:47 [INFO] ProveedorController inicializado
+2025-09-28 08:06:47 [INFO] InventarioController inicializado
+2025-09-28 08:06:47 [INFO] ReporteController inicializado
+2025-09-28 08:06:47 [INFO] ActividadesEspecialesController inicializado
+2025-09-28 08:06:47 [INFO] Datos de ejemplo inicializados para actividades especiales
+2025-09-28 08:06:47 [INFO] ProveedorController inicializado
+2025-09-28 08:06:47 [INFO] Inicializando MainController y todos los servicios del sistema
+2025-09-28 08:06:47 [INFO] CitaServiceImpl inicializado
+2025-09-28 08:06:47 [INFO] ProveedorController inicializado
+2025-09-28 08:06:47 [INFO] InventarioController inicializado
+2025-09-28 08:06:47 [INFO] FacturaController inicializado
+2025-09-28 08:06:47 [INFO] ActividadesEspecialesController inicializado
+2025-09-28 08:06:47 [INFO] Datos de ejemplo inicializados para actividades especiales
+2025-09-28 08:06:47 [INFO] Todos los módulos del sistema inicializados correctamente
+2025-09-28 08:06:47 [INFO] Todos los controladores inicializados correctamente
+2025-09-28 08:06:47 [ERROR] Error crítico en main
+java.util.NoSuchElementException: No line found
+	at java.base/java.util.Scanner.nextLine(Scanner.java:1651)
+	at com.happyfeet.view.ConsoleUtils.pause(ConsoleUtils.java:18)
+	at com.happyfeet.HappyFeetApplication.mostrarBienvenida(HappyFeetApplication.java:62)
+	at com.happyfeet.HappyFeetApplication.iniciar(HappyFeetApplication.java:43)
+	at com.happyfeet.HappyFeetApplication.main(HappyFeetApplication.java:145)

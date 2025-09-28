@@ -1,6 +1,7 @@
 package com.happyfeet.repository.impl;
 
 import com.happyfeet.model.entities.Servicio;
+import com.happyfeet.repository.DataAccessException;
 import com.happyfeet.repository.ServicioRepository;
 import com.happyfeet.util.DatabaseConnection;
 
@@ -39,7 +40,7 @@ public class ServicioRepositoryImpl implements ServicioRepository {
             return servicio;
 
         } catch (SQLException e) {
-            throw new RuntimeException("Error guardando servicio", e);
+            throw new DataAccessException("Error guardando servicio", e);
         }
     }
 
@@ -58,7 +59,7 @@ public class ServicioRepositoryImpl implements ServicioRepository {
             return Optional.empty();
 
         } catch (SQLException e) {
-            throw new RuntimeException("Error buscando servicio por id", e);
+            throw new DataAccessException("Error buscando servicio por id", e);
         }
     }
 
@@ -77,7 +78,7 @@ public class ServicioRepositoryImpl implements ServicioRepository {
             return list;
 
         } catch (SQLException e) {
-            throw new RuntimeException("Error listando servicios", e);
+            throw new DataAccessException("Error listando servicios", e);
         }
     }
 
@@ -103,7 +104,7 @@ public class ServicioRepositoryImpl implements ServicioRepository {
             return servicio;
 
         } catch (SQLException e) {
-            throw new RuntimeException("Error actualizando servicio", e);
+            throw new DataAccessException("Error actualizando servicio", e);
         }
     }
 
@@ -119,7 +120,7 @@ public class ServicioRepositoryImpl implements ServicioRepository {
             return ps.executeUpdate() > 0;
 
         } catch (SQLException e) {
-            throw new RuntimeException("Error eliminando servicio", e);
+            throw new DataAccessException("Error eliminando servicio", e);
         }
     }
 
@@ -140,7 +141,7 @@ public class ServicioRepositoryImpl implements ServicioRepository {
             return list;
 
         } catch (SQLException e) {
-            throw new RuntimeException("Error listando servicios por activo", e);
+            throw new DataAccessException("Error listando servicios por activo", e);
         }
     }
 
@@ -158,7 +159,7 @@ public class ServicioRepositoryImpl implements ServicioRepository {
             return Optional.empty();
 
         } catch (SQLException e) {
-            throw new RuntimeException("Error buscando servicio por código", e);
+            throw new DataAccessException("Error buscando servicio por código", e);
         }
     }
 
@@ -180,7 +181,7 @@ public class ServicioRepositoryImpl implements ServicioRepository {
             return Optional.empty();
 
         } catch (SQLException e) {
-            throw new RuntimeException("Error buscando servicio por nombre", e);
+            throw new DataAccessException("Error buscando servicio por nombre", e);
         }
     }
 
@@ -199,7 +200,7 @@ public class ServicioRepositoryImpl implements ServicioRepository {
             }
             return list;
         } catch (SQLException e) {
-            throw new RuntimeException("Error buscando servicios por categoria", e);
+            throw new DataAccessException("Error buscando servicios por categoria", e);
         }
     }
 

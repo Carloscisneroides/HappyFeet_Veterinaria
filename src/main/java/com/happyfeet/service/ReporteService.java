@@ -1,5 +1,6 @@
 package com.happyfeet.service;
 
+import java.util.List;
 import java.util.Map;
 
 public interface ReporteService {
@@ -7,4 +8,8 @@ public interface ReporteService {
     byte[] generarReporteInventarioPdf(String idReporte);
     byte[] generarReporteInventarioExcel(String idReporte);
     Map<String, Object> generarReporteInventarioDatos(String idReporte);
+    List<String> obtenerServiciosMasSolicitados();
+    List<String> obtenerDesempenoVeterinario();
+    List<String> obtenerEstadoInventario();
+    List<String> obtenerFacturacionPorPeriodo(String periodo);
 }

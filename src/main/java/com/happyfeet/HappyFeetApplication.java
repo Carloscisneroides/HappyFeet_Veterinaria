@@ -1,6 +1,6 @@
 package com.happyfeet;
 
-import com.happyfeet.config.SimpleDependencyFactory;
+import com.happyfeet.config.DependencyFactory;
 import com.happyfeet.controller.*;
 import com.happyfeet.view.ConsoleUtils;
 import com.happyfeet.util.FileLogger;
@@ -13,7 +13,7 @@ public class HappyFeetApplication {
 
     private static final FileLogger LOG = FileLogger.getInstance();
 
-    private final SimpleDependencyFactory factory;
+    private final DependencyFactory factory;
     private final DuenoController duenoController;
     private final MascotaController mascotaController;
     private final CitaController citaController;
@@ -26,7 +26,7 @@ public class HappyFeetApplication {
     public HappyFeetApplication() {
         LOG.info("Inicializando aplicación Happy Feet Veterinaria");
 
-        this.factory = SimpleDependencyFactory.getInstance();
+        this.factory = DependencyFactory.getInstance();
         this.duenoController = factory.getDuenoController();
         this.mascotaController = factory.getMascotaController();
         this.citaController = factory.getCitaController();
@@ -63,36 +63,8 @@ public class HappyFeetApplication {
     }
 
     private void ejecutarMenuPrincipal() {
-        while (true) {
-            int opcion = ConsoleUtils.menu("HAPPY FEET VETERINARIA - MENU PRINCIPAL",
-                    "Gestión de Dueños",
-                    "Gestión de Mascotas",
-                    "Gestión de Citas",
-                    "Gestión de Facturas",
-                    "Gestión de Inventario",
-                    "Reportes Gerenciales",
-                    "Actividades Especiales",
-                    "Información del Sistema"
-            );
-
-            switch (opcion) {
-                case 1 -> menuDuenos();
-                case 2 -> menuMascotas();
-                case 3 -> menuCitas();
-                case 4 -> menuFacturas();
-                case 5 -> menuInventario();
-                case 6 -> reporteController.menuReportes();
-                case 7 -> menuActividades();
-                case 8 -> mostrarInformacionSistema();
-                case 0 -> {
-                    if (ConsoleUtils.confirm("¿Está seguro que desea salir?")) {
-                        mostrarDespedida();
-                        return;
-                    }
-                }
-                default -> System.out.println("Opción no válida");
-            }
-        }
+        // Delegamos al menú principal completo ya implementado en MainController
+        mainController.run();
     }
 
     private void menuDuenos() {

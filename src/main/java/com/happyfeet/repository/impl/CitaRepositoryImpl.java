@@ -3,9 +3,11 @@ package com.happyfeet.repository.impl;
 import com.happyfeet.model.entities.Cita;
 import com.happyfeet.model.entities.enums.CitaEstado;
 import com.happyfeet.repository.CitaRepository;
+import com.happyfeet.repository.DataAccessException;
 import com.happyfeet.util.DatabaseConnection;
 
 import java.sql.*;
+import java.sql.Date;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -45,7 +47,7 @@ public class CitaRepositoryImpl implements CitaRepository {
             }
             return c;
         } catch (SQLException e) {
-            throw new RuntimeException("Error guardando cita", e);
+            throw new DataAccessException("Error guardando cita", e);
         }
     }
 
@@ -65,7 +67,7 @@ public class CitaRepositoryImpl implements CitaRepository {
             ps.executeUpdate();
             return c;
         } catch (SQLException e) {
-            throw new RuntimeException("Error actualizando cita", e);
+            throw new DataAccessException("Error actualizando cita", e);
         }
     }
 
@@ -81,7 +83,7 @@ public class CitaRepositoryImpl implements CitaRepository {
             }
             return Optional.empty();
         } catch (SQLException e) {
-            throw new RuntimeException("Error buscando cita por id", e);
+            throw new DataAccessException("Error buscando cita por id", e);
         }
     }
 
@@ -94,7 +96,7 @@ public class CitaRepositoryImpl implements CitaRepository {
             ps.setLong(1, id);
             ps.executeUpdate();
         } catch (SQLException e) {
-            throw new RuntimeException("Error eliminando cita", e);
+            throw new DataAccessException("Error eliminando cita", e);
         }
     }
 
@@ -113,7 +115,7 @@ public class CitaRepositoryImpl implements CitaRepository {
             }
             return list;
         } catch (SQLException e) {
-            throw new RuntimeException("Error buscando citas por rango", e);
+            throw new DataAccessException("Error buscando citas por rango", e);
         }
     }
 
@@ -130,7 +132,7 @@ public class CitaRepositoryImpl implements CitaRepository {
             }
             return list;
         } catch (SQLException e) {
-            throw new RuntimeException("Error buscando citas por fecha", e);
+            throw new DataAccessException("Error buscando citas por fecha", e);
         }
     }
 
@@ -147,7 +149,7 @@ public class CitaRepositoryImpl implements CitaRepository {
             }
             return list;
         } catch (SQLException e) {
-            throw new RuntimeException("Error buscando citas por estado", e);
+            throw new DataAccessException("Error buscando citas por estado", e);
         }
     }
 
@@ -165,7 +167,7 @@ public class CitaRepositoryImpl implements CitaRepository {
                 return rs.next();
             }
         } catch (SQLException e) {
-            throw new RuntimeException("Error verificando solape de citas", e);
+            throw new DataAccessException("Error verificando solape de citas", e);
         }
     }
 

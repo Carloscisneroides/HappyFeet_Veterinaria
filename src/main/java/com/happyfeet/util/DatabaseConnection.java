@@ -16,19 +16,21 @@ public class DatabaseConnection {
     private String username;
     private String password;
 
-    // Bloque estático para registrar el driver
+    // Registro perezoso del driver (se hará al primer uso)
     static {
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            System.out.println("Controlador MySQL registrado correctamente");
-        } catch (ClassNotFoundException e) {
-            System.err.println("Error al registrar el controlador MySQL: " + e.getMessage());
-            throw new ExceptionInInitializerError(e);
-        }
+        // No forzar carga del driver aquí para no romper el arranque si falta el conector/BD.
     }
 
     private DatabaseConnection() {
-        initializeConnection();
+        // No abrimos conexión aquí; sólo cargamos configuración. La conexión se abrirá al primer uso.
+        try {
+            Properties props = loadDatabaseProperties();
+            this.url = props.getProperty("db.url");
+            this.username = props.getProperty("db.username");
+            this.password = props.getProperty("db.password");
+        } catch (Exception ignored) {
+            // Usaremos valores por defecto si es necesario al primer uso
+        }
     }
 
     public static DatabaseConnection getInstance() {
@@ -42,60 +44,110 @@ public class DatabaseConnection {
         return instance;
     }
 
+    // Solo para pruebas: restablece el estado interno
+    void resetForTests() {
+        closeConnection();
+        this.connection = null;
+        this.url = null;
+        this.username = null;
+        this.password = null;
+    }
+
     private void initializeConnection() {
         try {
             Properties props = loadDatabaseProperties();
             this.url = props.getProperty("db.url");
             this.username = props.getProperty("db.username");
             this.password = props.getProperty("db.password");
-
-            // Validar que tenemos los parámetros necesarios
-            if (url == null || username == null) {
-                throw new SQLException("Configuración de base de datos incompleta");
-            }
-
-            // Establecer conexión inicial
-            this.connection = DriverManager.getConnection(url, username, password);
-            System.out.println("Conexión a BD establecida correctamente");
-
-            // Verificar que la base de datos existe y es accesible
-            testConnection();
-
-        } catch (SQLException e) {
-            System.err.println("Error al conectar con la BD: " + e.getMessage());
-            System.err.println("URL: " + url);
-            System.err.println("Usuario: " + username);
-            throw new RuntimeException("No se pudo establecer conexión con la base de datos", e);
+            // No abrimos conexión aquí; se abrirá bajo demanda en getConnection().
+        } catch (Exception e) {
+            System.err.println("Error cargando configuración de BD: " + e.getMessage());
         }
     }
 
     private Properties loadDatabaseProperties() {
         Properties props = new Properties();
 
-        try {
-            // Primero intentar cargar desde archivo properties
-            File configFile = new File("database.properties");
-            if (configFile.exists()) {
-                try (InputStream input = new FileInputStream(configFile)) {
-                    props.load(input);
-                    System.out.println("Configuración cargada desde database.properties");
-                }
-            } else {
-                // Si no existe, usar valores por defecto
-                System.out.println("No se encontró database.properties, usando valores por defecto");
-                props.setProperty("db.url", "jdbc:mysql://localhost:3306/happy_feet_veterinaria");
-                props.setProperty("db.username", "root");
-                props.setProperty("db.password", "");
+        // 1) Permitir override por System properties (útil en pruebas CI)
+        String sysUrl = System.getProperty("db.url");
+        String sysUser = System.getProperty("db.username");
+        String sysPass = System.getProperty("db.password");
+        if (sysUrl != null) props.setProperty("db.url", sysUrl);
+        if (sysUser != null) props.setProperty("db.username", sysUser);
+        if (sysPass != null) props.setProperty("db.password", sysPass);
 
-                // Crear archivo de configuración de ejemplo
-                createExampleConfigFile();
+        // 1b) Permitir override por variables de entorno si faltan claves
+        if (!props.containsKey("db.url") || !props.containsKey("db.username") || !props.containsKey("db.password")) {
+            String envUrl = System.getenv("DB_URL");
+            String envUser = System.getenv("DB_USERNAME");
+            String envPass = System.getenv("DB_PASSWORD");
+            if (envUrl != null) props.setProperty("db.url", envUrl);
+            if (envUser != null) props.setProperty("db.username", envUser);
+            if (envPass != null) props.setProperty("db.password", envPass);
+        }
+
+        // 2) Si no se establecieron vía sistema/entorno, intentar cargar desde classpath o archivos conocidos
+        //    Cargar desde alguna fuente si falta cualquiera de las 3 claves (url, username o password)
+        if (!props.containsKey("db.url") || !props.containsKey("db.username") || !props.containsKey("db.password")) {
+            try {
+                boolean loaded = false;
+
+                // 2.a) Primero intentar desde el classpath (útil cuando se empaqueta el JAR)
+                try (InputStream cp = Thread.currentThread().getContextClassLoader().getResourceAsStream("database.properties")) {
+                    if (cp != null) {
+                        Properties p2 = new Properties();
+                        p2.load(cp);
+                        props.putAll(p2);
+                        System.out.println("Configuración cargada desde classpath: database.properties");
+                        loaded = true;
+                    }
+                }
+
+                // 2.b) Intentar archivo en el directorio de trabajo actual
+                if (!loaded) {
+                    File configFile = new File("database.properties");
+                    if (configFile.exists()) {
+                        try (InputStream input = new FileInputStream(configFile)) {
+                            Properties p2 = new Properties();
+                            p2.load(input);
+                            props.putAll(p2);
+                            System.out.println("Configuración cargada desde archivo: " + configFile.getAbsolutePath());
+                            loaded = true;
+                        }
+                    }
+                }
+
+                // 2.c) Intentar archivo en ruta del módulo (cuando se ejecuta desde el directorio raíz del repositorio)
+                if (!loaded) {
+                    File moduleFile = new File("HappyFeet_Integrated_Carlos_clean\\database.properties");
+                    if (!moduleFile.exists()) {
+                        moduleFile = new File("HappyFeet_Integrated_Carlos_clean/database.properties"); // compatibilidad
+                    }
+                    if (moduleFile.exists()) {
+                        try (InputStream input = new FileInputStream(moduleFile)) {
+                            Properties p2 = new Properties();
+                            p2.load(input);
+                            props.putAll(p2);
+                            System.out.println("Configuración cargada desde archivo del módulo: " + moduleFile.getAbsolutePath());
+                            loaded = true;
+                        }
+                    }
+                }
+
+                // 2.d) Si no se pudo cargar de ningún lugar, usar valores por defecto razonables (MySQL local)
+                if (!loaded) {
+                    System.out.println("No se encontró database.properties en classpath ni en archivos conocidos, usando valores por defecto");
+                    props.setProperty("db.url", props.getProperty("db.url", "jdbc:mysql://localhost:3306/happy_feet_veterinaria"));
+                    props.setProperty("db.username", props.getProperty("db.username", "root"));
+                    props.setProperty("db.password", props.getProperty("db.password", ""));
+                    createExampleConfigFile();
+                }
+            } catch (IOException e) {
+                System.err.println("Error al cargar configuración: " + e.getMessage());
+                props.setProperty("db.url", props.getProperty("db.url", "jdbc:mysql://localhost:3306/happy_feet_veterinaria"));
+                props.setProperty("db.username", props.getProperty("db.username", "root"));
+                props.setProperty("db.password", props.getProperty("db.password", ""));
             }
-        } catch (IOException e) {
-            System.err.println("Error al cargar configuración: " + e.getMessage());
-            // Usar valores por defecto
-            props.setProperty("db.url", "jdbc:mysql://localhost:3306/happy_feet_veterinaria");
-            props.setProperty("db.username", "root");
-            props.setProperty("db.password", "");
         }
 
         return props;
@@ -125,19 +177,53 @@ public class DatabaseConnection {
         }
     }
 
+    private void registerDriverForUrl(String jdbcUrl) {
+        if (jdbcUrl == null) return;
+        try {
+            if (jdbcUrl.startsWith("jdbc:mysql:")) {
+                Class.forName("com.mysql.cj.jdbc.Driver");
+            } else if (jdbcUrl.startsWith("jdbc:h2:")) {
+                Class.forName("org.h2.Driver");
+            } else {
+                // Intento genérico: algunos drivers se registran automáticamente con ServiceLoader
+                // Así que no forzamos nada si no es conocido.
+            }
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException("No se encontró el driver JDBC para la URL: " + jdbcUrl + ". Agrega la dependencia correspondiente al pom.xml.", e);
+        }
+    }
+
     public Connection getConnection() {
         try {
             if (connection == null || connection.isClosed()) {
                 synchronized (this) {
                     if (connection == null || connection.isClosed()) {
-                        System.out.println("Reconectando a la base de datos...");
+                        // Cargar configuración si falta cualquiera de las credenciales
+                        if (url == null || username == null || password == null || password.isEmpty()) {
+                            initializeConnection();
+                        }
+                        if (url == null || username == null || password == null || password.isEmpty()) {
+                            String missing = (url == null ? "db.url " : "") +
+                                             (username == null ? "db.username " : "") +
+                                             ((password == null || password.isEmpty()) ? "db.password " : "");
+                            throw new RuntimeException("Configuración de base de datos incompleta o inválida (" + missing.trim() + "). Define db.url, db.username y db.password en System properties, variables de entorno o en 'database.properties'.");
+                        }
+                        // Registrar driver de forma perezosa según URL
+                        registerDriverForUrl(url);
+                        System.out.println("[BD] Intentando conectar -> URL: " + url + ", Usuario: " + username + ", Password definido: " + ((password != null && !password.isEmpty()) ? "SI" : "NO"));
                         this.connection = DriverManager.getConnection(url, username, password);
+                        // Probar conexión con SELECT 1
+                        try {
+                            testConnection();
+                        } catch (SQLException ignore) {}
                     }
                 }
             }
         } catch (SQLException e) {
             System.err.println("Error al obtener conexión: " + e.getMessage());
-            throw new RuntimeException("Error de conexión a la base de datos", e);
+            System.err.println("URL: " + url + ", Usuario: " + username);
+            System.err.println("Password definido: " + ((password != null && !password.isEmpty()) ? "SI" : "NO"));
+            throw new RuntimeException("No se pudo conectar a la base de datos. Verifica que el motor esté ejecutándose y las credenciales en database.properties o System properties.", e);
         }
         return connection;
     }
@@ -160,6 +246,18 @@ public class DatabaseConnection {
         } catch (SQLException e) {
             return false;
         }
+    }
+
+    // Exponer configuración efectiva sin abrir conexión
+    public Properties getCurrentConfig() {
+        if (url == null || username == null) {
+            initializeConnection();
+        }
+        Properties p = new Properties();
+        if (url != null) p.setProperty("db.url", url);
+        if (username != null) p.setProperty("db.username", username);
+        if (password != null) p.setProperty("db.password", password);
+        return p;
     }
 
     // Método para obtener información de la conexión (útil para debugging)

@@ -1,10 +1,12 @@
 package com.happyfeet.repository.impl;
 
 import com.happyfeet.model.entities.Veterinario;
+import com.happyfeet.repository.DataAccessException;
 import com.happyfeet.repository.VeterinarioRepository;
 import com.happyfeet.util.DatabaseConnection;
 
 import java.sql.*;
+import java.sql.Date;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -52,7 +54,7 @@ public class VeterinarioRepositoryImpl implements VeterinarioRepository {
             return veterinario;
 
         } catch (SQLException e) {
-            throw new RuntimeException("Error guardando veterinario", e);
+            throw new DataAccessException("Error guardando veterinario", e);
         }
     }
 
@@ -71,7 +73,7 @@ public class VeterinarioRepositoryImpl implements VeterinarioRepository {
             return Optional.empty();
 
         } catch (SQLException e) {
-            throw new RuntimeException("Error buscando veterinario por id", e);
+            throw new DataAccessException("Error buscando veterinario por id", e);
         }
     }
 
@@ -90,7 +92,7 @@ public class VeterinarioRepositoryImpl implements VeterinarioRepository {
             return list;
 
         } catch (SQLException e) {
-            throw new RuntimeException("Error listando veterinarios", e);
+            throw new DataAccessException("Error listando veterinarios", e);
         }
     }
 
@@ -127,7 +129,7 @@ public class VeterinarioRepositoryImpl implements VeterinarioRepository {
             return veterinario;
 
         } catch (SQLException e) {
-            throw new RuntimeException("Error actualizando veterinario", e);
+            throw new DataAccessException("Error actualizando veterinario", e);
         }
     }
 
@@ -143,7 +145,7 @@ public class VeterinarioRepositoryImpl implements VeterinarioRepository {
             return ps.executeUpdate() > 0;
 
         } catch (SQLException e) {
-            throw new RuntimeException("Error eliminando veterinario", e);
+            throw new DataAccessException("Error eliminando veterinario", e);
         }
     }
 
@@ -166,7 +168,7 @@ public class VeterinarioRepositoryImpl implements VeterinarioRepository {
             return list;
 
         } catch (SQLException e) {
-            throw new RuntimeException("Error buscando veterinarios por especialidad", e);
+            throw new DataAccessException("Error buscando veterinarios por especialidad", e);
         }
     }
 
@@ -185,7 +187,7 @@ public class VeterinarioRepositoryImpl implements VeterinarioRepository {
             return list;
 
         } catch (SQLException e) {
-            throw new RuntimeException("Error listando veterinarios activos", e);
+            throw new DataAccessException("Error listando veterinarios activos", e);
         }
     }
 
@@ -204,7 +206,7 @@ public class VeterinarioRepositoryImpl implements VeterinarioRepository {
             return Optional.empty();
 
         } catch (SQLException e) {
-            throw new RuntimeException("Error buscando veterinario por documento", e);
+            throw new DataAccessException("Error buscando veterinario por documento", e);
         }
     }
 
@@ -223,7 +225,7 @@ public class VeterinarioRepositoryImpl implements VeterinarioRepository {
             return Optional.empty();
 
         } catch (SQLException e) {
-            throw new RuntimeException("Error buscando veterinario por email", e);
+            throw new DataAccessException("Error buscando veterinario por email", e);
         }
     }
 

@@ -1,36 +1,43 @@
 package com.happyfeet.service;
 
 import com.happyfeet.model.entities.Inventario;
-import com.happyfeet.repository.InventarioRepository;
+import java.util.List;
 
-public class InventarioService {
-    private final InventarioRepository inventarioRepository;
+public interface InventarioService {
 
-    public InventarioService(InventarioRepository inventarioRepository) {
-        this.inventarioRepository = inventarioRepository;
-    }
+    /**
+     * Descuenta una cantidad de un producto por su nombre.
+     */
+    void descontarProductoPorNombre(String nombreProducto, int cantidad);
 
-    // Se mantiene el nombre del método tal como está en tu código para no romper llamadas existentes
-    public void descontarStostck(Integer productoId, Integer cantidad) {
-        if (cantidad == null || cantidad <= 0) {
-            throw new IllegalArgumentException("La cantidad debe ser un entero positivo");
-        }
-        Inventario producto = inventarioRepository.findById(productoId)
-                .orElseThrow(() -> new IllegalArgumentException("Producto no encontrado con ID: " + productoId));
+    /**
+     * Descuenta stock de un producto por ID.
+     * Se mantiene el nombre del método tal como está en tu código para no romper llamadas existentes
+     */
+    void descontarStostck(Integer productoId, Integer cantidad);
 
-        if (producto.estaVencido()) {
-            throw new IllegalStateException("No se puede vender un producto vencido: " + producto.getNombreProducto());
-        }
-        if (!producto.tieneStock(cantidad)) {
-            throw new IllegalStateException("Stock insuficiente para el producto: " + producto.getNombreProducto());
-        }
+    /**
+     * Nueva API con el nombre correcto, manteniendo compatibilidad hacia atrás
+     */
+    void descontarStock(Integer productoId, Integer cantidad);
 
-        producto.descontarStock(cantidad);
-        inventarioRepository.update(producto);
-    }
+    /**
+     * Verifica si hay disponibilidad de un producto por nombre
+     */
+    boolean verificarDisponibilidad(String nombreProducto, int cantidad);
 
-    // Nueva API con el nombre correcto, manteniendo compatibilidad hacia atrás
-    public void descontarStock(Integer productoId, Integer cantidad) {
-        descontarStostck(productoId, cantidad);
-    }
+    /**
+     * Descuenta stock de un producto por nombre
+     */
+    void descontarStock(String nombreProducto, int cantidad);
+
+    /**
+     * Obtiene productos con stock bajo el mínimo
+     */
+    List<Inventario> obtenerProductosBajoStockMinimo();
+
+    /**
+     * Obtiene productos próximos a vencer
+     */
+    List<Inventario> obtenerProductosProximosAVencer();
 }

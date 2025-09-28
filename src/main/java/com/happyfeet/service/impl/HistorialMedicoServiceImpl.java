@@ -9,6 +9,7 @@ import com.happyfeet.util.FileLogger;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 public class HistorialMedicoServiceImpl implements HistorialMedicoService {
 
@@ -21,6 +22,23 @@ public class HistorialMedicoServiceImpl implements HistorialMedicoService {
                                       InventarioService inventarioService) {
         this.historialRepo = Objects.requireNonNull(historialRepo);
         this.inventarioService = Objects.requireNonNull(inventarioService);
+    }
+
+    @Override
+    public void registrarConsulta(HistorialMedico consulta) {
+        historialRepo.save(consulta);
+        if (consulta.getMedicamentosRecetados() != null && !consulta.getMedicamentosRecetados().isBlank()) {
+            String[] meds = consulta.getMedicamentosRecetados().split(",");
+            for (String med : meds) {
+                inventarioService.descontarProductoPorNombre(med.trim(), 1);
+            }
+        }
+    }
+
+    @Override
+    public List<HistorialMedico> obtenerHistorialPorMascota(Long mascotaId) {
+        if (mascotaId == null) return List.of();
+        return historialRepo.findByMascotaId(mascotaId.intValue());
     }
 
     @Override
@@ -43,4 +61,13 @@ public class HistorialMedicoServiceImpl implements HistorialMedicoService {
         LOG.info("Historial médico registrado con ID: " + guardado.getId());
         return guardado;
     }
+
+    @Override
+    public Optional<HistorialMedico> obtenerPorId(Integer id) {
+        if (id == null) {
+            return Optional.empty();
+        }
+        return historialRepo.findById(id);
+    }
+
 }

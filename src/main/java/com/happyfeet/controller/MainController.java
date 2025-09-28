@@ -11,6 +11,7 @@ import com.happyfeet.service.*;
 import com.happyfeet.service.impl.*;
 import com.happyfeet.view.ConsoleUtils;
 import com.happyfeet.util.FileLogger;
+import com.happyfeet.util.DatabaseConnection;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -42,26 +43,31 @@ public class MainController {
         LOG.info("Inicializando MainController y todos los servicios del sistema");
 
         try {
+            // Instanciar conexión a base de datos
+            DatabaseConnection dbConnection = DatabaseConnection.getInstance();
+
             // Instanciar repositorios
             DuenoRepository duenoRepo = new DuenoRepositoryImpl();
             MascotaRepository mascotaRepo = new MascotaRepositoryImpl();
             CitaRepository citaRepo = new CitaRepositoryImpl();
-            InventarioRepository inventarioRepo = new InventarioRepositoryImpl();
-            FacturaRepository facturaRepo = new FacturaRepositoryImpl();
+            InventarioRepository inventarioRepo = new InventarioRepositoryImpl(dbConnection);
+            FacturaRepository facturaRepo = new FacturaRepositoryImpl(dbConnection);
+            ProveedorRepository proveedorRepo = new ProveedorRepositoryImpl();
 
             // Instanciar servicios
             this.duenoService = new DuenoServiceImpl(duenoRepo);
             this.mascotaService = new MascotaServiceImpl(mascotaRepo);
             this.citaService = new CitaServiceImpl(citaRepo);
-            this.inventarioService = new InventarioService(inventarioRepo);
-            this.facturaService = new FacturaServiceImpl(facturaRepo);
+            this.inventarioService = new InventarioServiceImpl(inventarioRepo);
+            ProveedorService proveedorService = new ProveedorServiceImpl(proveedorRepo);
             this.historialMedicoService = new com.happyfeet.service.impl.HistorialMedicoServiceImpl(
                     new com.happyfeet.repository.impl.HistorialMedicoRepositoryImpl(),
                     this.inventarioService
             );
+            this.facturaService = new FacturaServiceImpl(facturaRepo, historialMedicoService);
 
             // Instanciar controladores especializados
-            this.inventarioController = new InventarioController(inventarioService, inventarioRepo);
+            this.inventarioController = new InventarioController(inventarioService, inventarioRepo, proveedorService);
             this.facturaController = new FacturaController(facturaService, duenoService, inventarioService, inventarioRepo);
             this.actividadesController = new ActividadesEspecialesController(mascotaService, duenoService);
 

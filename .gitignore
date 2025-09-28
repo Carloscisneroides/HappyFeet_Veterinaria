@@ -1,23 +1,19 @@
-# Maven build output
+# Maven target directory
 /target/
 
-# Java
+# Compiled class files (should only live in target/classes)
 *.class
-*.log
 
-# IDEs and editors
+# IDE files
 .idea/
-.vscode/
 *.iml
-*.ipr
-*.iws
+.project
+.classpath
+.settings/
+
+# Logs
+*.log
 
 # OS files
 .DS_Store
 Thumbs.db
-
-# Maven
-.mvn/wrapper/maven-wrapper.jar
-
-# Local configuration (optional)
-database.properties

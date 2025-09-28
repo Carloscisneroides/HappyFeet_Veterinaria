@@ -857,3 +857,29 @@ Se deben entregar dos archivos SQL en la carpeta `/database`:
 - `**data.sql**`**:** Contiene las sentencias `INSERT INTO` para poblar la base de datos con la cantidad y calidad de datos solicitada.
 
   
+
+# Happy Feet Veterinaria - Guía rápida de ejecución
+
+Para ejecutar el proyecto (JDK 17):
+
+- Desde IntelliJ/IDE:
+  1) Abrir el proyecto Maven.
+  2) Asegúrese de seleccionar la clase principal: com.happyfeet.Main
+  3) Run ▶ Main (o botón verde junto a la clase).
+
+- Desde Maven (CLI):
+  1) Compilar: mvn -q -e -DskipTests package
+  2) Ejecutar: mvn -q -DskipTests exec:java
+     (usa el mainClass configurado en el pom: com.happyfeet.Main)
+
+- Ejecutar JAR:
+  Tras empaquetar, se genera target/veterinaria-happy-feet-1.0.0.jar con manifest Main-Class.
+  Ejecute:
+    java -jar target/veterinaria-happy-feet-1.0.0.jar
+
+Notas:
+- Si su IDE lista múltiples 'main', el correcto es com.happyfeet.Main.
+- Requiere consola interactiva (el programa usa entrada por teclado).
+
+---
+

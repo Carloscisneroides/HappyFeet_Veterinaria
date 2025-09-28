@@ -3,6 +3,7 @@ package com.happyfeet.controller;
 import com.happyfeet.model.entities.Inventario;
 import com.happyfeet.repository.InventarioRepository;
 import com.happyfeet.service.InventarioService;
+import com.happyfeet.service.ProveedorService;
 import com.happyfeet.service.impl.AlertaInventarioServiceObserver;
 import com.happyfeet.util.FileLogger;
 import com.happyfeet.view.ConsoleUtils;
@@ -18,13 +19,18 @@ public class InventarioController {
 
     private final InventarioService inventarioService;
     private final InventarioRepository inventarioRepository;
+    private final ProveedorService proveedorService;
     private final AlertaInventarioServiceObserver alertaService;
+    private ProveedorController proveedorController;
 
     public InventarioController(InventarioService inventarioService,
-                                InventarioRepository inventarioRepository) {
+                                InventarioRepository inventarioRepository,
+                                ProveedorService proveedorService) {
         this.inventarioService = inventarioService;
         this.inventarioRepository = inventarioRepository;
+        this.proveedorService = proveedorService;
         this.alertaService = new AlertaInventarioServiceObserver();
+        this.proveedorController = new ProveedorController(proveedorService);
         LOG.info("InventarioController inicializado");
     }
 
@@ -113,7 +119,7 @@ public class InventarioController {
 
             // Verificar que no exista
             if (inventarioRepository.findByCodigo(codigo).isPresent()) {
-                System.out.println("Ya existe un producto con ese código: " + codigo);
+                System.out.println("[409] Ya existe un producto con ese código: " + codigo);
                 return;
             }
 
@@ -137,12 +143,23 @@ public class InventarioController {
             nuevoProducto.setFechaVencimiento(fechaVencimiento);
 
             Inventario creado = inventarioRepository.save(nuevoProducto);
-            LOG.info("Producto creado: " + creado.getNombreProducto() + " (ID: " + creado.getId() + ")");
-            System.out.println("Producto creado exitosamente: " + creado.getNombreProducto());
+            if (creado == null || creado.getId() == null) {
+                LOG.error("Persistencia fallida al crear producto. Código=" + codigo + ", nombre=" + nombre);
+                System.err.println("[500] No se pudo persistir el producto. Verifica la conexión a la base de datos y los datos obligatorios.");
+                return;
+            }
+            LOG.info("Producto creado: " + creado.getNombreProducto() + " (ID: " + creado.getId() + ", Código: " + creado.getCodigo() + ")");
+            System.out.println("[201] Producto creado exitosamente (ID: " + creado.getId() + ")");
 
+        } catch (IllegalArgumentException iae) {
+            LOG.error("Validación fallida al crear producto", iae);
+            System.err.println("[400] Datos inválidos: " + iae.getMessage());
+        } catch (RuntimeException re) {
+            LOG.error("Error de persistencia al crear producto", re);
+            System.err.println("[500] Error de persistencia: " + re.getMessage());
         } catch (Exception e) {
             LOG.error("Error creando producto", e);
-            System.err.println("Error al crear producto: " + e.getMessage());
+            System.err.println("[500] Error al crear producto: " + e.getMessage());
         }
     }
 
@@ -152,7 +169,7 @@ public class InventarioController {
             Optional<Inventario> productoOpt = inventarioRepository.findById(id);
 
             if (productoOpt.isEmpty()) {
-                System.out.println("No se encontró producto con ID: " + id);
+                System.out.println("[404] No se encontró producto con ID: " + id);
                 return;
             }
 
@@ -173,13 +190,44 @@ public class InventarioController {
                 producto.setStockMinimo(Integer.parseInt(nuevoStockMinimoStr));
             }
 
-            inventarioRepository.update(producto);
-            LOG.info("Producto actualizado: " + producto.getNombreProducto() + " (ID: " + id + ")");
-            System.out.println("Producto actualizado exitosamente");
+            Inventario actualizado = inventarioRepository.update(producto);
+            if (actualizado == null) {
+                LOG.error("Repositorio retornó null al actualizar producto ID: " + id);
+                System.err.println("[500] No se pudo actualizar el producto. Verifica la conexión a la base de datos y los datos obligatorios.");
+                return;
+            }
 
+            // Verificación post-persistencia
+            Optional<Inventario> verificacion = inventarioRepository.findById(id);
+            if (verificacion.isEmpty()) {
+                LOG.error("Post-verificación fallida: no se pudo leer el producto actualizado ID: " + id);
+                System.err.println("[500] No se pudo verificar la actualización del producto");
+                return;
+            }
+            Inventario v = verificacion.get();
+            boolean ok = true;
+            if (!nuevoNombre.isEmpty() && !v.getNombreProducto().equals(nuevoNombre)) ok = false;
+            if (!nuevoPrecioStr.isEmpty() && v.getPrecioVenta() != null && !(new BigDecimal(nuevoPrecioStr).compareTo(v.getPrecioVenta()) == 0)) ok = false;
+            if (!nuevoStockMinimoStr.isEmpty() && v.getStockMinimo() != null && v.getStockMinimo() != Integer.parseInt(nuevoStockMinimoStr)) ok = false;
+
+            if (!ok) {
+                LOG.error("Los cambios no se reflejaron correctamente en BD para el producto ID: " + id);
+                System.err.println("[500] No se pudo confirmar la actualización en la base de datos");
+                return;
+            }
+
+            LOG.info("Producto actualizado: " + v.getNombreProducto() + " (ID: " + id + ")");
+            System.out.println("[200] Producto actualizado exitosamente");
+
+        } catch (IllegalArgumentException iae) {
+            LOG.error("Validación fallida al actualizar producto", iae);
+            System.err.println("[400] Datos inválidos: " + iae.getMessage());
+        } catch (RuntimeException re) {
+            LOG.error("Error de persistencia al actualizar producto", re);
+            System.err.println("[500] Error de persistencia: " + re.getMessage());
         } catch (Exception e) {
             LOG.error("Error actualizando producto", e);
-            System.err.println("Error al actualizar producto: " + e.getMessage());
+            System.err.println("[500] Error al actualizar producto: " + e.getMessage());
         }
     }
 
@@ -435,22 +483,44 @@ public class InventarioController {
     
     
     public void run() {
-        System.out.println("=== GESTIÓN DE INVENTARIO ===");
-        System.out.println("Funcionalidad disponible:");
-        System.out.println("- Agregar nuevos productos");
-        System.out.println("- Controlar niveles de stock");
-        System.out.println("- Alertas de stock bajo y productos vencidos");
-        System.out.println("- Ajustar cantidades de inventario");
-        System.out.println("- Buscar productos por código y nombre");
-        System.out.println("- Generar reportes de inventario");
-        System.out.println("- Gestionar fechas de vencimiento");
-        System.out.println();
-        System.out.println("Esta sección está lista para ser utilizada.");
-        System.out.println("Presione ENTER para continuar...");
-        try {
-            System.in.read();
-        } catch (Exception e) {
-            // Ignore
+        while (true) {
+            int opcion = ConsoleUtils.menu("GESTIÓN DE INVENTARIO Y FARMACIA",
+                    "Listar todos los productos",
+                    "Buscar producto por código",
+                    "Buscar productos por nombre",
+                    "Crear nuevo producto",
+                    "Actualizar producto",
+                    "Eliminar producto",
+                    "Ajustar stock",
+                    "Descontar stock",
+                    "Productos con stock bajo",
+                    "Productos vencidos",
+                    "Productos por vencer",
+                    "Generar reporte completo",
+                    "Gestionar proveedores"
+            );
+
+            switch (opcion) {
+                case 1 -> listarTodosLosProductos();
+                case 2 -> buscarProductoPorCodigo();
+                case 3 -> buscarProductosPorNombre();
+                case 4 -> crearProducto();
+                case 5 -> actualizarProducto();
+                case 6 -> eliminarProducto();
+                case 7 -> ajustarStock();
+                case 8 -> descontarStock();
+                case 9 -> mostrarProductosConStockBajo();
+                case 10 -> mostrarProductosVencidos();
+                case 11 -> mostrarProductosPorVencer();
+                case 12 -> generarReporteCompleto();
+                case 13 -> proveedorController.run();
+                case 0 -> {
+                    return;
+                }
+                default -> System.out.println("Opción no válida");
+            }
+
+            ConsoleUtils.pause();
         }
     }
 

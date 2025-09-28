@@ -493,6 +493,12 @@ public class Factura {
         Objects.requireNonNull(motivo, "Motivo no puede ser nulo");
         Objects.requireNonNull(usuario, "Usuario no puede ser nulo");
 
+        // Idempotencia: si el estado solicitado es el mismo que el actual, no hacer nada
+        if (this.estado == nuevoEstado) {
+            return;
+        }
+
+        // Mantener validaciones para transiciones reales
         if (!estado.puedeTransicionarA(nuevoEstado)) {
             throw new IllegalStateException(
                     String.format("Transición inválida: %s -> %s", estado.getNombre(), nuevoEstado.getNombre()));

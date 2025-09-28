@@ -10,6 +10,7 @@ import com.happyfeet.service.InventarioService;
 import com.happyfeet.repository.InventarioRepository;
 import com.happyfeet.repository.FacturaRepository;
 import com.happyfeet.util.FileLogger;
+import com.happyfeet.util.InvoiceGenerator;
 import com.happyfeet.view.ConsoleUtils;
 
 import java.math.BigDecimal;
@@ -38,6 +39,14 @@ public class FacturaController {
     }
 
     // ============ OPERACIONES PRINCIPALES ============
+
+
+    public void generarYMostrarFactura(Integer consultaId) {
+        Factura factura = facturaService.generarFacturaPorConsulta(consultaId);
+        String facturaTexto = InvoiceGenerator.generarFacturaTextoPlano(factura);
+        System.out.println("\n--- FACTURA ---\n" + facturaTexto);
+    }
+
 
     public void crearFactura() {
         try {
@@ -466,23 +475,167 @@ public class FacturaController {
     
     
     public void run() {
-        System.out.println("=== GESTIÓN DE FACTURAS ===");
-        System.out.println("Funcionalidad disponible:");
-        System.out.println("- Crear nueva factura");
-        System.out.println("- Buscar facturas por número");
-        System.out.println("- Procesar pagos y formas de pago");
-        System.out.println("- Aplicar descuentos especiales");
-        System.out.println("- Cancelar facturas pendientes");
-        System.out.println("- Generar reportes de ventas");
-        System.out.println("- Gestionar facturas vencidas");
-        System.out.println();
-        System.out.println("Esta sección está lista para ser utilizada.");
-        System.out.println("Presione ENTER para continuar...");
-        try {
-            System.in.read();
-        } catch (Exception e) {
-            // Ignore
+        while (true) {
+            int opcion = ConsoleUtils.menu("GESTIÓN DE FACTURAS Y REPORTES",
+                    "Crear nueva factura",
+                    "Listar todas las facturas",
+                    "Buscar factura por número",
+                    "Procesar pago de factura",
+                    "Cancelar factura",
+                    "Ver facturas vencidas",
+                    "Generar reporte de ventas",
+                    "Generar factura en texto plano (demo)"
+            );
+
+            switch (opcion) {
+                case 1 -> crearFactura();
+                case 2 -> listarFacturas();
+                case 3 -> buscarFactura();
+                case 4 -> pagarFactura();
+                case 5 -> cancelarFactura();
+                case 6 -> mostrarFacturasVencidas();
+                case 7 -> generarReporteVentas();
+                case 8 -> generarFacturaDemo();
+                case 0 -> {
+                    return;
+                }
+                default -> System.out.println("Opción no válida");
+            }
+
+            ConsoleUtils.pause();
         }
+    }
+
+    private void generarFacturaDemo() {
+        try {
+            System.out.println("\n=== GENERANDO FACTURA DEMO ===");
+
+            // Crear factura demo
+            Factura facturaDemo = new Factura();
+            facturaDemo.setId(999);
+            facturaDemo.setNumeroFactura("DEMO-" + System.currentTimeMillis());
+            facturaDemo.setDuenoId(1);
+            facturaDemo.setFechaEmision(LocalDateTime.now());
+
+            // Agregar items demo
+            Factura.ItemFactura itemServicio = new Factura.ItemFactura.Builder(Factura.ItemFactura.TipoItem.SERVICIO)
+                    .withDescripcion("Consulta Veterinaria General")
+                    .withCantidad(BigDecimal.ONE)
+                    .withPrecioUnitario(new BigDecimal("50000"))
+                    .build();
+            facturaDemo.agregarItem(itemServicio);
+
+            Factura.ItemFactura itemProducto = new Factura.ItemFactura.Builder(Factura.ItemFactura.TipoItem.PRODUCTO)
+                    .withDescripcion("Antiparasitario Canino")
+                    .withCantidad(BigDecimal.ONE)
+                    .withPrecioUnitario(new BigDecimal("25000"))
+                    .build();
+            facturaDemo.agregarItem(itemProducto);
+
+            // Generar factura en texto plano
+            String facturaTexto = generarFacturaTextoPlano(facturaDemo);
+            System.out.println("\n" + facturaTexto);
+
+            // Guardar en archivo si se desea
+            if (ConsoleUtils.confirm("¿Guardar factura en archivo?")) {
+                String nombreArchivo = "factura_demo_" + System.currentTimeMillis() + ".txt";
+                try {
+                    java.nio.file.Files.write(
+                        java.nio.file.Paths.get(nombreArchivo),
+                        facturaTexto.getBytes()
+                    );
+                    System.out.println("✅ Factura guardada en: " + nombreArchivo);
+                } catch (Exception e) {
+                    System.err.println("❌ Error al guardar archivo: " + e.getMessage());
+                }
+            }
+
+        } catch (Exception e) {
+            LOG.error("Error generando factura demo", e);
+            System.err.println("Error: " + e.getMessage());
+        }
+    }
+
+    private String generarFacturaTextoPlano(Factura factura) {
+        StringBuilder sb = new StringBuilder();
+
+        // Encabezado
+        sb.append("╔══════════════════════════════════════════════════════════════╗\n");
+        sb.append("║                    HAPPY FEET VETERINARIA                   ║\n");
+        sb.append("║                      FACTURA DE VENTA                       ║\n");
+        sb.append("╚══════════════════════════════════════════════════════════════╝\n\n");
+
+        // Información de la clínica
+        sb.append("CLÍNICA VETERINARIA HAPPY FEET\n");
+        sb.append("Dirección: Calle Principal #123\n");
+        sb.append("Teléfono: (555) 123-4567\n");
+        sb.append("Email: info@happyfeet.com\n");
+        sb.append("NIT: 900.123.456-7\n\n");
+
+        // Información de la factura
+        sb.append("FACTURA No: ").append(factura.getNumeroFactura()).append("\n");
+        sb.append("Fecha: ").append(factura.getFechaEmision().toLocalDate()).append("\n");
+        sb.append("Hora: ").append(factura.getFechaEmision().toLocalTime().toString().substring(0, 8)).append("\n\n");
+
+        // Información del cliente
+        sb.append("CLIENTE:\n");
+        if (factura.getDueno() != null) {
+            sb.append("Nombre: ").append(factura.getDueno().getNombreCompleto()).append("\n");
+            sb.append("Documento: ").append(factura.getDueno().getDocumentoIdentidad()).append("\n");
+            sb.append("Teléfono: ").append(factura.getDueno().getTelefono()).append("\n");
+        } else {
+            sb.append("Cliente ID: ").append(factura.getDuenoId()).append("\n");
+        }
+        sb.append("\n");
+
+        // Detalle de items
+        sb.append("DETALLE DE LA FACTURA:\n");
+        sb.append("-".repeat(65)).append("\n");
+        sb.append(String.format("%-30s %5s %10s %12s\n", "DESCRIPCIÓN", "CANT", "PRECIO", "SUBTOTAL"));
+        sb.append("-".repeat(65)).append("\n");
+
+        for (Factura.ItemFactura item : factura.getItems()) {
+            sb.append(String.format("%-30s %5.0f %10.2f %12.2f\n",
+                truncateString(item.getDescripcion(), 30),
+                item.getCantidad(),
+                item.getPrecioUnitario(),
+                item.getSubtotal()));
+        }
+
+        sb.append("-".repeat(65)).append("\n");
+
+        // Totales
+        sb.append(String.format("%47s %12.2f\n", "SUBTOTAL:", factura.getSubtotal()));
+
+        if (factura.getDescuento().compareTo(BigDecimal.ZERO) > 0) {
+            sb.append(String.format("%47s %12.2f\n", "DESCUENTO:", factura.getDescuento()));
+        }
+
+        BigDecimal iva = factura.getSubtotal().subtract(factura.getDescuento()).multiply(new BigDecimal("0.19"));
+        sb.append(String.format("%47s %12.2f\n", "IVA (19%):", iva));
+        sb.append(String.format("%47s %12.2f\n", "TOTAL:", factura.getTotal()));
+
+        sb.append("\n");
+        sb.append("Estado: ").append(factura.getEstado().getNombre()).append("\n");
+
+        if (factura.getFormaPago() != null) {
+            sb.append("Forma de pago: ").append(factura.getFormaPago().getNombre()).append("\n");
+        }
+
+        sb.append("\n");
+        sb.append("¡Gracias por confiar en Happy Feet Veterinaria!\n");
+        sb.append("El cuidado de su mascota es nuestra prioridad\n\n");
+
+        sb.append("🤖 Generado con [Claude Code](https://claude.com/claude-code)\n");
+        sb.append("Co-Authored-By: Claude <noreply@anthropic.com>\n");
+
+        return sb.toString();
+    }
+
+    private String truncateString(String str, int maxLength) {
+        if (str == null) return "";
+        if (str.length() <= maxLength) return str;
+        return str.substring(0, maxLength - 3) + "...";
     }
 
 }

@@ -908,22 +908,90 @@ public class ActividadesEspecialesController {
     
     
     public void run() {
-        System.out.println("=== ACTIVIDADES ESPECIALES ===");
-        System.out.println("Funcionalidad disponible:");
-        System.out.println("- Gestión de adopciones de mascotas");
-        System.out.println("- Organizar jornadas de vacunación");
-        System.out.println("- Club de mascotas frecuentes");
-        System.out.println("- Eventos especiales y promociones");
-        System.out.println("- Programas de fidelización");
-        System.out.println("- Contratos y documentación");
-        System.out.println("- Seguimiento post-adopción");
-        System.out.println();
-        System.out.println("Esta sección está lista para ser utilizada.");
-        System.out.println("Presione ENTER para continuar...");
-        try {
-            System.in.read();
-        } catch (Exception e) {
-            // Ignore
+        while (true) {
+            int opcion = ConsoleUtils.menu("ACTIVIDADES ESPECIALES",
+                    "Gestión de Adopciones",
+                    "Jornadas de Vacunación",
+                    "Club de Mascotas Frecuentes",
+                    "Resumen de Actividades"
+            );
+
+            switch (opcion) {
+                case 1 -> gestionarAdopciones();
+                case 2 -> gestionarJornadasVacunacion();
+                case 3 -> gestionarClubFrecuentes();
+                case 4 -> mostrarResumenActividades();
+                case 0 -> {
+                    return;
+                }
+                default -> System.out.println("Opción no válida");
+            }
+
+            ConsoleUtils.pause();
+        }
+    }
+
+    private void mostrarResumenActividades() {
+        System.out.println("\n╔══════════════════════════════════════════════════════════════╗");
+        System.out.println("║               RESUMEN DE ACTIVIDADES ESPECIALES             ║");
+        System.out.println("╚══════════════════════════════════════════════════════════════╝");
+
+        // Resumen de adopciones
+        long totalMascotasAdopcion = mascotasAdopcion.size();
+        long adoptadas = mascotasAdopcion.values().stream().filter(MascotaAdopcion::isAdoptada).count();
+        long disponibles = totalMascotasAdopcion - adoptadas;
+
+        System.out.println("\n🏠 ADOPCIONES:");
+        System.out.println("   • Total registradas: " + totalMascotasAdopcion);
+        System.out.println("   • Adoptadas: " + adoptadas);
+        System.out.println("   • Disponibles: " + disponibles);
+        if (totalMascotasAdopcion > 0) {
+            double porcentajeAdopcion = (adoptadas * 100.0) / totalMascotasAdopcion;
+            System.out.printf("   • Tasa de adopción: %.1f%%\n", porcentajeAdopcion);
+        }
+
+        // Resumen de jornadas de vacunación
+        long totalJornadas = jornadasVacunacion.size();
+        long jornadasActivas = jornadasVacunacion.values().stream().filter(JornadaVacunacion::isActiva).count();
+        int totalVacunaciones = jornadasVacunacion.values().stream()
+                .mapToInt(j -> j.getRegistros().size()).sum();
+
+        System.out.println("\n💉 JORNADAS DE VACUNACIÓN:");
+        System.out.println("   • Total de jornadas: " + totalJornadas);
+        System.out.println("   • Jornadas activas: " + jornadasActivas);
+        System.out.println("   • Total vacunaciones: " + totalVacunaciones);
+
+        // Resumen del club
+        long totalClientes = clientesFrecuentes.size();
+        int totalPuntos = clientesFrecuentes.values().stream()
+                .mapToInt(ClienteFrecuente::getPuntosAcumulados).sum();
+        BigDecimal totalGastado = clientesFrecuentes.values().stream()
+                .map(ClienteFrecuente::getTotalGastado)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+        System.out.println("\n⭐ CLUB DE CLIENTES FRECUENTES:");
+        System.out.println("   • Total clientes: " + totalClientes);
+        System.out.println("   • Puntos en circulación: " + totalPuntos);
+        System.out.printf("   • Ventas del club: $%.2f\n", totalGastado);
+
+        if (totalClientes > 0) {
+            // Top clientes
+            ClienteFrecuente topCliente = clientesFrecuentes.values().stream()
+                    .max(Comparator.comparing(ClienteFrecuente::getPuntosAcumulados))
+                    .orElse(null);
+            if (topCliente != null) {
+                System.out.println("   • Top cliente: " + topCliente.getNombreCompleto() +
+                        " (" + topCliente.getPuntosAcumulados() + " puntos)");
+            }
+        }
+
+        System.out.println("\n📊 ESTADO GENERAL:");
+        int actividadesTotales = (int) (totalMascotasAdopcion + totalJornadas + totalClientes);
+        if (actividadesTotales > 0) {
+            System.out.println("   ✅ Sistema de actividades especiales operativo");
+            System.out.println("   📈 Total de registros: " + actividadesTotales);
+        } else {
+            System.out.println("   ℹ️ No hay actividades registradas");
         }
     }
 
