@@ -20,7 +20,7 @@ public class HappyFeetApplication {
     private final FacturaController facturaController;
     private final InventarioController inventarioController;
     private final ReporteController reporteController;
-    private final ActividadesEspecialesController actividadesController;
+    private final ActividadesEspecialesControllerRefactored actividadesController;
     private final MainController mainController;
 
     public HappyFeetApplication() {

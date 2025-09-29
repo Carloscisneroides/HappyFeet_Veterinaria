@@ -162,6 +162,67 @@ public class FacturaRepositoryImpl implements FacturaRepository {
         }
     }
 
+    @Override
+    public Map<String, Object> obtenerFacturacionPorPeriodo(LocalDateTime inicio, LocalDateTime fin) {
+        String sql = "SELECT " +
+                     "COUNT(*) AS cantidad, " +
+                     "SUM(total) AS total, " +
+                     "AVG(total) AS promedio " +
+                     "FROM facturas " +
+                     "WHERE fecha_emision BETWEEN ? AND ? " +
+                     "AND estado != 'Cancelada'";
+
+        Map<String, Object> resultado = new HashMap<>();
+
+        try (Connection conn = db.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setTimestamp(1, Timestamp.valueOf(inicio));
+            ps.setTimestamp(2, Timestamp.valueOf(fin));
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    resultado.put("cantidad", rs.getInt("cantidad"));
+                    resultado.put("total", rs.getBigDecimal("total") != null ? rs.getBigDecimal("total") : BigDecimal.ZERO);
+                    resultado.put("promedio", rs.getBigDecimal("promedio") != null ? rs.getBigDecimal("promedio") : BigDecimal.ZERO);
+                }
+            }
+
+            return resultado;
+
+        } catch (SQLException e) {
+            System.err.println("[FacturaRepositoryImpl] Error obteniendo facturación por período: " + e.getMessage());
+            throw new DataAccessException("Error obteniendo facturación por período", e);
+        }
+    }
+
+    @Override
+    public BigDecimal obtenerTotalFacturado(LocalDateTime inicio, LocalDateTime fin) {
+        String sql = "SELECT COALESCE(SUM(total), 0) AS total " +
+                     "FROM facturas " +
+                     "WHERE fecha_emision BETWEEN ? AND ? " +
+                     "AND estado != 'Cancelada'";
+
+        try (Connection conn = db.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setTimestamp(1, Timestamp.valueOf(inicio));
+            ps.setTimestamp(2, Timestamp.valueOf(fin));
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getBigDecimal("total");
+                }
+            }
+
+            return BigDecimal.ZERO;
+
+        } catch (SQLException e) {
+            System.err.println("[FacturaRepositoryImpl] Error obteniendo total facturado: " + e.getMessage());
+            throw new DataAccessException("Error obteniendo total facturado", e);
+        }
+    }
+
     private Factura mapRow(ResultSet rs) throws SQLException {
         Factura f = new Factura();
         f.setId(rs.getInt("id"));

@@ -14,15 +14,23 @@ public class DependencyFactory {
 
     // Repositories
     private CitaRepository citaRepository;
+    private CitaEstadoRepository citaEstadoRepository;
     private DuenoRepository duenoRepository;
     private MascotaRepository mascotaRepository;
     private FacturaRepository facturaRepository;
     private InventarioRepository inventarioRepository;
     private ProveedorRepository proveedorRepository;
     private HistorialMedicoRepository historialMedicoRepository;
+    private MascotaAdopcionRepository mascotaAdopcionRepository;
+    private JornadaVacunacionRepository jornadaVacunacionRepository;
+    private RegistroVacunacionRepository registroVacunacionRepository;
+    private PuntosClienteRepository puntosClienteRepository;
+    private MovimientoPuntosRepository movimientoPuntosRepository;
+    private CompraClubFrecuenteRepository compraClubFrecuenteRepository;
 
     // Services
     private CitaService citaService;
+    private CitaEstadoService citaEstadoService;
     private DuenoService duenoService;
     private MascotaService mascotaService;
     private FacturaService facturaService;
@@ -31,6 +39,8 @@ public class DependencyFactory {
     private VeterinarioService veterinarioService;
     private ProveedorService proveedorService;
     private HistorialMedicoService historialMedicoService;
+    private MascotaAdopcionService mascotaAdopcionService;
+    private JornadaVacunacionService jornadaVacunacionService;
 
     // Views
     private CitaView citaView;
@@ -44,7 +54,7 @@ public class DependencyFactory {
     private FacturaController facturaController;
     private InventarioController inventarioController;
     private ReporteController reporteController;
-    private ActividadesEspecialesController actividadesController;
+    private ActividadesEspecialesControllerRefactored actividadesController;
     private ProveedorController proveedorController;
     private MainController mainController;
 
@@ -80,6 +90,7 @@ public class DependencyFactory {
 
         // Initialize repositories
         citaRepository = new CitaRepositoryImpl();
+        citaEstadoRepository = new CitaEstadoRepositoryImpl();
         duenoRepository = new DuenoRepositoryImpl();
         mascotaRepository = new MascotaRepositoryImpl();
         facturaRepository = new FacturaRepositoryImpl(dbConnection);
@@ -88,16 +99,33 @@ public class DependencyFactory {
         historialMedicoRepository = new HistorialMedicoRepositoryImpl();
         VeterinarioRepository veterinarioRepository = new VeterinarioRepositoryImpl();
 
+        // Initialize new repositories for Actividades Especiales
+        mascotaAdopcionRepository = new MascotaAdopcionRepositoryImpl();
+        jornadaVacunacionRepository = new JornadaVacunacionRepositoryImpl();
+        registroVacunacionRepository = new RegistroVacunacionRepositoryImpl();
+        puntosClienteRepository = new PuntosClienteRepositoryImpl();
+        movimientoPuntosRepository = new MovimientoPuntosRepositoryImpl();
+        compraClubFrecuenteRepository = new CompraClubFrecuenteRepositoryImpl();
+
         // Initialize services
         duenoService = new DuenoServiceImpl(duenoRepository);
         mascotaService = new MascotaServiceImpl(mascotaRepository);
+        citaEstadoService = new CitaEstadoServiceImpl(citaEstadoRepository);
         citaService = new CitaServiceImpl(citaRepository);
         inventarioService = new InventarioServiceImpl(inventarioRepository);
-        reporteService = new ReporteServiceImpl(new LoggerServiceImpl());
+        reporteService = new ReporteServiceImpl(new LoggerServiceImpl(),
+                                               historialMedicoRepository,
+                                               facturaRepository,
+                                               inventarioRepository);
         proveedorService = new ProveedorServiceImpl(proveedorRepository);
         veterinarioService = new VeterinarioServiceImpl(veterinarioRepository);
         historialMedicoService = new HistorialMedicoServiceImpl(historialMedicoRepository, inventarioService);
         facturaService = new FacturaServiceImpl(facturaRepository, historialMedicoService);
+
+        // Initialize new services for Actividades Especiales
+        LoggerManager loggerService = new LoggerServiceImpl();
+        mascotaAdopcionService = new MascotaAdopcionServiceImpl(mascotaAdopcionRepository, loggerService);
+        jornadaVacunacionService = new JornadaVacunacionServiceImpl(jornadaVacunacionRepository, registroVacunacionRepository, loggerService);
 
         // Initialize views
         citaView = new CitaView();
@@ -111,7 +139,17 @@ public class DependencyFactory {
         facturaController = new FacturaController(facturaService, duenoService, inventarioService, inventarioRepository);
         inventarioController = new InventarioController(inventarioService, inventarioRepository, proveedorService);
         reporteController = new ReporteController(facturaService, mascotaService, duenoService, citaService, inventarioRepository);
-        actividadesController = new ActividadesEspecialesController(mascotaService, duenoService);
+
+        // Initialize ActividadesEspecialesController with database repositories and services
+        actividadesController = new ActividadesEspecialesControllerRefactored(
+                mascotaAdopcionService,
+                jornadaVacunacionService,
+                duenoService,
+                puntosClienteRepository,
+                movimientoPuntosRepository,
+                compraClubFrecuenteRepository
+        );
+
         proveedorController = new ProveedorController(proveedorService);
         mainController = new MainController();
     }
@@ -141,7 +179,7 @@ public class DependencyFactory {
         return reporteController;
     }
 
-    public ActividadesEspecialesController getActividadesController() {
+    public ActividadesEspecialesControllerRefactored getActividadesController() {
         return actividadesController;
     }
 
@@ -156,6 +194,10 @@ public class DependencyFactory {
     // Getters for services (if needed elsewhere)
     public CitaService getCitaService() {
         return citaService;
+    }
+
+    public CitaEstadoService getCitaEstadoService() {
+        return citaEstadoService;
     }
 
     public DuenoService getDuenoService() {

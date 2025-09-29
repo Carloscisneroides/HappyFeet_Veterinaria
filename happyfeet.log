@@ -1,1 +1,298 @@
 
+2025-09-29 12:45:13 [INFO] Inicializando aplicación Happy Feet Veterinaria
+2025-09-29 12:45:14 [INFO] CitaServiceImpl inicializado
+2025-09-29 12:45:14 [INFO] FacturaController inicializado
+2025-09-29 12:45:14 [INFO] ProveedorController inicializado
+2025-09-29 12:45:14 [INFO] InventarioController inicializado
+2025-09-29 12:45:14 [INFO] ReporteController inicializado
+2025-09-29 12:45:14 [INFO] ActividadesEspecialesController inicializado
+2025-09-29 12:45:14 [INFO] Datos de ejemplo inicializados para actividades especiales
+2025-09-29 12:45:14 [INFO] ProveedorController inicializado
+2025-09-29 12:45:14 [INFO] Inicializando MainController y todos los servicios del sistema
+2025-09-29 12:45:14 [INFO] CitaServiceImpl inicializado
+2025-09-29 12:45:14 [INFO] ProveedorController inicializado
+2025-09-29 12:45:14 [INFO] InventarioController inicializado
+2025-09-29 12:45:14 [INFO] FacturaController inicializado
+2025-09-29 12:45:14 [INFO] ActividadesEspecialesController inicializado
+2025-09-29 12:45:14 [INFO] Datos de ejemplo inicializados para actividades especiales
+2025-09-29 12:45:14 [INFO] Todos los módulos del sistema inicializados correctamente
+2025-09-29 12:45:14 [INFO] Todos los controladores inicializados correctamente
+2025-09-29 12:45:18 [INFO] Iniciando sistema Happy Feet Veterinaria
+2025-09-29 12:47:09 [INFO] Inicializando aplicación Happy Feet Veterinaria
+2025-09-29 12:47:10 [INFO] CitaServiceImpl inicializado
+2025-09-29 12:47:10 [INFO] FacturaController inicializado
+2025-09-29 12:47:10 [INFO] ProveedorController inicializado
+2025-09-29 12:47:10 [INFO] InventarioController inicializado
+2025-09-29 12:47:10 [INFO] ReporteController inicializado
+2025-09-29 12:47:10 [INFO] ActividadesEspecialesController inicializado
+2025-09-29 12:47:10 [INFO] Datos de ejemplo inicializados para actividades especiales
+2025-09-29 12:47:10 [INFO] ProveedorController inicializado
+2025-09-29 12:47:10 [INFO] Inicializando MainController y todos los servicios del sistema
+2025-09-29 12:47:10 [INFO] CitaServiceImpl inicializado
+2025-09-29 12:47:10 [INFO] ProveedorController inicializado
+2025-09-29 12:47:10 [INFO] InventarioController inicializado
+2025-09-29 12:47:10 [INFO] FacturaController inicializado
+2025-09-29 12:47:10 [INFO] ActividadesEspecialesController inicializado
+2025-09-29 12:47:10 [INFO] Datos de ejemplo inicializados para actividades especiales
+2025-09-29 12:47:10 [INFO] Todos los módulos del sistema inicializados correctamente
+2025-09-29 12:47:10 [INFO] Todos los controladores inicializados correctamente
+2025-09-29 12:47:17 [INFO] Iniciando sistema Happy Feet Veterinaria
+2025-09-29 14:08:28 [INFO] Inicializando aplicación Happy Feet Veterinaria
+2025-09-29 14:08:29 [INFO] CitaServiceImpl inicializado
+2025-09-29 14:08:29 [INFO] FacturaController inicializado
+2025-09-29 14:08:29 [INFO] ProveedorController inicializado
+2025-09-29 14:08:29 [INFO] InventarioController inicializado
+2025-09-29 14:08:29 [INFO] ReporteController inicializado
+2025-09-29 14:08:29 [INFO] ActividadesEspecialesController inicializado
+2025-09-29 14:08:29 [INFO] Datos de ejemplo inicializados para actividades especiales
+2025-09-29 14:08:29 [INFO] ProveedorController inicializado
+2025-09-29 14:08:29 [INFO] Inicializando MainController y todos los servicios del sistema
+2025-09-29 14:08:29 [INFO] CitaServiceImpl inicializado
+2025-09-29 14:08:29 [INFO] ProveedorController inicializado
+2025-09-29 14:08:29 [INFO] InventarioController inicializado
+2025-09-29 14:08:29 [INFO] FacturaController inicializado
+2025-09-29 14:08:29 [INFO] ActividadesEspecialesController inicializado
+2025-09-29 14:08:29 [INFO] Datos de ejemplo inicializados para actividades especiales
+2025-09-29 14:08:29 [INFO] Todos los módulos del sistema inicializados correctamente
+2025-09-29 14:08:29 [INFO] Todos los controladores inicializados correctamente
+2025-09-29 14:08:37 [INFO] Iniciando sistema Happy Feet Veterinaria
+2025-09-29 14:12:04 [INFO] CitaServiceImpl inicializado
+2025-09-29 14:12:04 [INFO] FacturaController inicializado
+2025-09-29 14:12:04 [INFO] ProveedorController inicializado
+2025-09-29 14:12:04 [INFO] InventarioController inicializado
+2025-09-29 14:12:04 [INFO] ReporteController inicializado
+2025-09-29 14:12:04 [INFO] ActividadesEspecialesController inicializado
+2025-09-29 14:12:04 [INFO] Datos de ejemplo inicializados para actividades especiales
+2025-09-29 14:12:04 [INFO] ProveedorController inicializado
+2025-09-29 14:12:04 [INFO] Inicializando MainController y todos los servicios del sistema
+2025-09-29 14:12:04 [INFO] CitaServiceImpl inicializado
+2025-09-29 14:12:04 [INFO] ProveedorController inicializado
+2025-09-29 14:12:04 [INFO] InventarioController inicializado
+2025-09-29 14:12:04 [INFO] FacturaController inicializado
+2025-09-29 14:12:04 [INFO] ActividadesEspecialesController inicializado
+2025-09-29 14:12:04 [INFO] Datos de ejemplo inicializados para actividades especiales
+2025-09-29 14:12:04 [INFO] Todos los módulos del sistema inicializados correctamente
+2025-09-29T14:12:04.117043800 INFO  MenuPrincipal inicializado
+2025-09-29 14:12:36 [INFO] CitaServiceImpl inicializado
+2025-09-29 14:12:36 [INFO] FacturaController inicializado
+2025-09-29 14:12:36 [INFO] ProveedorController inicializado
+2025-09-29 14:12:36 [INFO] InventarioController inicializado
+2025-09-29 14:12:36 [INFO] ReporteController inicializado
+2025-09-29 14:12:36 [INFO] ActividadesEspecialesController inicializado
+2025-09-29 14:12:36 [INFO] Datos de ejemplo inicializados para actividades especiales
+2025-09-29 14:12:36 [INFO] ProveedorController inicializado
+2025-09-29 14:12:36 [INFO] Inicializando MainController y todos los servicios del sistema
+2025-09-29 14:12:36 [INFO] CitaServiceImpl inicializado
+2025-09-29 14:12:36 [INFO] ProveedorController inicializado
+2025-09-29 14:12:36 [INFO] InventarioController inicializado
+2025-09-29 14:12:36 [INFO] FacturaController inicializado
+2025-09-29 14:12:36 [INFO] ActividadesEspecialesController inicializado
+2025-09-29 14:12:36 [INFO] Datos de ejemplo inicializados para actividades especiales
+2025-09-29 14:12:36 [INFO] Todos los módulos del sistema inicializados correctamente
+2025-09-29T14:12:36.934552400 INFO  MenuPrincipal inicializado
+2025-09-29T14:12:44.668708400 INFO  Usuario salió del sistema
+2025-09-29 14:13:18 [INFO] Inicializando aplicación Happy Feet Veterinaria
+2025-09-29 14:13:19 [INFO] CitaServiceImpl inicializado
+2025-09-29 14:13:19 [INFO] FacturaController inicializado
+2025-09-29 14:13:19 [INFO] ProveedorController inicializado
+2025-09-29 14:13:19 [INFO] InventarioController inicializado
+2025-09-29 14:13:19 [INFO] ReporteController inicializado
+2025-09-29 14:13:19 [INFO] ActividadesEspecialesController inicializado
+2025-09-29 14:13:19 [INFO] Datos de ejemplo inicializados para actividades especiales
+2025-09-29 14:13:19 [INFO] ProveedorController inicializado
+2025-09-29 14:13:19 [INFO] Inicializando MainController y todos los servicios del sistema
+2025-09-29 14:13:19 [INFO] CitaServiceImpl inicializado
+2025-09-29 14:13:19 [INFO] ProveedorController inicializado
+2025-09-29 14:13:19 [INFO] InventarioController inicializado
+2025-09-29 14:13:19 [INFO] FacturaController inicializado
+2025-09-29 14:13:19 [INFO] ActividadesEspecialesController inicializado
+2025-09-29 14:13:19 [INFO] Datos de ejemplo inicializados para actividades especiales
+2025-09-29 14:13:19 [INFO] Todos los módulos del sistema inicializados correctamente
+2025-09-29 14:13:19 [INFO] Todos los controladores inicializados correctamente
+2025-09-29 14:13:24 [INFO] Iniciando sistema Happy Feet Veterinaria
+2025-09-29 14:13:50 [INFO] Factura creada: FACT-1759173215331-1 para carlos cisneros
+2025-09-29 14:54:05 [INFO] Inicializando aplicación Happy Feet Veterinaria
+2025-09-29 14:54:06 [INFO] CitaServiceImpl inicializado
+2025-09-29 14:54:06 [INFO] FacturaController inicializado
+2025-09-29 14:54:06 [INFO] ProveedorController inicializado
+2025-09-29 14:54:06 [INFO] InventarioController inicializado
+2025-09-29 14:54:06 [INFO] ReporteController inicializado
+2025-09-29 14:54:06 [INFO] ActividadesEspecialesController inicializado
+2025-09-29 14:54:06 [INFO] Datos de ejemplo inicializados para actividades especiales
+2025-09-29 14:54:06 [INFO] ProveedorController inicializado
+2025-09-29 14:54:06 [INFO] Inicializando MainController y todos los servicios del sistema
+2025-09-29 14:54:06 [INFO] CitaServiceImpl inicializado
+2025-09-29 14:54:06 [INFO] ProveedorController inicializado
+2025-09-29 14:54:06 [INFO] InventarioController inicializado
+2025-09-29 14:54:06 [INFO] FacturaController inicializado
+2025-09-29 14:54:06 [INFO] ActividadesEspecialesController inicializado
+2025-09-29 14:54:06 [INFO] Datos de ejemplo inicializados para actividades especiales
+2025-09-29 14:54:06 [INFO] Todos los módulos del sistema inicializados correctamente
+2025-09-29 14:54:06 [INFO] Todos los controladores inicializados correctamente
+2025-09-29 14:54:13 [INFO] Iniciando sistema Happy Feet Veterinaria
+2025-09-29 14:56:12 [INFO] Factura pagada: FAC002 - Efectivo
+2025-09-29 14:59:16 [INFO] Mascota registrada para adopción: pepita
+2025-09-29 16:08:28 [INFO] Inicializando aplicación Happy Feet Veterinaria
+2025-09-29 16:08:29 [INFO] CitaServiceImpl inicializado
+2025-09-29 16:08:29 [INFO] FacturaController inicializado
+2025-09-29 16:08:29 [INFO] ProveedorController inicializado
+2025-09-29 16:08:29 [INFO] InventarioController inicializado
+2025-09-29 16:08:29 [INFO] ReporteController inicializado
+2025-09-29 16:08:29 [INFO] ActividadesEspecialesController inicializado
+2025-09-29 16:08:29 [INFO] Datos de ejemplo inicializados para actividades especiales
+2025-09-29 16:08:29 [INFO] ProveedorController inicializado
+2025-09-29 16:08:29 [INFO] Inicializando MainController y todos los servicios del sistema
+2025-09-29 16:08:29 [INFO] CitaServiceImpl inicializado
+2025-09-29 16:08:29 [INFO] ProveedorController inicializado
+2025-09-29 16:08:29 [INFO] InventarioController inicializado
+2025-09-29 16:08:29 [INFO] FacturaController inicializado
+2025-09-29 16:08:29 [INFO] ActividadesEspecialesController inicializado
+2025-09-29 16:08:29 [INFO] Datos de ejemplo inicializados para actividades especiales
+2025-09-29 16:08:29 [INFO] Todos los módulos del sistema inicializados correctamente
+2025-09-29 16:08:29 [INFO] Todos los controladores inicializados correctamente
+2025-09-29 16:08:37 [INFO] Iniciando sistema Happy Feet Veterinaria
+2025-09-29 16:09:42 [INFO] Jornada de vacunación creada: Vacunacion perritos
+2025-09-29 16:31:53 [INFO] Inicializando aplicación Happy Feet Veterinaria
+2025-09-29 16:31:53 [INFO] CitaServiceImpl inicializado
+2025-09-29 16:31:53 [INFO] FacturaController inicializado
+2025-09-29 16:31:53 [INFO] ProveedorController inicializado
+2025-09-29 16:31:53 [INFO] InventarioController inicializado
+2025-09-29 16:31:53 [INFO] ReporteController inicializado
+2025-09-29 16:31:53 [INFO] ActividadesEspecialesController inicializado
+2025-09-29 16:31:53 [INFO] Datos de ejemplo inicializados para actividades especiales
+2025-09-29 16:31:53 [INFO] ProveedorController inicializado
+2025-09-29 16:31:53 [INFO] Inicializando MainController y todos los servicios del sistema
+2025-09-29 16:31:53 [INFO] CitaServiceImpl inicializado
+2025-09-29 16:31:53 [INFO] ProveedorController inicializado
+2025-09-29 16:31:53 [INFO] InventarioController inicializado
+2025-09-29 16:31:53 [INFO] FacturaController inicializado
+2025-09-29 16:31:53 [INFO] ActividadesEspecialesController inicializado
+2025-09-29 16:31:53 [INFO] Datos de ejemplo inicializados para actividades especiales
+2025-09-29 16:31:53 [INFO] Todos los módulos del sistema inicializados correctamente
+2025-09-29 16:31:53 [INFO] Todos los controladores inicializados correctamente
+2025-09-29 16:31:59 [INFO] Iniciando sistema Happy Feet Veterinaria
+2025-09-29 16:32:27 [INFO] Mascota registrada para adopción: GEMINI
+2025-09-29 16:45:25 [INFO] Inicializando aplicación Happy Feet Veterinaria
+2025-09-29 16:45:25 [INFO] CitaServiceImpl inicializado
+2025-09-29 16:45:25 [INFO] FacturaController inicializado
+2025-09-29 16:45:25 [INFO] ProveedorController inicializado
+2025-09-29 16:45:25 [INFO] InventarioController inicializado
+2025-09-29 16:45:25 [INFO] ReporteController inicializado
+2025-09-29 16:45:25 [INFO] ActividadesEspecialesController REFACTORIZADO inicializado - 100% BASE DE DATOS
+2025-09-29 16:45:25 [INFO] ProveedorController inicializado
+2025-09-29 16:45:25 [INFO] Inicializando MainController y todos los servicios del sistema
+2025-09-29 16:45:25 [INFO] CitaServiceImpl inicializado
+2025-09-29 16:45:25 [INFO] ProveedorController inicializado
+2025-09-29 16:45:25 [INFO] InventarioController inicializado
+2025-09-29 16:45:25 [INFO] FacturaController inicializado
+2025-09-29 16:45:25 [INFO] ActividadesEspecialesController inicializado
+2025-09-29 16:45:25 [INFO] Datos de ejemplo inicializados para actividades especiales
+2025-09-29 16:45:25 [INFO] Todos los módulos del sistema inicializados correctamente
+2025-09-29 16:45:25 [INFO] Todos los controladores inicializados correctamente
+2025-09-29 16:45:27 [INFO] Iniciando sistema Happy Feet Veterinaria
+2025-09-29 16:45:46 [INFO] Mascota registrada para adopción: moddy
+2025-09-29 16:47:21 [INFO] Inicializando aplicación Happy Feet Veterinaria
+2025-09-29 16:47:21 [INFO] CitaServiceImpl inicializado
+2025-09-29 16:47:21 [INFO] FacturaController inicializado
+2025-09-29 16:47:21 [INFO] ProveedorController inicializado
+2025-09-29 16:47:21 [INFO] InventarioController inicializado
+2025-09-29 16:47:21 [INFO] ReporteController inicializado
+2025-09-29 16:47:21 [INFO] ActividadesEspecialesController REFACTORIZADO inicializado - 100% BASE DE DATOS
+2025-09-29 16:47:21 [INFO] ProveedorController inicializado
+2025-09-29 16:47:21 [INFO] Inicializando MainController y todos los servicios del sistema
+2025-09-29 16:47:21 [INFO] CitaServiceImpl inicializado
+2025-09-29 16:47:21 [INFO] ProveedorController inicializado
+2025-09-29 16:47:21 [INFO] InventarioController inicializado
+2025-09-29 16:47:21 [INFO] FacturaController inicializado
+2025-09-29 16:47:21 [INFO] ActividadesEspecialesController inicializado
+2025-09-29 16:47:21 [INFO] Datos de ejemplo inicializados para actividades especiales
+2025-09-29 16:47:21 [INFO] Todos los módulos del sistema inicializados correctamente
+2025-09-29 16:47:21 [INFO] Todos los controladores inicializados correctamente
+2025-09-29 16:47:30 [INFO] Inicializando aplicación Happy Feet Veterinaria
+2025-09-29 16:47:30 [INFO] CitaServiceImpl inicializado
+2025-09-29 16:47:30 [INFO] FacturaController inicializado
+2025-09-29 16:47:30 [INFO] ProveedorController inicializado
+2025-09-29 16:47:30 [INFO] InventarioController inicializado
+2025-09-29 16:47:30 [INFO] ReporteController inicializado
+2025-09-29 16:47:30 [INFO] ActividadesEspecialesController REFACTORIZADO inicializado - 100% BASE DE DATOS
+2025-09-29 16:47:30 [INFO] ProveedorController inicializado
+2025-09-29 16:47:30 [INFO] Inicializando MainController y todos los servicios del sistema
+2025-09-29 16:47:30 [INFO] CitaServiceImpl inicializado
+2025-09-29 16:47:30 [INFO] ProveedorController inicializado
+2025-09-29 16:47:30 [INFO] InventarioController inicializado
+2025-09-29 16:47:30 [INFO] FacturaController inicializado
+2025-09-29 16:47:30 [INFO] ActividadesEspecialesController inicializado
+2025-09-29 16:47:30 [INFO] Datos de ejemplo inicializados para actividades especiales
+2025-09-29 16:47:30 [INFO] Todos los módulos del sistema inicializados correctamente
+2025-09-29 16:47:30 [INFO] Todos los controladores inicializados correctamente
+2025-09-29 16:47:32 [INFO] Iniciando sistema Happy Feet Veterinaria
+2025-09-29 16:47:57 [INFO] Mascota registrada para adopción: moddy
+2025-09-29 16:53:28 [INFO] Inicializando aplicación Happy Feet Veterinaria
+2025-09-29 16:53:28 [INFO] CitaServiceImpl inicializado
+2025-09-29 16:53:28 [INFO] FacturaController inicializado
+2025-09-29 16:53:28 [INFO] ProveedorController inicializado
+2025-09-29 16:53:28 [INFO] InventarioController inicializado
+2025-09-29 16:53:28 [INFO] ReporteController inicializado
+2025-09-29 16:53:28 [INFO] ActividadesEspecialesController REFACTORIZADO inicializado - 100% BASE DE DATOS
+2025-09-29 16:53:28 [INFO] ProveedorController inicializado
+2025-09-29 16:53:28 [INFO] Inicializando MainController y todos los servicios del sistema
+2025-09-29 16:53:28 [INFO] CitaServiceImpl inicializado
+2025-09-29 16:53:28 [INFO] ProveedorController inicializado
+2025-09-29 16:53:28 [INFO] InventarioController inicializado
+2025-09-29 16:53:28 [INFO] FacturaController inicializado
+2025-09-29 16:53:28 [INFO] ActividadesEspecialesController REFACTORIZADO inicializado - 100% BASE DE DATOS
+2025-09-29 16:53:28 [INFO] Todos los módulos del sistema inicializados correctamente
+2025-09-29 16:53:28 [INFO] Todos los controladores inicializados correctamente
+2025-09-29 16:53:33 [INFO] Iniciando sistema Happy Feet Veterinaria
+2025-09-29 16:53:49 [INFO] Mascota registrada para adopción en BD: moddy
+2025-09-29 16:54:49 [INFO] Jornada de vacunación creada en BD: perroputa
+2025-09-29 16:55:33 [INFO] Vacunación registrada en BD para jornada ID: 2
+2025-09-29 16:56:19 [INFO] Compra registrada en BD para cliente ID: 1
+2025-09-29 17:12:21 [INFO] Inicializando aplicación Happy Feet Veterinaria
+2025-09-29 17:12:22 [INFO] CitaServiceImpl inicializado
+2025-09-29 17:12:22 [INFO] FacturaController inicializado
+2025-09-29 17:12:22 [INFO] ProveedorController inicializado
+2025-09-29 17:12:22 [INFO] InventarioController inicializado
+2025-09-29 17:12:22 [INFO] ReporteController inicializado
+2025-09-29 17:12:22 [INFO] ActividadesEspecialesController REFACTORIZADO inicializado - 100% BASE DE DATOS
+2025-09-29 17:12:22 [INFO] ProveedorController inicializado
+2025-09-29 17:12:22 [INFO] Inicializando MainController y todos los servicios del sistema
+2025-09-29 17:12:22 [INFO] CitaServiceImpl inicializado
+2025-09-29 17:12:22 [INFO] ProveedorController inicializado
+2025-09-29 17:12:22 [INFO] InventarioController inicializado
+2025-09-29 17:12:22 [INFO] FacturaController inicializado
+2025-09-29 17:12:22 [INFO] ActividadesEspecialesController REFACTORIZADO inicializado - 100% BASE DE DATOS
+2025-09-29 17:12:22 [INFO] Todos los módulos del sistema inicializados correctamente
+2025-09-29 17:12:22 [INFO] Todos los controladores inicializados correctamente
+2025-09-29 17:12:25 [INFO] Iniciando sistema Happy Feet Veterinaria
+2025-09-29 17:16:00 [ERROR] Error iniciando cita
+com.happyfeet.service.impl.CitaServiceImpl$RecursoNoEncontradoException: No se encontró cita con ID: 1758997534955
+	at com.happyfeet.service.impl.CitaServiceImpl.cambiarEstado(CitaServiceImpl.java:252)
+	at com.happyfeet.service.impl.CitaServiceImpl.iniciar(CitaServiceImpl.java:109)
+	at com.happyfeet.controller.MainController.iniciarCita(MainController.java:478)
+	at com.happyfeet.controller.MainController$MenuPrincipalCompleto.menuCitas(MainController.java:748)
+	at com.happyfeet.controller.MainController$MenuPrincipalCompleto.iniciar(MainController.java:679)
+	at com.happyfeet.controller.MainController.run(MainController.java:107)
+	at com.happyfeet.HappyFeetApplication.ejecutarMenuPrincipal(HappyFeetApplication.java:67)
+	at com.happyfeet.HappyFeetApplication.iniciar(HappyFeetApplication.java:44)
+	at com.happyfeet.HappyFeetApplication.main(HappyFeetApplication.java:145)
+2025-09-29 17:17:15 [INFO] Inicializando aplicación Happy Feet Veterinaria
+2025-09-29 17:17:16 [INFO] CitaServiceImpl inicializado
+2025-09-29 17:17:16 [INFO] FacturaController inicializado
+2025-09-29 17:17:16 [INFO] ProveedorController inicializado
+2025-09-29 17:17:16 [INFO] InventarioController inicializado
+2025-09-29 17:17:16 [INFO] ReporteController inicializado
+2025-09-29 17:17:16 [INFO] ActividadesEspecialesController REFACTORIZADO inicializado - 100% BASE DE DATOS
+2025-09-29 17:17:16 [INFO] ProveedorController inicializado
+2025-09-29 17:17:16 [INFO] Inicializando MainController y todos los servicios del sistema
+2025-09-29 17:17:16 [INFO] CitaServiceImpl inicializado
+2025-09-29 17:17:16 [INFO] ProveedorController inicializado
+2025-09-29 17:17:16 [INFO] InventarioController inicializado
+2025-09-29 17:17:16 [INFO] FacturaController inicializado
+2025-09-29 17:17:16 [INFO] ActividadesEspecialesController REFACTORIZADO inicializado - 100% BASE DE DATOS
+2025-09-29 17:17:16 [INFO] Todos los módulos del sistema inicializados correctamente
+2025-09-29 17:17:16 [INFO] Todos los controladores inicializados correctamente
+2025-09-29 17:17:21 [INFO] Iniciando sistema Happy Feet Veterinaria
+2025-09-29 17:18:29 [INFO] Factura creada: FACT-1759184248583-1 para carlos cisneros
+2025-09-29 17:19:24 [INFO] Factura pagada: FACT-1759184248583-1 - Efectivo
+2025-09-29 17:20:31 [INFO] Jornada de vacunación creada en BD: putaclub

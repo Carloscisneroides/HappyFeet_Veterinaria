@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 8.2.0, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.43, for Win64 (x86_64)
 --
 -- Host: localhost    Database: happy_feet_veterinaria
 -- ------------------------------------------------------
--- Server version	8.2.0
+-- Server version	8.0.43
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -30,7 +30,7 @@ CREATE TABLE `cita_estados` (
   `fecha_creacion` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE KEY `nombre` (`nombre`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -39,6 +39,7 @@ CREATE TABLE `cita_estados` (
 
 LOCK TABLES `cita_estados` WRITE;
 /*!40000 ALTER TABLE `cita_estados` DISABLE KEYS */;
+INSERT INTO `cita_estados` VALUES (1,'Pendiente','Cita programada pendiente de atención',1,'2025-09-26 08:20:03'),(2,'Atendida','Cita completada',1,'2025-09-26 08:20:03'),(3,'Cancelada','Cita anulada por el cliente o veterinario',0,'2025-09-26 08:20:03');
 /*!40000 ALTER TABLE `cita_estados` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -74,7 +75,7 @@ CREATE TABLE `citas` (
   CONSTRAINT `citas_ibfk_2` FOREIGN KEY (`servicio_id`) REFERENCES `servicios` (`id`),
   CONSTRAINT `citas_ibfk_3` FOREIGN KEY (`veterinario_id`) REFERENCES `veterinarios` (`id`),
   CONSTRAINT `citas_ibfk_4` FOREIGN KEY (`estado_id`) REFERENCES `cita_estados` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -83,6 +84,7 @@ CREATE TABLE `citas` (
 
 LOCK TABLES `citas` WRITE;
 /*!40000 ALTER TABLE `citas` DISABLE KEYS */;
+INSERT INTO `citas` VALUES (1,'CIT-1758997534955',3,1,2,'2025-09-27 21:40:00','se corto',1,'Baja',NULL,'2025-09-27 18:25:34','2025-09-27 18:25:34'),(2,'CIT-1759017242130',3,1,1,'2025-09-28 15:20:00','checqueo de rutina',1,'Baja',NULL,'2025-09-27 23:54:02','2025-09-27 23:54:02'),(5,'CIT-1759075973863',2,1,2,'2025-09-30 15:10:00','prueba',1,'Baja',NULL,'2025-09-28 16:12:53','2025-09-28 16:12:53'),(7,'CIT-1759141421343',2,1,2,'2025-10-10 15:40:00','prueba',1,'Baja',NULL,'2025-09-29 10:23:41','2025-09-29 10:23:41');
 /*!40000 ALTER TABLE `citas` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -112,7 +114,7 @@ CREATE TABLE `duenos` (
   KEY `idx_documento` (`documento_identidad`),
   KEY `idx_email` (`email`),
   KEY `idx_nombre` (`nombre_completo`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -121,7 +123,7 @@ CREATE TABLE `duenos` (
 
 LOCK TABLES `duenos` WRITE;
 /*!40000 ALTER TABLE `duenos` DISABLE KEYS */;
-INSERT INTO `duenos` VALUES (1,'Juan','1112149848','calle6','3108051310','arrublas1208@gmail.com','3108051310',NULL,NULL,NULL,'2025-09-27 13:57:32','2025-09-27 13:57:32');
+INSERT INTO `duenos` VALUES (1,'carlos cisneros','1098765',NULL,'3133609617','cisneroscarlos@gmail.com','31550014789',NULL,NULL,NULL,'2025-09-26 08:27:13','2025-09-26 08:27:13'),(2,'Juan','1098765432','calle11','310859999','juan@gmail.com','315099876678',NULL,NULL,NULL,'2025-09-26 19:15:29','2025-09-26 19:15:29'),(5,'Cliente Prueba BD','DNI-DBTEST','Calle Falsa 123','3000000000','dbtest.dueno@happyfeet.local',NULL,NULL,NULL,NULL,'2025-09-28 02:35:10','2025-09-28 02:35:10');
 /*!40000 ALTER TABLE `duenos` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -139,7 +141,7 @@ CREATE TABLE `especies` (
   `fecha_creacion` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE KEY `nombre` (`nombre`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -148,6 +150,7 @@ CREATE TABLE `especies` (
 
 LOCK TABLES `especies` WRITE;
 /*!40000 ALTER TABLE `especies` DISABLE KEYS */;
+INSERT INTO `especies` VALUES (1,'Canino','Perros de todas las razas','2025-09-26 08:18:38'),(2,'Felino','Gatos domésticos','2025-09-26 08:18:38'),(3,'Ave','Aves de compañía como loros y canarios','2025-09-26 08:18:38');
 /*!40000 ALTER TABLE `especies` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -166,7 +169,7 @@ CREATE TABLE `evento_tipos` (
   `fecha_creacion` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE KEY `nombre` (`nombre`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -175,6 +178,7 @@ CREATE TABLE `evento_tipos` (
 
 LOCK TABLES `evento_tipos` WRITE;
 /*!40000 ALTER TABLE `evento_tipos` DISABLE KEYS */;
+INSERT INTO `evento_tipos` VALUES (1,'Consulta general','Revisión médica general',1,'2025-09-26 08:19:37'),(2,'Vacunación','Aplicación de vacunas',0,'2025-09-26 08:19:37'),(3,'Desparasitación','Control de parásitos internos y externos',0,'2025-09-26 08:19:37');
 /*!40000 ALTER TABLE `evento_tipos` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -207,7 +211,7 @@ CREATE TABLE `facturas` (
   KEY `idx_estado` (`estado`),
   KEY `idx_numero` (`numero_factura`),
   CONSTRAINT `facturas_ibfk_1` FOREIGN KEY (`dueno_id`) REFERENCES `duenos` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -216,6 +220,7 @@ CREATE TABLE `facturas` (
 
 LOCK TABLES `facturas` WRITE;
 /*!40000 ALTER TABLE `facturas` DISABLE KEYS */;
+INSERT INTO `facturas` VALUES (1,'FAC001',1,'2025-09-20 10:00:00','2025-10-20',75.00,7.50,0.00,82.50,'Pagada','Tarjeta Crédito','Pago exitoso en línea','2025-09-27 14:49:10','2025-09-27 14:49:10'),(2,'FAC002',2,'2025-09-22 15:30:00','2025-10-22',200.00,20.00,10.00,210.00,'Pagada','Efectivo','Cliente pagará en próxima visita','2025-09-27 14:49:10','2025-09-29 19:56:12'),(4,'FACT-1759026910262',5,'2025-09-28 02:35:10','2025-10-27',0.00,0.00,0.00,0.00,'Pendiente','Efectivo',NULL,'2025-09-28 02:35:10','2025-09-28 02:35:10'),(5,'FACT-1759027577018',5,'2025-09-28 02:46:17','2025-10-27',54000.00,10260.00,0.00,64260.00,'Pagada','Efectivo',NULL,'2025-09-28 02:46:17','2025-09-28 02:46:17'),(6,'FACT-1759027969411-1',1,'2025-09-28 02:52:49','2025-10-27',265000.00,45600.00,0.00,310600.00,'Cancelada','Efectivo',NULL,'2025-09-28 02:53:32','2025-09-28 16:20:51'),(7,'FACT-1759028148263-1',1,'2025-09-28 02:55:48','2025-10-27',0.00,0.00,0.00,0.00,'Cancelada','Efectivo',NULL,'2025-09-28 02:56:09','2025-09-28 16:18:32'),(8,'FACT-1759173215331-1',1,'2025-09-29 19:13:35','2025-10-29',50000.00,0.00,0.00,50000.00,'Pendiente','Efectivo',NULL,'2025-09-29 19:13:50','2025-09-29 19:13:50');
 /*!40000 ALTER TABLE `facturas` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -306,7 +311,7 @@ CREATE TABLE `inventario` (
   KEY `idx_activo` (`activo`),
   CONSTRAINT `inventario_ibfk_1` FOREIGN KEY (`producto_tipo_id`) REFERENCES `producto_tipos` (`id`),
   CONSTRAINT `inventario_ibfk_2` FOREIGN KEY (`proveedor_id`) REFERENCES `proveedores` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -315,6 +320,7 @@ CREATE TABLE `inventario` (
 
 LOCK TABLES `inventario` WRITE;
 /*!40000 ALTER TABLE `inventario` DISABLE KEYS */;
+INSERT INTO `inventario` VALUES (2,'PROD002','Alimento premium para gatos',2,2,'Bolsa de 10kg para gatos adultos','PetFood Co.','L002','Bodega B',47,5,100,'2026-02-10',90.00,175.00,0,0,1,'2025-09-27 14:50:17','2025-09-28 15:43:24'),(3,'PROD004','hibermentina',1,NULL,NULL,NULL,NULL,NULL,400,5,NULL,NULL,NULL,30.00,0,0,1,'2025-09-28 01:47:30','2025-09-28 01:50:14'),(6,'PRD-1759026910133','Amoxicilina 500mg',1,NULL,NULL,NULL,NULL,NULL,50,5,NULL,'2026-03-27',NULL,12000.00,0,0,1,'2025-09-28 02:35:10','2025-09-28 02:35:10'),(7,'PRD-1759027576906','Amoxicilina 500mg',1,NULL,NULL,NULL,NULL,NULL,30,5,NULL,'2026-03-27',NULL,12000.00,0,0,1,'2025-09-28 02:46:16','2025-09-28 02:53:10'),(8,'PRD-1759139305173','SMOKE-Test-Producto',1,NULL,NULL,NULL,NULL,NULL,10,5,NULL,'2025-10-09',NULL,9999.00,0,0,1,'2025-09-29 09:48:25','2025-09-29 09:48:25'),(9,'PRD-1759139305570','SMOKE-Test-Producto',1,NULL,NULL,NULL,NULL,NULL,10,5,NULL,'2025-10-09',NULL,9999.00,0,0,1,'2025-09-29 09:48:25','2025-09-29 09:48:25'),(10,'PROD10010','PRUEBA',1,NULL,NULL,NULL,NULL,NULL,300,5,NULL,NULL,NULL,20.00,0,0,1,'2025-09-29 12:48:51','2025-09-29 12:48:51');
 /*!40000 ALTER TABLE `inventario` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -345,7 +351,7 @@ CREATE TABLE `items_factura` (
   CONSTRAINT `items_factura_ibfk_2` FOREIGN KEY (`servicio_id`) REFERENCES `servicios` (`id`),
   CONSTRAINT `items_factura_ibfk_3` FOREIGN KEY (`producto_id`) REFERENCES `inventario` (`id`),
   CONSTRAINT `items_factura_chk_1` CHECK ((((`tipo_item` = _utf8mb4'servicio') and (`servicio_id` is not null)) or ((`tipo_item` = _utf8mb4'producto') and (`producto_id` is not null))))
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -354,6 +360,7 @@ CREATE TABLE `items_factura` (
 
 LOCK TABLES `items_factura` WRITE;
 /*!40000 ALTER TABLE `items_factura` DISABLE KEYS */;
+INSERT INTO `items_factura` VALUES (3,5,'servicio',6,NULL,'Consulta general',1.000,30000.00,0.00,30000.00,'2025-09-28 02:46:17'),(4,5,'producto',NULL,7,'Venta producto inventario',2.000,12000.00,0.00,24000.00,'2025-09-28 02:46:17');
 /*!40000 ALTER TABLE `items_factura` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -390,7 +397,7 @@ CREATE TABLE `mascotas` (
   KEY `idx_microchip` (`microchip`),
   CONSTRAINT `mascotas_ibfk_1` FOREIGN KEY (`dueno_id`) REFERENCES `duenos` (`id`) ON DELETE CASCADE,
   CONSTRAINT `mascotas_ibfk_2` FOREIGN KEY (`raza_id`) REFERENCES `razas` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -399,43 +406,8 @@ CREATE TABLE `mascotas` (
 
 LOCK TABLES `mascotas` WRITE;
 /*!40000 ALTER TABLE `mascotas` DISABLE KEYS */;
+INSERT INTO `mascotas` VALUES (2,1,'lobo',1,NULL,'Macho',NULL,NULL,NULL,NULL,NULL,NULL,'98788',NULL,NULL,'2025-09-27 13:14:21','2025-09-27 17:57:05'),(3,1,'Luna',1,NULL,'Hembra',NULL,NULL,NULL,NULL,NULL,NULL,'12212',NULL,NULL,'2025-09-27 13:59:07','2025-09-27 13:59:07'),(5,1,'petra',1,NULL,'Hembra',NULL,NULL,NULL,NULL,NULL,NULL,'11211',NULL,NULL,'2025-09-27 17:56:01','2025-09-27 17:56:01'),(6,2,'firulais',1,NULL,'Macho',NULL,NULL,NULL,NULL,NULL,NULL,'22222',NULL,NULL,'2025-09-28 15:39:31','2025-09-28 15:39:31');
 /*!40000 ALTER TABLE `mascotas` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `movimientos_inventario`
---
-
-DROP TABLE IF EXISTS `movimientos_inventario`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `movimientos_inventario` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `producto_id` int NOT NULL,
-  `tipo_movimiento` enum('entrada','salida','ajuste','vencimiento') NOT NULL,
-  `cantidad` int NOT NULL,
-  `cantidad_anterior` int NOT NULL,
-  `cantidad_nueva` int NOT NULL,
-  `motivo` varchar(255) NOT NULL,
-  `referencia_id` int DEFAULT NULL COMMENT 'ID de factura, cita, etc.',
-  `referencia_tipo` varchar(50) DEFAULT NULL COMMENT 'factura, cita, etc.',
-  `fecha_movimiento` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `usuario_registro` varchar(100) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `idx_producto` (`producto_id`),
-  KEY `idx_fecha` (`fecha_movimiento`),
-  KEY `idx_tipo` (`tipo_movimiento`),
-  CONSTRAINT `movimientos_inventario_ibfk_1` FOREIGN KEY (`producto_id`) REFERENCES `inventario` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `movimientos_inventario`
---
-
-LOCK TABLES `movimientos_inventario` WRITE;
-/*!40000 ALTER TABLE `movimientos_inventario` DISABLE KEYS */;
-/*!40000 ALTER TABLE `movimientos_inventario` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -485,7 +457,7 @@ CREATE TABLE `producto_tipos` (
   `fecha_creacion` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE KEY `nombre` (`nombre`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -494,6 +466,7 @@ CREATE TABLE `producto_tipos` (
 
 LOCK TABLES `producto_tipos` WRITE;
 /*!40000 ALTER TABLE `producto_tipos` DISABLE KEYS */;
+INSERT INTO `producto_tipos` VALUES (1,'Medicamento','Productos farmacéuticos para mascotas','2025-09-26 08:19:15'),(2,'Alimento','Comida balanceada para mascotas','2025-09-26 08:19:15'),(3,'Accesorio','Juguetes, collares y otros accesorios','2025-09-26 08:19:15');
 /*!40000 ALTER TABLE `producto_tipos` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -517,7 +490,7 @@ CREATE TABLE `proveedores` (
   `fecha_actualizacion` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE KEY `ruc` (`ruc`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -526,6 +499,7 @@ CREATE TABLE `proveedores` (
 
 LOCK TABLES `proveedores` WRITE;
 /*!40000 ALTER TABLE `proveedores` DISABLE KEYS */;
+INSERT INTO `proveedores` VALUES (1,'Distribuidora VetCare','1234567890','Carlos Ramírez','3001234567','contacto@vetcare.com','Calle 123 #45-67',1,'2025-09-26 08:20:20','2025-09-26 08:20:20'),(2,'Mascotas & Cia','9876543210','Ana López','3019876543','ventas@mascotascia.com','Carrera 45 #89-10',1,'2025-09-26 08:20:20','2025-09-26 08:20:20');
 /*!40000 ALTER TABLE `proveedores` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -577,7 +551,7 @@ CREATE TABLE `razas` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `unique_raza_especie` (`especie_id`,`nombre`),
   CONSTRAINT `razas_ibfk_1` FOREIGN KEY (`especie_id`) REFERENCES `especies` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -586,6 +560,7 @@ CREATE TABLE `razas` (
 
 LOCK TABLES `razas` WRITE;
 /*!40000 ALTER TABLE `razas` DISABLE KEYS */;
+INSERT INTO `razas` VALUES (1,1,'Labrador Retriever','Amigable, activo y sociable','2025-09-26 08:18:56'),(2,1,'Bulldog','Calmado y cariñoso','2025-09-26 08:18:56'),(3,2,'Persa','Pelo largo, temperamento tranquilo','2025-09-26 08:18:56'),(4,2,'Siames','Activo, vocal y curioso','2025-09-26 08:18:56'),(5,3,'Canario','Ave pequeña y colorida','2025-09-26 08:18:56');
 /*!40000 ALTER TABLE `razas` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -651,7 +626,7 @@ CREATE TABLE `servicios` (
   `fecha_actualizacion` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE KEY `codigo` (`codigo`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -660,6 +635,7 @@ CREATE TABLE `servicios` (
 
 LOCK TABLES `servicios` WRITE;
 /*!40000 ALTER TABLE `servicios` DISABLE KEYS */;
+INSERT INTO `servicios` VALUES (1,'CONS001','Consulta general','Consulta básica de revisión',50.00,30,'Consulta',0,1,'2025-09-26 08:21:01','2025-09-26 08:21:01'),(2,'VAC001','Vacunación antirrábica','Aplicación de vacuna contra la rabia',25.00,15,'Procedimiento',0,1,'2025-09-26 08:21:01','2025-09-26 08:21:01'),(3,'CIR001','Cirugía menor','Procedimientos quirúrgicos básicos',200.00,120,'Cirugía',1,1,'2025-09-26 08:21:01','2025-09-26 08:21:01'),(6,'CONS-GEN','Consulta general','Consulta bÃ¡sica de revisiÃ³n',30000.00,30,'Consulta',0,1,'2025-09-28 02:35:10','2025-09-28 02:35:10');
 /*!40000 ALTER TABLE `servicios` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -700,31 +676,7 @@ UNLOCK TABLES;
 -- Table structure for table `usuarios`
 --
 
-DROP TABLE IF EXISTS `usuarios`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `usuarios` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `username` varchar(50) NOT NULL,
-  `email` varchar(100) NOT NULL,
-  `password_hash` varchar(255) NOT NULL,
-  `nombre_completo` varchar(255) NOT NULL,
-  `rol` enum('superadmin','admin','veterinario','recepcion','inventario') DEFAULT 'recepcion',
-  `veterinario_id` int DEFAULT NULL,
-  `activo` tinyint(1) DEFAULT '1',
-  `fecha_ultimo_login` timestamp NULL DEFAULT NULL,
-  `fecha_creacion` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `fecha_actualizacion` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `username` (`username`),
-  UNIQUE KEY `email` (`email`),
-  KEY `veterinario_id` (`veterinario_id`),
-  KEY `idx_username` (`username`),
-  KEY `idx_email` (`email`),
-  KEY `idx_rol` (`rol`),
-  CONSTRAINT `usuarios_ibfk_1` FOREIGN KEY (`veterinario_id`) REFERENCES `veterinarios` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+
 
 --
 -- Dumping data for table `usuarios`
@@ -758,7 +710,7 @@ CREATE TABLE `veterinarios` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `documento_identidad` (`documento_identidad`),
   UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -767,6 +719,7 @@ CREATE TABLE `veterinarios` (
 
 LOCK TABLES `veterinarios` WRITE;
 /*!40000 ALTER TABLE `veterinarios` DISABLE KEYS */;
+INSERT INTO `veterinarios` VALUES (1,'Dr. Juan Pérez','100200300','Medicina interna','3124567890','juanperez@vet.com','Calle 50 #20-10','2020-05-01',3500.00,1,'2025-09-26 08:20:33','2025-09-26 08:20:33'),(2,'Dra. María Gómez','200300400','Cirugía','3109876543','mariagomez@vet.com','Av. Siempre Viva 742','2021-07-15',4200.00,1,'2025-09-26 08:20:33','2025-09-26 08:20:33');
 /*!40000 ALTER TABLE `veterinarios` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -783,4 +736,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-09-27  9:18:59
+-- Dump completed on 2025-09-29 15:03:32

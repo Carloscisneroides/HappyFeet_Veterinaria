@@ -416,10 +416,9 @@ public class SimpleDependencyFactory {
         actividadesController = new ActividadesEspecialesController(mascotaService, duenoService);
         // Create a simple mock controller that doesn't extend MainController
         mainController = new MainController() {
-            // This will not be used in SimpleDependencyFactory mode
             @Override
             public void run() {
-                System.out.println("MainController en modo demo - funciones de BD no disponibles");
+                System.out.println("MainController - funciones de BD requieren configuración");
             }
         };
     }

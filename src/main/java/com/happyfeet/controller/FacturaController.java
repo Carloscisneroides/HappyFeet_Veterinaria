@@ -483,8 +483,7 @@ public class FacturaController {
                     "Procesar pago de factura",
                     "Cancelar factura",
                     "Ver facturas vencidas",
-                    "Generar reporte de ventas",
-                    "Generar factura en texto plano (demo)"
+                    "Generar reporte de ventas"
             );
 
             switch (opcion) {
@@ -495,7 +494,6 @@ public class FacturaController {
                 case 5 -> cancelarFactura();
                 case 6 -> mostrarFacturasVencidas();
                 case 7 -> generarReporteVentas();
-                case 8 -> generarFacturaDemo();
                 case 0 -> {
                     return;
                 }
@@ -506,55 +504,6 @@ public class FacturaController {
         }
     }
 
-    private void generarFacturaDemo() {
-        try {
-            System.out.println("\n=== GENERANDO FACTURA DEMO ===");
-
-            // Crear factura demo
-            Factura facturaDemo = new Factura();
-            facturaDemo.setId(999);
-            facturaDemo.setNumeroFactura("DEMO-" + System.currentTimeMillis());
-            facturaDemo.setDuenoId(1);
-            facturaDemo.setFechaEmision(LocalDateTime.now());
-
-            // Agregar items demo
-            Factura.ItemFactura itemServicio = new Factura.ItemFactura.Builder(Factura.ItemFactura.TipoItem.SERVICIO)
-                    .withDescripcion("Consulta Veterinaria General")
-                    .withCantidad(BigDecimal.ONE)
-                    .withPrecioUnitario(new BigDecimal("50000"))
-                    .build();
-            facturaDemo.agregarItem(itemServicio);
-
-            Factura.ItemFactura itemProducto = new Factura.ItemFactura.Builder(Factura.ItemFactura.TipoItem.PRODUCTO)
-                    .withDescripcion("Antiparasitario Canino")
-                    .withCantidad(BigDecimal.ONE)
-                    .withPrecioUnitario(new BigDecimal("25000"))
-                    .build();
-            facturaDemo.agregarItem(itemProducto);
-
-            // Generar factura en texto plano
-            String facturaTexto = generarFacturaTextoPlano(facturaDemo);
-            System.out.println("\n" + facturaTexto);
-
-            // Guardar en archivo si se desea
-            if (ConsoleUtils.confirm("¿Guardar factura en archivo?")) {
-                String nombreArchivo = "factura_demo_" + System.currentTimeMillis() + ".txt";
-                try {
-                    java.nio.file.Files.write(
-                        java.nio.file.Paths.get(nombreArchivo),
-                        facturaTexto.getBytes()
-                    );
-                    System.out.println("✅ Factura guardada en: " + nombreArchivo);
-                } catch (Exception e) {
-                    System.err.println("❌ Error al guardar archivo: " + e.getMessage());
-                }
-            }
-
-        } catch (Exception e) {
-            LOG.error("Error generando factura demo", e);
-            System.err.println("Error: " + e.getMessage());
-        }
-    }
 
     private String generarFacturaTextoPlano(Factura factura) {
         StringBuilder sb = new StringBuilder();

@@ -10,9 +10,8 @@ import java.sql.*;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.Map;
 
 public class HistorialMedicoRepositoryImpl implements HistorialMedicoRepository {
     private final DatabaseConnection db;
@@ -260,6 +259,66 @@ public class HistorialMedicoRepositoryImpl implements HistorialMedicoRepository 
             return list;
         } catch (SQLException e) {
             throw new DataAccessException("Error buscando historiales que requieren seguimiento", e);
+        }
+    }
+
+    @Override
+    public List<Map<String, Object>> obtenerServiciosMasSolicitados(int limite) {
+        String sql = "SELECT et.nombre AS tipo_evento_medico, COUNT(*) AS cantidad " +
+                     "FROM historial_medico hm " +
+                     "JOIN evento_tipos et ON hm.evento_tipo_id = et.id " +
+                     "GROUP BY et.nombre " +
+                     "ORDER BY cantidad DESC " +
+                     "LIMIT ?";
+
+        List<Map<String, Object>> resultados = new ArrayList<>();
+
+        try (Connection conn = db.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, limite);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    Map<String, Object> fila = new HashMap<>();
+                    fila.put("tipo_evento_medico", rs.getString("tipo_evento_medico"));
+                    fila.put("cantidad", rs.getLong("cantidad"));
+                    resultados.add(fila);
+                }
+            }
+
+            return resultados;
+
+        } catch (SQLException e) {
+            throw new DataAccessException("Error obteniendo servicios más solicitados", e);
+        }
+    }
+
+    @Override
+    public List<Map<String, Object>> obtenerDesempenoVeterinarios() {
+        String sql = "SELECT veterinario_id, COUNT(*) AS total_consultas " +
+                     "FROM historial_medico " +
+                     "WHERE veterinario_id IS NOT NULL " +
+                     "GROUP BY veterinario_id " +
+                     "ORDER BY total_consultas DESC";
+
+        List<Map<String, Object>> resultados = new ArrayList<>();
+
+        try (Connection conn = db.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                Map<String, Object> fila = new HashMap<>();
+                fila.put("veterinario_id", rs.getInt("veterinario_id"));
+                fila.put("total_consultas", rs.getLong("total_consultas"));
+                resultados.add(fila);
+            }
+
+            return resultados;
+
+        } catch (SQLException e) {
+            throw new DataAccessException("Error obteniendo desempeño de veterinarios", e);
         }
     }
 

@@ -37,7 +37,7 @@ public class MainController {
     // ============ CONTROLADORES ESPECIALIZADOS ============
     private final InventarioController inventarioController;
     private final FacturaController facturaController;
-    private final ActividadesEspecialesController actividadesController;
+    private final ActividadesEspecialesControllerRefactored actividadesController;
 
     public MainController() {
         LOG.info("Inicializando MainController y todos los servicios del sistema");
@@ -54,6 +54,14 @@ public class MainController {
             FacturaRepository facturaRepo = new FacturaRepositoryImpl(dbConnection);
             ProveedorRepository proveedorRepo = new ProveedorRepositoryImpl();
 
+            // Instanciar repositorios para Actividades Especiales
+            MascotaAdopcionRepository mascotaAdopcionRepo = new MascotaAdopcionRepositoryImpl();
+            JornadaVacunacionRepository jornadaVacunacionRepo = new JornadaVacunacionRepositoryImpl();
+            RegistroVacunacionRepository registroVacunacionRepo = new RegistroVacunacionRepositoryImpl();
+            PuntosClienteRepository puntosClienteRepo = new PuntosClienteRepositoryImpl();
+            MovimientoPuntosRepository movimientoPuntosRepo = new MovimientoPuntosRepositoryImpl();
+            CompraClubFrecuenteRepository compraClubRepo = new CompraClubFrecuenteRepositoryImpl();
+
             // Instanciar servicios
             this.duenoService = new DuenoServiceImpl(duenoRepo);
             this.mascotaService = new MascotaServiceImpl(mascotaRepo);
@@ -66,10 +74,24 @@ public class MainController {
             );
             this.facturaService = new FacturaServiceImpl(facturaRepo, historialMedicoService);
 
+            // Instanciar servicios para Actividades Especiales
+            LoggerManager loggerService = new LoggerServiceImpl();
+            MascotaAdopcionService mascotaAdopcionService = new MascotaAdopcionServiceImpl(mascotaAdopcionRepo, loggerService);
+            JornadaVacunacionService jornadaVacunacionService = new JornadaVacunacionServiceImpl(jornadaVacunacionRepo, registroVacunacionRepo, loggerService);
+
             // Instanciar controladores especializados
             this.inventarioController = new InventarioController(inventarioService, inventarioRepo, proveedorService);
             this.facturaController = new FacturaController(facturaService, duenoService, inventarioService, inventarioRepo);
-            this.actividadesController = new ActividadesEspecialesController(mascotaService, duenoService);
+
+            // Instanciar controlador de Actividades Especiales con BASE DE DATOS
+            this.actividadesController = new ActividadesEspecialesControllerRefactored(
+                    mascotaAdopcionService,
+                    jornadaVacunacionService,
+                    duenoService,
+                    puntosClienteRepo,
+                    movimientoPuntosRepo,
+                    compraClubRepo
+            );
 
             LOG.info("Todos los módulos del sistema inicializados correctamente");
 
@@ -765,7 +787,7 @@ public class MainController {
         return facturaController;
     }
 
-    public ActividadesEspecialesController getActividadesController() {
+    public ActividadesEspecialesControllerRefactored getActividadesController() {
         return actividadesController;
     }
 

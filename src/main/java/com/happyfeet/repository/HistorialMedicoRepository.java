@@ -4,6 +4,7 @@ import com.happyfeet.model.entities.HistorialMedico;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -26,4 +27,10 @@ public interface HistorialMedicoRepository extends CrudRepository<HistorialMedic
 
     // Buscar historiales que requieren seguimiento
     List<HistorialMedico> findByRequiereSeguimientoTrue();
+
+    // Método para reportes: Obtener servicios más solicitados
+    List<Map<String, Object>> obtenerServiciosMasSolicitados(int limite);
+
+    // Método para reportes: Obtener desempeño de veterinarios
+    List<Map<String, Object>> obtenerDesempenoVeterinarios();
 }

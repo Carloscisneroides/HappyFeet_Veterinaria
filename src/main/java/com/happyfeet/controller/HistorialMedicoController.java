@@ -13,7 +13,7 @@ public class HistorialMedicoController {
     }
 
     public void registrarConsulta() {
-        // Crear una consulta básica para demostración usando Builder
+        // Registrar consulta médica
         HistorialMedico consulta = HistorialMedico.builder()
                 .withDiagnostico("Consulta general")
                 .withTratamientoPrescrito("Tratamiento básico")
