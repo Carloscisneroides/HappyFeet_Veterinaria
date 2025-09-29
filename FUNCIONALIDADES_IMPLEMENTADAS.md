@@ -188,6 +188,3 @@ El sistema está listo para su uso con todas las funcionalidades operativas y un
 
 ---
 
-🤖 **Generado con [Claude Code](https://claude.com/claude-code)**
-
-**Co-Authored-By: Claude <noreply@anthropic.com>**
