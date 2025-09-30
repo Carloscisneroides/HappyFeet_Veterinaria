@@ -276,8 +276,3 @@ El sistema cuenta con una interfaz de consola intuitiva:
 
 ---
 
-## 📄 Licencia
-
-Este proyecto es de uso académico y profesional. Desarrollado como sistema integral de gestión veterinaria.
-
-**© 2024 HappyFeet Veterinaria - Sistema de Gestión Integral**
